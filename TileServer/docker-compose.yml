@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  tileserver:
+    image: maptiler/tileserver-gl
+    container_name: tileserver-gl
+    volumes:
+      - ./data:/data
+    ports:
+      - "8080:8080"
+    command: australia.mbtiles
+    restart: unless-stopped

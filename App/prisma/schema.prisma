@@ -38,6 +38,16 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model Bubbler {
+  id          Int      @id @default(autoincrement())
+  name        String?  // Optional name
+  latitude    Float
+  longitude   Float
+  description String?  // Optional description
+  addedby     String
+  createdAt   DateTime @default(now())
+}
+
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique

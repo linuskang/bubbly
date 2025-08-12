@@ -30,14 +30,16 @@ export default function WaterMap() {
 
     console.log("Initializing map...")
 
-map.current = new maplibregl.Map({
-  container: mapContainer.current,
-  style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/basic-preview/style.json`,
-  center: [153.028295, -27.474188],
-  zoom: 13,
-});
+    map.current = new maplibregl.Map({
+      container: mapContainer.current,
+      style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/basic-preview/style.json`,
+      center: [153.028295, -27.474188],
+      zoom: 13,
+    });
 
-
+    map.current.addControl(new maplibregl.NavigationControl(), "top-right")
+    map.current.addControl(new maplibregl.FullscreenControl(), "top-right")
+    map.current.addControl(new maplibregl.ScaleControl(), "bottom-left")
 
     map.current.on("load", () => {
       console.log("Map loaded successfully")
@@ -169,7 +171,7 @@ map.current = new maplibregl.Map({
         </Button>
       </div>
 
-      <div className="absolute right-5 bottom-5 z-10 flex flex-col gap-3">
+      <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">
         <Button
           size="icon"
           className="h-14 w-14 bg-blue-600 hover:bg-blue-700 shadow-lg rounded-full"
@@ -187,10 +189,9 @@ map.current = new maplibregl.Map({
         </Button>
       </div>
 
-      <div className="absolute bottom-5 left-5 z-20 bg-white/90 rounded-lg p-2 text-xs">
+      <div className="absolute bottom-12 left-2.5 z-20 bg-white/90 rounded-lg p-2 text-xs">
         <div>Map loaded: {mapLoaded ? "✓" : "✗"}</div>
         <div>Waypoints: {waypoints.length}</div>
-        <div>Markers: {markersRef.current.length}</div>
       </div>
     </div>
   )

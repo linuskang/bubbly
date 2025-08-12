@@ -10,7 +10,6 @@ export default function WaterMap() {
   const mapContainer = useRef<HTMLDivElement | null>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const [search, setSearch] = useState("");
-
   const { data: session } = useSession();
 
   useEffect(() => {

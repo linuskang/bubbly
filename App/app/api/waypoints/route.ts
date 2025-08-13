@@ -6,6 +6,16 @@ export async function GET() {
   return NextResponse.json(bubblers);
 }
 
+// curl -X POST http://localhost:3000/api/waypoints \
+//  -H "Content-Type: application/json" \
+//  -d '{
+//    "name": "Calamvale District Park Fountain",
+//    "latitude": -27.621276,
+//    "longitude": 153.038100,
+//    "description": "Near the playground",
+//    "addedby": "linus"
+//  }'
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -33,6 +43,7 @@ export async function POST(request: Request) {
   }
 }
 
+// curl -X DELETE "https://example.com/api/bubblers?id=123"
 
 export async function DELETE(request: Request) {
   try {

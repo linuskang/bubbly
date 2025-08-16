@@ -40,11 +40,12 @@ model Account {
 
 model Bubbler {
   id          Int      @id @default(autoincrement())
-  name        String?  // Optional name
+  name        String? // Optional name
   latitude    Float
   longitude   Float
-  description String?  // Optional description
+  description String? // Optional description
   addedby     String
+  type        String
   createdAt   DateTime @default(now())
 }
 

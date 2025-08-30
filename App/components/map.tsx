@@ -32,7 +32,7 @@ export default function WaterMap() {
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/basic-preview/style.json`,
+      style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/openstreetmap/style.json`,
       center: [153.028295, -27.474188],
       zoom: 13,
     });

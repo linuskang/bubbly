@@ -13,7 +13,8 @@ export async function GET() {
 //    "latitude": -27.621276,
 //    "longitude": 153.038100,
 //    "description": "Near the playground",
-//    "addedby": "linus"
+//    "addedby": "linus",
+//    "type": "fountain"
 //  }'
 
 export async function POST(request: Request) {
@@ -21,7 +22,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     console.log("POST body:", body);
 
-    const { name, latitude, longitude, description, addedby } = body;
+    const { name, latitude, longitude, description, addedby, type } = body;
 
     if (typeof latitude !== "number" || typeof longitude !== "number") {
       console.error("Latitude or longitude invalid:", latitude, longitude);
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     }
 
     const newBubbler = await prisma.bubbler.create({
-      data: { name, latitude, longitude, description, addedby },
+      data: { name, latitude, longitude, description, addedby, type },
     });
 
     return NextResponse.json(newBubbler);

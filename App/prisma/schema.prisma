@@ -17,6 +17,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   Account       Account[]
   Session       Session[]
+  role          String @default("USER")
 
   Review   Review[]
   Favorite Favorite[]

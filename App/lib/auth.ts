@@ -37,6 +37,16 @@ export const authOptions: AuthOptions = {
       maxAge: 10 * 60, // 10 minutes
     }),
   ],
+  callbacks: {
+    async session({ session, user }) {
+      // Add username to the session object
+      if (session.user) {
+        session.user.id = user.id
+        session.user.username = user.username
+      }
+      return session
+    },
+  },
   session: { strategy: "database" },
   secret: process.env.NEXTAUTH_SECRET,
 }

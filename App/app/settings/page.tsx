@@ -1,4 +1,5 @@
 "use client"
+
 import { useEffect, useState } from "react"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -9,6 +10,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 export default function SettingsPage() {
   const [user, setUser] = useState<any>(null)
   const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
   const [image, setImage] = useState("")
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null)
@@ -19,6 +21,7 @@ export default function SettingsPage() {
       .then(data => {
         setUser(data)
         setName(data.name ?? "")
+        setUsername(data.username ?? "")
         setImage(data.image ?? "")
       })
   }, [])
@@ -31,16 +34,16 @@ export default function SettingsPage() {
       const res = await fetch("/api/user/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, image }),
+        body: JSON.stringify({ name, username, image }),
       })
 
       if (!res.ok) throw new Error("Failed to save changes")
 
-      setFeedback({ type: "success", message: "Changes saved successfully!" })
       const updatedUser = await res.json()
       setUser(updatedUser)
-    } catch (err) {
-      setFeedback({ type: "error", message: "Failed to save changes. Please try again." })
+      setFeedback({ type: "success", message: "Changes saved successfully!" })
+    } catch (err: any) {
+      setFeedback({ type: "error", message: err.message || "Failed to save changes. Please try again." })
     } finally {
       setSaving(false)
     }
@@ -89,8 +92,16 @@ export default function SettingsPage() {
           </div>
 
           <div className="space-y-2">
-            <Label>Email</Label>
-            <Input value={user.email} disabled />
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username"
+            />
+            <p className="text-xs text-muted-foreground">
+              Your username will be used in profile URLs like <code>waternearme.linus.id.au/user/{username || "username"}</code>
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -106,9 +117,7 @@ export default function SettingsPage() {
           {/* Feedback Message */}
           {feedback && (
             <p
-              className={`text-sm font-medium ${
-                feedback.type === "success" ? "text-green-600" : "text-red-600"
-              }`}
+              className={`text-sm font-medium ${feedback.type === "success" ? "text-green-600" : "text-red-600"}`}
             >
               {feedback.message}
             </p>

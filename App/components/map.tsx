@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
 import maplibregl from "maplibre-gl"
 import { Button } from "@/components/ui/button"
 import {
@@ -91,7 +92,7 @@ export default function WaterMap() {
       }
     }
   }, [])
-
+const router = useRouter()
   const showRedMarker = (waypoint: Waypoint) => {
     if (!map.current) return
 
@@ -125,6 +126,16 @@ export default function WaterMap() {
       redMarkerRef.current = null
     }
   }
+
+  useEffect(() => {
+    if (status === "loading") return
+
+    // If logged in but username not set, redirect to settings
+    if (session?.user && !session.user.username) {
+      alert("You need to set a username before using the site.")
+      router.push("/settings") // Redirect to your settings page
+    }
+  }, [session, status, router])
 
   useEffect(() => {
     if (!search) {

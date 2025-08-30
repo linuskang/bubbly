@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Plus, Navigation, Search } from "lucide-react"
 import { signIn, signOut, useSession } from "next-auth/react"
 import MagicLinkPopup from "@/components/loginPopup"
+import type { Feature, Point } from "geojson";
 
 interface Waypoint {
   id: number
@@ -94,125 +95,126 @@ export default function WaterMap() {
   }, [])
 
   useEffect(() => {
-  if (!map.current || !mapLoaded || waypoints.length === 0) return;
+    if (!map.current || !mapLoaded || waypoints.length === 0) return;
 
-  // Remove previous clustered source/layer if exists
-  if (map.current.getSource("waypoints")) {
-    map.current.removeLayer("clusters");
-    map.current.removeLayer("cluster-count");
-    map.current.removeLayer("unclustered-point");
-    map.current.removeSource("waypoints");
-  }
+    // Remove previous clustered source/layer if exists
+    if (map.current.getSource("waypoints")) {
+      map.current.removeLayer("clusters");
+      map.current.removeLayer("cluster-count");
+      map.current.removeLayer("unclustered-point");
+      map.current.removeSource("waypoints");
+    }
 
-  const features = waypoints.map((w) => ({
-    type: "Feature",
-    properties: {
-      id: w.id,
-      name: w.name,
-      description: w.description,
-      addedby: w.addedby,
-    },
+    const features: Feature<Point, { id: number; name?: string; description?: string; addedby?: string }>[] = 
+  waypoints.map(b => ({
+    type: "Feature", // ✅ must be "Feature"
     geometry: {
       type: "Point",
-      coordinates: [w.longitude, w.latitude],
+      coordinates: [b.longitude, b.latitude],
+    },
+    properties: {
+      id: b.id,
+      name: b.name,
+      description: b.description,
+      addedby: b.addedby,
     },
   }));
 
-  map.current.addSource("waypoints", {
-    type: "geojson",
-    data: {
-      type: "FeatureCollection",
-      features,
-    },
-    cluster: true,
-    clusterMaxZoom: 14, // Max zoom to cluster points on
-    clusterRadius: 50, // Radius of each cluster in pixels
-  });
+    map.current.addSource("waypoints", {
+      type: "geojson",
+      data: {
+        type: "FeatureCollection",
+        features,
+      },
+      cluster: true,
+      clusterMaxZoom: 14, // Max zoom to cluster points on
+      clusterRadius: 50, // Radius of each cluster in pixels
+    });
 
-  // Cluster circles
-  map.current.addLayer({
-    id: "clusters",
-    type: "circle",
-    source: "waypoints",
-    filter: ["has", "point_count"],
-    paint: {
-      "circle-color": "#3B82F6",
-      "circle-radius": ["step", ["get", "point_count"], 15, 100, 20, 750, 25],
-      "circle-stroke-width": 1,
-      "circle-stroke-color": "#fff",
-    },
-  });
+    // Cluster circles
+    map.current.addLayer({
+      id: "clusters",
+      type: "circle",
+      source: "waypoints",
+      filter: ["has", "point_count"],
+      paint: {
+        "circle-color": "#3B82F6",
+        "circle-radius": ["step", ["get", "point_count"], 15, 100, 20, 750, 25],
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
+      },
+    });
 
-  // Cluster count labels
-  map.current.addLayer({
-    id: "cluster-count",
-    type: "symbol",
-    source: "waypoints",
-    filter: ["has", "point_count"],
-    layout: {
-      "text-field": "{point_count_abbreviated}",
-      "text-font": ["Arial Unicode MS Bold"],
-      "text-size": 12,
-    },
-  });
+    // Cluster count labels
+    map.current.addLayer({
+      id: "cluster-count",
+      type: "symbol",
+      source: "waypoints",
+      filter: ["has", "point_count"],
+      layout: {
+        "text-field": "{point_count_abbreviated}",
+        "text-font": ["Arial Unicode MS Bold"],
+        "text-size": 12,
+      },
+    });
 
-  // Individual unclustered points
-  map.current.addLayer({
-    id: "unclustered-point",
-    type: "circle",
-    source: "waypoints",
-    filter: ["!", ["has", "point_count"]],
-    paint: {
-      "circle-color": "#3B82F6",
-      "circle-radius": 7,
-      "circle-stroke-width": 1,
-      "circle-stroke-color": "#fff",
-    },
-  });
+    // Individual unclustered points
+    map.current.addLayer({
+      id: "unclustered-point",
+      type: "circle",
+      source: "waypoints",
+      filter: ["!", ["has", "point_count"]],
+      paint: {
+        "circle-color": "#3B82F6",
+        "circle-radius": 7,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff",
+      },
+    });
 
-  // Popup on click
-  map.current.on("click", "unclustered-point", (e) => {
-    const feature = e.features![0];
-    const props = feature.properties as any;
-    new maplibregl.Popup({ offset: 25 })
-      .setLngLat((feature.geometry as any).coordinates)
-      .setHTML(`
+    // Popup on click
+    map.current.on("click", "unclustered-point", (e) => {
+      const feature = e.features![0];
+      const props = feature.properties as any;
+      new maplibregl.Popup({ offset: 25 })
+        .setLngLat((feature.geometry as any).coordinates)
+        .setHTML(`
         <div class="p-3">
           <h3 class="font-semibold text-sm mb-1">${props.name}</h3>
           ${props.description ? `<p class="text-xs text-gray-600">${props.description}</p>` : ""}
           <p class="text-xs text-gray-500 mt-1">Added by: ${props.addedby}</p>
         </div>
       `)
-      .addTo(map.current!);
-  });
-
-  // Zoom in on cluster click
-  map.current.on("click", "clusters", async (e) => {
-  const features = map.current!.queryRenderedFeatures(e.point, { layers: ["clusters"] });
-  if (!features.length) return;
-
-  const clusterId = features[0].properties!.cluster_id;
-  const source = map.current!.getSource("waypoints") as maplibregl.GeoJSONSource;
-
-  try {
-    const zoom = await source.getClusterExpansionZoom(clusterId);
-    map.current!.easeTo({
-      center: (features[0].geometry as any).coordinates,
-      zoom,
+        .addTo(map.current!);
     });
-  } catch (err) {
-    console.error("Error expanding cluster:", err);
-  }
-});
+
+    // Zoom in on cluster click
+    map.current.on("click", "clusters", async (e) => {
+      const features = map.current!.queryRenderedFeatures(e.point, { layers: ["clusters"] });
+      if (!features.length) return;
+
+      const clusterId = features[0].properties!.cluster_id;
+      const source = map.current!.getSource("waypoints") as maplibregl.GeoJSONSource;
+
+      try {
+        const zoom = await source.getClusterExpansionZoom(clusterId);
+        map.current!.easeTo({
+          center: (features[0].geometry as any).coordinates,
+          zoom,
+        });
+      } catch (err) {
+        console.error("Error expanding cluster:", err);
+      }
+    });
 
 
-  map.current.on("mouseenter", "clusters", () => {
-    map.current!.getCanvas().style.cursor = "pointer";
-  });
-  map.current.on("mouseleave", "clusters", () => {
-    map.current!.getCanvas().style.cursor = "";
-  });
-}, [waypoints, mapLoaded]);
+    map.current.on("mouseenter", "clusters", () => {
+      map.current!.getCanvas().style.cursor = "pointer";
+    });
+    map.current.on("mouseleave", "clusters", () => {
+      map.current!.getCanvas().style.cursor = "";
+    });
+  }, [waypoints, mapLoaded]);
 
 
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -223,9 +225,9 @@ export default function WaterMap() {
   return (
     <div className="relative w-screen h-screen bg-gray-50">
       <MagicLinkPopup
-  isOpen={isPopupOpen}
-  onClose={() => setIsPopupOpen(false)}
-/>
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+      />
 
 
       <div
@@ -251,25 +253,25 @@ export default function WaterMap() {
       </form>
 
       <div className="absolute top-5 right-5 z-30 flex items-center gap-2">
-  {!session ? (
-    <Button
-      onClick={() => setIsPopupOpen(true)}
-      className="bg-blue-600 hover:bg-blue-700 shadow-lg rounded-lg px-5 py-4 text-white font-semibold"
-    >
-      Sign in
-    </Button>
-  ) : (
-    <div className="flex items-center gap-2 bg-white rounded-lg shadow px-3 py-2">
-      <span className="text-sm font-medium">{session.user?.email}</span>
-      <Button
-        onClick={() => signOut()}
-        className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
-      >
-        Sign out
-      </Button>
-    </div>
-  )}
-</div>
+        {!session ? (
+          <Button
+            onClick={() => setIsPopupOpen(true)}
+            className="bg-blue-600 hover:bg-blue-700 shadow-lg rounded-lg px-5 py-4 text-white font-semibold cursor-pointer"
+          >
+            Sign in
+          </Button>
+        ) : (
+          <div className="flex items-center gap-2 bg-white rounded-lg shadow px-3 py-2">
+            <span className="text-sm font-medium">{session.user?.email}</span>
+            <Button
+              onClick={() => signOut()}
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+            >
+              Sign out
+            </Button>
+          </div>
+        )}
+      </div>
 
 
       <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">

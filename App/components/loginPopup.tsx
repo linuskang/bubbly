@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { X, Mail, Loader2, CheckCircle } from "lucide-react"
+import { X, Loader2, CheckCircle, Droplet } from "lucide-react"
 import { signIn } from "next-auth/react"
 
 interface MagicLinkPopupProps {
@@ -60,17 +60,17 @@ export default function MagicLinkPopup({ isOpen, onClose }: MagicLinkPopupProps)
       <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md mx-4 relative">
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="text-center mb-6">
-          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Mail className="w-6 h-6 text-blue-600" />
+          <div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Droplet className="w-6 h-6 text-blue-600 fill-current" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Sign in to Water Map</h2>
-          <p className="text-gray-600 text-sm">Enter your email to receive a magic link for instant access</p>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Sign in to WaterNearMe</h2>
+          <p className="text-gray-600 text-sm">Enter your email to continue</p>
         </div>
 
         {isSuccess ? (
@@ -100,7 +100,7 @@ export default function MagicLinkPopup({ isOpen, onClose }: MagicLinkPopupProps)
 
             {error && <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">{error}</div>}
 
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading || !email}>
+            <Button type="submit" className="cursor-pointer w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading || !email}>
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -112,7 +112,7 @@ export default function MagicLinkPopup({ isOpen, onClose }: MagicLinkPopupProps)
             </Button>
 
             <p className="text-xs text-gray-500 text-center">
-              By continuing, you agree to our terms of service and privacy policy
+              By continuing, you agree to the TOS and Privacy Policy.
             </p>
           </form>
         )}

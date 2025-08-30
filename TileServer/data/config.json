@@ -1,0 +1,20 @@
+{
+  "options": {
+    "paths": {
+      "root": "/data"
+    }
+  },
+  "styles": {
+    "default": {
+      "style": "default.json"
+    },
+    "openstreetmap": {
+      "style": "openstreetmap.json"
+    }
+  },
+  "data": {
+    "australia": {
+      "mbtiles": "australia.mbtiles"
+    }
+  }
+}

@@ -29,6 +29,9 @@ export default function WaterMap() {
   const markersRef = useRef<maplibregl.Marker[]>([])
   const { data: session } = useSession()
   const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const [matches, setMatches] = useState<Waypoint[]>([])
+  const popupRef = useRef<maplibregl.Popup | null>(null)
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return
@@ -63,6 +66,19 @@ export default function WaterMap() {
       }
     }
   }, [])
+
+  useEffect(() => {
+  if (!search) {
+    setMatches([])
+    return
+  }
+
+  const filtered = waypoints.filter((w) =>
+    w.name?.toLowerCase().includes(search.toLowerCase())
+  )
+  setMatches(filtered)
+}, [search, waypoints])
+
 
   useEffect(() => {
     console.log("Fetching waypoints...")
@@ -218,9 +234,39 @@ export default function WaterMap() {
 
 
   const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Search for:", search)
+  e.preventDefault()
+  if (!map.current) return
+
+  // Find matching waypoints
+  const matches = waypoints.filter((w) =>
+    w.name?.toLowerCase().includes(search.toLowerCase())
+  )
+
+  if (matches.length === 0) {
+    alert("No fountains found")
+    return
   }
+
+  // Fly to the first match
+  const first = matches[0]
+  map.current.flyTo({
+    center: [first.longitude, first.latitude],
+    zoom: 16,
+  })
+
+  // Optionally show a popup
+  new maplibregl.Popup({ offset: 25 })
+    .setLngLat([first.longitude, first.latitude])
+    .setHTML(`
+      <div class="p-3">
+        <h3 class="font-semibold text-sm mb-1">${first.name}</h3>
+        ${first.description ? `<p class="text-xs text-gray-600">${first.description}</p>` : ""}
+        <p class="text-xs text-gray-500 mt-1">Added by: ${first.addedby}</p>
+      </div>
+    `)
+    .addTo(map.current)
+}
+
 
   return (
     <div className="relative w-screen h-screen bg-gray-50">
@@ -236,21 +282,68 @@ export default function WaterMap() {
         style={{ minHeight: "100vh", minWidth: "100vw" }}
       />
 
-      <form
-        onSubmit={handleSearchSubmit}
-        className="absolute top-5 left-5 z-20 flex items-center bg-white rounded-full shadow-md px-5 py-3 max-w-sm w-full"
+  <form
+    onSubmit={handleSearchSubmit}
+    className="absolute top-5 left-5 z-20 w-full max-w-sm"
+  >
+    <div className="relative">
+      <input
+        type="text"
+        placeholder="Search for water fountains..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        onFocus={() => setIsFocused(true)}       // Show dropdown on focus
+        onBlur={() => setTimeout(() => setIsFocused(false), 150)} // Delay to allow click
+        className="w-full border-none focus:outline-none text-base placeholder-gray-600 bg-white rounded-full shadow-md px-5 py-3"
+      />
+      <button
+        type="submit"
+        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-colors"
+        aria-label="Search"
       >
-        <input
-          type="text"
-          placeholder="Search for water fountains..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="flex-grow border-none focus:outline-none text-base placeholder-gray-600"
-        />
-        <button type="submit" className="ml-3 text-gray-500 hover:text-gray-700 transition-colors" aria-label="Search">
-          <Search className="w-5 h-5" />
-        </button>
-      </form>
+        <Search className="w-5 h-5" />
+      </button>
+
+      {matches.length > 0 && isFocused && (
+        <div className="absolute top-full left-0 mt-1 w-full max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-md shadow-lg z-50">
+          {matches.map((w) => (
+            <button
+              key={w.id}
+              className="w-full text-left px-4 py-2 hover:bg-blue-100"
+              onClick={() => {
+                if (!map.current) return
+
+                map.current.flyTo({
+                  center: [w.longitude, w.latitude],
+                  zoom: 16,
+                })
+
+                if (popupRef.current) popupRef.current.remove()
+                const popup = new maplibregl.Popup({ offset: 25 })
+                  .setLngLat([w.longitude, w.latitude])
+                  .setHTML(`
+                    <div class="p-3">
+                      <h3 class="font-semibold text-sm mb-1">${w.name}</h3>
+                      ${w.description ? `<p class="text-xs text-gray-600">${w.description}</p>` : ""}
+                      <p class="text-xs text-gray-500 mt-1">Added by: ${w.addedby}</p>
+                    </div>
+                  `)
+                  .addTo(map.current!)
+                popupRef.current = popup
+
+                // Close dropdown
+                setMatches([])
+                setSearch(w.name || "")
+                setIsFocused(false) // <- hide dropdown until user focuses input again
+              }}
+            >
+              {w.name}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  </form>
 
       <div className="absolute top-5 right-5 z-30 flex items-center gap-2">
         {!session ? (

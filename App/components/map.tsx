@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import maplibregl from "maplibre-gl"
 import { Button } from "@/components/ui/button"
 import { Plus, Navigation, Search } from "lucide-react"
+import { signIn, signOut, useSession } from "next-auth/react"
 
 interface Waypoint {
   id: number
@@ -24,6 +25,7 @@ export default function WaterMap() {
   const [waypoints, setWaypoints] = useState<Waypoint[]>([])
   const [mapLoaded, setMapLoaded] = useState(false)
   const markersRef = useRef<maplibregl.Marker[]>([])
+  const { data: session } = useSession()
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return
@@ -240,13 +242,25 @@ export default function WaterMap() {
         </button>
       </form>
 
-      <div className="absolute top-5 right-5 z-30 flex items-center">
-        <Button
-          className="bg-blue-600 hover:bg-blue-700 shadow-lg rounded-lg px-5 py-4 text-white font-semibold cursor-pointer"
-          title="Sign in"
-        >
-          Sign in
-        </Button>
+      <div className="absolute top-5 right-5 z-30 flex items-center gap-2">
+        {!session ? (
+          <Button
+            onClick={() => signIn("email")}
+            className="bg-blue-600 hover:bg-blue-700 shadow-lg rounded-lg px-5 py-4 text-white font-semibold"
+          >
+            Sign in
+          </Button>
+        ) : (
+          <div className="flex items-center gap-2 bg-white rounded-lg shadow px-3 py-2">
+            <span className="text-sm font-medium">{session.user?.email}</span>
+            <Button
+              onClick={() => signOut()}
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
+            >
+              Sign out
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">

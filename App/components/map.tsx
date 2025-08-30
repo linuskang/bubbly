@@ -90,48 +90,126 @@ export default function WaterMap() {
   }, [])
 
   useEffect(() => {
-    if (!map.current || !mapLoaded || waypoints.length === 0) {
-      console.log("Not ready to add markers:", {
-        mapExists: !!map.current,
-        mapLoaded,
-        waypointsLength: waypoints.length,
-      })
-      return
-    }
+  if (!map.current || !mapLoaded || waypoints.length === 0) return;
 
-    console.log("Adding markers for waypoints:", waypoints)
+  // Remove previous clustered source/layer if exists
+  if (map.current.getSource("waypoints")) {
+    map.current.removeLayer("clusters");
+    map.current.removeLayer("cluster-count");
+    map.current.removeLayer("unclustered-point");
+    map.current.removeSource("waypoints");
+  }
 
-    markersRef.current.forEach((marker) => {
-      marker.remove()
-    })
-    markersRef.current = []
+  const features = waypoints.map((w) => ({
+    type: "Feature",
+    properties: {
+      id: w.id,
+      name: w.name,
+      description: w.description,
+      addedby: w.addedby,
+    },
+    geometry: {
+      type: "Point",
+      coordinates: [w.longitude, w.latitude],
+    },
+  }));
 
-    waypoints.forEach((waypoint, index) => {
-      console.log(`Adding marker ${index + 1} for ${waypoint.name} at [${waypoint.longitude}, ${waypoint.latitude}]`)
+  map.current.addSource("waypoints", {
+    type: "geojson",
+    data: {
+      type: "FeatureCollection",
+      features,
+    },
+    cluster: true,
+    clusterMaxZoom: 14, // Max zoom to cluster points on
+    clusterRadius: 50, // Radius of each cluster in pixels
+  });
 
-      try {
-        const marker = new maplibregl.Marker({ color: "#3B82F6" })
-          .setLngLat([waypoint.longitude, waypoint.latitude])
-          .setPopup(
-            new maplibregl.Popup({ offset: 25 }).setHTML(`
-              <div class="p-3">
-                <h3 class="font-semibold text-sm mb-1">${waypoint.name}</h3>
-                ${waypoint.description ? `<p class="text-xs text-gray-600">${waypoint.description}</p>` : ""}
-                <p class="text-xs text-gray-500 mt-1">Lat: ${waypoint.latitude}, Lng: ${waypoint.longitude}</p>
-              </div>
-            `),
-          )
-          .addTo(map.current!)
+  // Cluster circles
+  map.current.addLayer({
+    id: "clusters",
+    type: "circle",
+    source: "waypoints",
+    filter: ["has", "point_count"],
+    paint: {
+      "circle-color": "#3B82F6",
+      "circle-radius": ["step", ["get", "point_count"], 15, 100, 20, 750, 25],
+      "circle-stroke-width": 1,
+      "circle-stroke-color": "#fff",
+    },
+  });
 
-        markersRef.current.push(marker)
-        console.log(`Successfully added marker ${index + 1}`)
-      } catch (error) {
-        console.error(`Error adding marker for ${waypoint.name}:`, error)
-      }
-    })
+  // Cluster count labels
+  map.current.addLayer({
+    id: "cluster-count",
+    type: "symbol",
+    source: "waypoints",
+    filter: ["has", "point_count"],
+    layout: {
+      "text-field": "{point_count_abbreviated}",
+      "text-font": ["Arial Unicode MS Bold"],
+      "text-size": 12,
+    },
+  });
 
-    console.log(`Total markers added: ${markersRef.current.length}`)
-  }, [waypoints, mapLoaded])
+  // Individual unclustered points
+  map.current.addLayer({
+    id: "unclustered-point",
+    type: "circle",
+    source: "waypoints",
+    filter: ["!", ["has", "point_count"]],
+    paint: {
+      "circle-color": "#3B82F6",
+      "circle-radius": 7,
+      "circle-stroke-width": 1,
+      "circle-stroke-color": "#fff",
+    },
+  });
+
+  // Popup on click
+  map.current.on("click", "unclustered-point", (e) => {
+    const feature = e.features![0];
+    const props = feature.properties as any;
+    new maplibregl.Popup({ offset: 25 })
+      .setLngLat((feature.geometry as any).coordinates)
+      .setHTML(`
+        <div class="p-3">
+          <h3 class="font-semibold text-sm mb-1">${props.name}</h3>
+          ${props.description ? `<p class="text-xs text-gray-600">${props.description}</p>` : ""}
+          <p class="text-xs text-gray-500 mt-1">Added by: ${props.addedby}</p>
+        </div>
+      `)
+      .addTo(map.current!);
+  });
+
+  // Zoom in on cluster click
+  map.current.on("click", "clusters", async (e) => {
+  const features = map.current!.queryRenderedFeatures(e.point, { layers: ["clusters"] });
+  if (!features.length) return;
+
+  const clusterId = features[0].properties!.cluster_id;
+  const source = map.current!.getSource("waypoints") as maplibregl.GeoJSONSource;
+
+  try {
+    const zoom = await source.getClusterExpansionZoom(clusterId);
+    map.current!.easeTo({
+      center: (features[0].geometry as any).coordinates,
+      zoom,
+    });
+  } catch (err) {
+    console.error("Error expanding cluster:", err);
+  }
+});
+
+
+  map.current.on("mouseenter", "clusters", () => {
+    map.current!.getCanvas().style.cursor = "pointer";
+  });
+  map.current.on("mouseleave", "clusters", () => {
+    map.current!.getCanvas().style.cursor = "";
+  });
+}, [waypoints, mapLoaded]);
+
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()

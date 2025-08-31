@@ -10,15 +10,15 @@ datasource db {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  username          String?   @unique
+  username      String?   @unique
   email         String    @unique
   emailVerified DateTime?
-  image         String?
+  image         String?   @db.Text
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   Account       Account[]
   Session       Session[]
-  role          String @default("USER")
+  role          String    @default("USER")
 
   Review   Review[]
   Favorite Favorite[]
@@ -52,7 +52,7 @@ model Bubbler {
   addedby     String
   type        String
   createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt
   Review      Review[]
   Favorite    Favorite[]
 }

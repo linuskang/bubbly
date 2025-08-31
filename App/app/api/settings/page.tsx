@@ -82,7 +82,7 @@ export default function SettingsPage() {
 
           {/* Editable Fields */}
           <div className="space-y-2">
-            <Label htmlFor="name">Display Name</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               value={name}
@@ -99,9 +99,6 @@ export default function SettingsPage() {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
             />
-            <p className="text-xs text-muted-foreground">
-              Your username will be used in profile URLs like <code>waternearme.linus.id.au/user/{username || "username"}</code>
-            </p>
           </div>
 
           <div className="space-y-2">
@@ -129,8 +126,6 @@ export default function SettingsPage() {
           </Button>
         </CardFooter>
       </Card>
-
-      {/* Danger Zone */}
       <Card className="border-destructive/30">
         <CardHeader>
           <CardTitle className="text-lg text-destructive">Danger Zone</CardTitle>

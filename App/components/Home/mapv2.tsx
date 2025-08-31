@@ -407,7 +407,7 @@ const selectWaypoint = (w: Waypoint) => {
       {/* Buttons */}
       <div className="absolute top-5 right-5 z-30 flex items-center gap-2">
         {!session ? (
-          <button onClick={() => setIsPopupOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-md shadow hover:bg-blue-700">
+          <button onClick={() => setIsPopupOpen(true)} className="px-4 py-2 bg-blue-600 text-white shadow hover:bg-blue-700 rounded-full">
             Sign In
           </button>
         ) : (

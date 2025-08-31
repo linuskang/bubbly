@@ -61,6 +61,8 @@ model Bubbler {
   updatedAt       DateTime   @updatedAt
   Review          Review[]
   Favorite        Favorite[]
+  User            User?      @relation(fields: [addedbyuserid], references: [id])
+  userId          String?
 }
 
 model Review {

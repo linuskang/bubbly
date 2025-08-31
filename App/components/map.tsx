@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
@@ -23,7 +24,8 @@ import {
 import { signOut, useSession } from "next-auth/react"
 import MagicLinkPopup from "@/components/loginPopup"
 import type { Feature, Point } from "geojson"
-
+import UserAvatarDropdown from "@/components/avatarDropdown"
+import SettingsPanel from "@/components/settingsPopup"
 interface Waypoint {
   id: number
   name: string
@@ -58,6 +60,7 @@ export default function WaterMap() {
   const [selectedWaypoint, setSelectedWaypoint] = useState<Waypoint | null>(null)
   const [showInfoPanel, setShowInfoPanel] = useState(false)
   const redMarkerRef = useRef<maplibregl.Marker | null>(null)
+  const [showSettings, setShowSettings] = useState(false)
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return
@@ -92,7 +95,7 @@ export default function WaterMap() {
       }
     }
   }, [])
-const router = useRouter()
+  const router = useRouter()
   const showRedMarker = (waypoint: Waypoint) => {
     if (!map.current) return
 
@@ -400,21 +403,19 @@ const router = useRouter()
 
       <div className="absolute top-5 right-5 z-30 flex items-center gap-2">
         {!session ? (
-          <Button
-            onClick={() => setIsPopupOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 shadow-lg rounded-lg px-5 py-4 text-white font-semibold cursor-pointer"
-          >
-            Sign in
-          </Button>
+          <button>Sign In</button>
         ) : (
-          <div className="flex items-center gap-2 bg-white rounded-lg shadow px-3 py-2">
-            <span className="text-sm font-medium">{session.user?.email}</span>
-            <Button onClick={() => signOut()} className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded">
-              Sign out
-            </Button>
-          </div>
+          <UserAvatarDropdown
+  session={session}
+  onSettingsClick={() => setShowSettings(true)}
+/>
         )}
       </div>
+
+      
+    {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
+    
+
 
       <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">
         <Button
@@ -469,11 +470,10 @@ const router = useRouter()
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`w-5 h-5 ${
-                            i < Math.floor(selectedWaypoint.rating!)
+                          className={`w-5 h-5 ${i < Math.floor(selectedWaypoint.rating!)
                               ? "fill-yellow-400 text-yellow-400"
                               : "text-gray-300"
-                          }`}
+                            }`}
                         />
                       ))}
                     </div>

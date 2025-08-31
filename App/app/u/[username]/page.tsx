@@ -1,13 +1,13 @@
-// app/user/[username]/page.tsx
+// app/u/[username]/page.tsx
 import { notFound } from "next/navigation"
 import { prisma } from "@/lib/prisma"
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 
-interface PageProps {
-  params: { username: string }
+interface Params {
+  username: string
 }
 
-export default async function UserProfilePage({ params }: PageProps) {
+export default async function UserProfilePage({ params }: any) {
   const user = await prisma.user.findUnique({
     where: { username: params.username },
     select: { name: true, username: true, image: true, createdAt: true },
@@ -20,7 +20,7 @@ export default async function UserProfilePage({ params }: PageProps) {
       <div className="flex items-center space-x-4">
         <Avatar className="h-20 w-20">
           <AvatarImage src={user.image || ""} />
-          <AvatarFallback>{user.name?.[0] || user.username[0]}</AvatarFallback>
+          <AvatarFallback>{user.name?.[0]}</AvatarFallback>
         </Avatar>
         <div>
           <p className="text-2xl font-semibold">{user.name || user.username}</p>
@@ -30,8 +30,6 @@ export default async function UserProfilePage({ params }: PageProps) {
           </p>
         </div>
       </div>
-
-      {/* Optional: Add user’s reviews, favorites, or other info here */}
     </div>
   )
 }

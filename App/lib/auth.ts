@@ -43,6 +43,7 @@ export const authOptions: AuthOptions = {
       if (session.user) {
         session.user.id = user.id
         session.user.username = user.username
+        session.user.image = user.image
       }
       return session
     },

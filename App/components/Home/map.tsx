@@ -132,7 +132,21 @@ export default function WaterMap() {
       type: "circle",
       source: "waypoints",
       filter: ["has", "point_count"],
-      paint: { "circle-color": "#3B82F6", "circle-radius": ["step", ["get", "point_count"], 15, 100, 20, 750, 25], "circle-stroke-width": 1, "circle-stroke-color": "#fff" },
+      paint: {
+        "circle-color": [
+          "step",
+          ["get", "point_count"],
+          "#3b82f6", // blue-500
+          10,
+          "#1d4ed8", // blue-700
+          30,
+          "#1e40af", // blue-800
+        ],
+        "circle-radius": ["step", ["get", "point_count"], 18, 100, 24, 750, 30],
+        "circle-stroke-width": 2,
+        "circle-stroke-color": "#ffffff",
+        "circle-opacity": 0.9,
+      },
     })
 
     map.current.addLayer({
@@ -140,21 +154,34 @@ export default function WaterMap() {
       type: "symbol",
       source: "waypoints",
       filter: ["has", "point_count"],
-      layout: { "text-field": "{point_count_abbreviated}", "text-font": ["Arial Unicode MS Bold"], "text-size": 12 },
+      layout: {
+        "text-field": "{point_count_abbreviated}",
+        "text-font": ["Arial Unicode MS Bold"],
+        "text-size": 13,
+      },
+      paint: {
+        "text-color": "#ffffff",
+      },
     })
 
-    map.current.addLayer({
+     map.current.addLayer({
       id: "unclustered-point",
       type: "circle",
       source: "waypoints",
       filter: ["!", ["has", "point_count"]],
-      paint: { "circle-color": "#3B82F6", "circle-radius": 7, "circle-stroke-width": 1, "circle-stroke-color": "#fff" },
+      paint: {
+        "circle-color": "#06b6d4", // cyan-500 for individual points
+        "circle-radius": 8,
+        "circle-stroke-width": 2,
+        "circle-stroke-color": "#ffffff",
+        "circle-opacity": 0.9,
+      },
     })
 
     map.current.on("click", "unclustered-point", (e) => {
       const feature = e.features![0]
       const props = feature.properties as any
-      const waypoint = waypoints.find(w => w.id === props.id)
+      const waypoint = waypoints.find((w) => w.id === props.id)
       if (waypoint) selectWaypoint(waypoint)
     })
 

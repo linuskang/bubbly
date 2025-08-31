@@ -1,6 +1,9 @@
 {
   "name": "water-near-me",
-  "version": "0.1.0",
+  "version": "1.2.0",
+  "description": "Mapping out Australia's water fountains",
+  "author": "linuskang",
+  "license": "CC BY-NC 4.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

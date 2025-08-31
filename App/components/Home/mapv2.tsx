@@ -15,21 +15,7 @@ import MapControls from "@/components/mapControls"
 import AddWaypointModal from "@/components/addWaypoint"
 import WaypointInfoPanel from "@/components/waypointInfo"
 
-interface Waypoint {
-  id: number
-  name?: string
-  latitude: number
-  longitude: number
-  description?: string
-  addedby?: string
-  addedbyuserid?: string
-  verified?: boolean
-  isaccessible?: boolean
-  dogfriendly?: boolean
-  hasbottlefiller?: boolean
-  createdAt?: string
-  type?: string
-}
+import type { Waypoint } from '@/types';
 
 export default function WaterMap() {
   const mapContainer = useRef<HTMLDivElement | null>(null)
@@ -351,7 +337,7 @@ export default function WaterMap() {
     map.current.flyTo({ center: [first.longitude, first.latitude], zoom: 16 })
     selectWaypoint(first)
   }
-  
+
   return (
     <div className="relative w-screen h-screen bg-gray-50">
 

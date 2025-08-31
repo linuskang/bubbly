@@ -2,15 +2,7 @@
 
 import React from "react"
 
-interface Waypoint {
-  id: number
-  name?: string
-  description?: string
-  type?: string
-  isaccessible?: boolean
-  dogfriendly?: boolean
-  hasbottlefiller?: boolean
-}
+import type { Waypoint } from '@/types';
 
 interface AddWaypointModalProps {
   selectedWaypoint: Waypoint

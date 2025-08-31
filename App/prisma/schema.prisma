@@ -22,6 +22,7 @@ model User {
 
   Review   Review[]
   Favorite Favorite[]
+  bubblers Bubbler[]
 }
 
 model Account {
@@ -44,17 +45,22 @@ model Account {
 }
 
 model Bubbler {
-  id          Int        @id @default(autoincrement())
-  name        String? // Optional name
-  latitude    Float
-  longitude   Float
-  description String? // Optional description
-  addedby     String
-  type        String
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @default(now()) @updatedAt
-  Review      Review[]
-  Favorite    Favorite[]
+  id              Int        @id @default(autoincrement())
+  name            String
+  latitude        Float
+  longitude       Float
+  description     String?
+  addedby         String?
+  addedbyuserid   String
+  type            String
+  verified        Boolean    @default(false)
+  isaccessible    Boolean    @default(false)
+  dogfriendly     Boolean    @default(false)
+  hasbottlefiller Boolean    @default(false)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  Review          Review[]
+  Favorite        Favorite[]
 }
 
 model Review {

@@ -11,8 +11,10 @@ import { Plus, Navigation, Search } from "lucide-react"
 
 import UserAvatarDropdown from "@/components/avatarDropdown"
 import { Button } from "@/components/ui/button"
+
 import SettingsPanel from "@/components/settingsPopup"
 import MagicLinkPopup from "@/components/loginPopup"
+import CommandDeck from "@/components/commandDeck"
 
 interface Waypoint {
   id: number
@@ -21,14 +23,15 @@ interface Waypoint {
   longitude: number
   description?: string
   addedby?: string
+  addedbyuserid?: string
+  verified?: boolean
+  isaccessible?: boolean
+  dogfriendly?: boolean
+  hasbottlefiller?: boolean
   createdAt?: string
-  address?: string
-  rating?: number
-  reviewCount?: number
-  hours?: string
-  website?: string
-  accessibility?: string
+  type?: string
 }
+
 
 export default function WaterMap() {
   const mapContainer = useRef<HTMLDivElement | null>(null)
@@ -38,6 +41,7 @@ export default function WaterMap() {
   const [search, setSearch] = useState("")
   const [waypoints, setWaypoints] = useState<Waypoint[]>([])
   const [mapLoaded, setMapLoaded] = useState(false)
+  const [showCommandDeck, setShowCommandDeck] = useState(false)
   const { data: session, status } = useSession()
   const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [matches, setMatches] = useState<Waypoint[]>([])
@@ -167,42 +171,45 @@ export default function WaterMap() {
     map.current.on("mouseleave", "clusters", () => { map.current!.getCanvas().style.cursor = "" })
   }, [waypoints, mapLoaded])
 
-  const selectWaypoint = (w: Waypoint) => {
-    if (!map.current) return
-    setSelectedWaypoint(w)
-    showRedMarker(w)
+const selectWaypoint = (w: Waypoint) => {
+  if (!map.current) return
+  setSelectedWaypoint(w)
+  showRedMarker(w)
 
-    if (popupRef.current) popupRef.current.remove()
+  if (popupRef.current) popupRef.current.remove()
 
-    const htmlContent = `
-      <div class="max-w-xs relative">
-        <button id="close-popup" class="absolute top-0 right-0 text-gray-500 hover:text-gray-700 font-bold px-2">×</button>
-        <h3 class="font-bold text-blue-600">${w.name || "Unknown"}</h3>
-        ${w.description ? `<p class="text-sm">${w.description}</p>` : ""}
-        ${w.address ? `<p class="text-sm"><strong>Address:</strong> ${w.address}</p>` : ""}
-        ${w.addedby ? `<p class="text-sm"><strong>Added by:</strong> ${w.addedby}</p>` : ""}
-        ${w.hours ? `<p class="text-sm"><strong>Hours:</strong> ${w.hours}</p>` : ""}
-        ${w.rating ? `<p class="text-sm"><strong>Rating:</strong> ${w.rating} / 5 (${w.reviewCount || 0} reviews)</p>` : ""}
-        ${w.accessibility ? `<p class="text-sm"><strong>Accessibility:</strong> ${w.accessibility}</p>` : ""}
-      </div>
-    `
+  const htmlContent = `
+    <div class="max-w-xs relative space-y-1 text-sm">
+      <button id="close-popup" class="absolute top-0 right-0 text-gray-500 hover:text-gray-700 font-bold px-2">×</button>
+      <h3 class="font-bold text-blue-600 text-lg">${w.name || "Unknown"}</h3>
+      ${w.description ? `<p><strong>Description:</strong> ${w.description}</p>` : ""}
+      ${w.addedby ? `<p><strong>Added by:</strong> ${w.addedby}</p>` : ""}
+      ${w.addedbyuserid ? `<p><strong>Added by UserID:</strong> ${w.addedbyuserid}</p>` : ""}
+      ${w.verified !== undefined ? `<p><strong>Verified:</strong> ${w.verified ? "Yes" : "No"}</p>` : ""}
+      ${w.isaccessible !== undefined ? `<p><strong>Accessible:</strong> ${w.isaccessible ? "Yes" : "No"}</p>` : ""}
+      ${w.dogfriendly !== undefined ? `<p><strong>Dog Friendly:</strong> ${w.dogfriendly ? "Yes" : "No"}</p>` : ""}
+      ${w.hasbottlefiller !== undefined ? `<p><strong>Bottle Filler:</strong> ${w.hasbottlefiller ? "Yes" : "No"}</p>` : ""}
+      ${w.createdAt ? `<p><strong>Created at:</strong> ${new Date(w.createdAt).toLocaleString()}</p>` : ""}
+    </div>
+  `
 
-    popupRef.current = new maplibregl.Popup({ offset: 25, closeOnClick: false, closeButton: false }) // keep popup open
-      .setLngLat([w.longitude, w.latitude])
-      .setHTML(htmlContent)
-      .addTo(map.current)
+  popupRef.current = new maplibregl.Popup({ offset: 25, closeOnClick: false, closeButton: false })
+    .setLngLat([w.longitude, w.latitude])
+    .setHTML(htmlContent)
+    .addTo(map.current)
 
-    // Attach click handler to close button
-    const closeBtn = document.getElementById("close-popup")
-    closeBtn?.addEventListener("click", () => {
-      if (popupRef.current) {
-        popupRef.current.remove()
-        popupRef.current = null
-        setSelectedWaypoint(null)
-        hideRedMarker()
-      }
-    })
-  }
+  // Close button handler
+  const closeBtn = document.getElementById("close-popup")
+  closeBtn?.addEventListener("click", () => {
+    if (popupRef.current) {
+      popupRef.current.remove()
+      popupRef.current = null
+      setSelectedWaypoint(null)
+      hideRedMarker()
+    }
+  })
+}
+
 
   const showRedMarker = (w: Waypoint) => {
     if (!map.current) return
@@ -283,7 +290,12 @@ export default function WaterMap() {
       </div>
 
       <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">
-        <Button size="icon" className="h-14 w-14 bg-blue-600 hover:bg-blue-700 shadow-lg rounded-full" title="Add new water fountain">
+        <Button
+          size="icon"
+          className="h-14 w-14 bg-blue-600 hover:bg-blue-700 shadow-lg rounded-full cursor-pointer"
+          title="Contribute"
+          onClick={() => setShowCommandDeck(true)}
+        >
           <Plus className="w-6 h-6" />
         </Button>
 
@@ -304,6 +316,15 @@ export default function WaterMap() {
       {/* Popups */}
       <MagicLinkPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
       {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
+
+      <CommandDeck
+        isOpen={showCommandDeck}
+        onClose={() => setShowCommandDeck(false)}
+        onAction={(action) => {
+          console.log(action)
+          // TODO: handle the action
+        }}
+      />
     </div>
   )
 }

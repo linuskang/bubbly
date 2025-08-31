@@ -3,6 +3,9 @@ import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+
+// curl -X GET "https://waternearme.linus.id.au/api/reviews?bubblerId=123"
+
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const bubblerId = url.searchParams.get("bubblerId");
@@ -19,6 +22,16 @@ export async function GET(request: Request) {
 
   return NextResponse.json(reviews);
 }
+
+// curl -X POST "https://waternearme.linus.id.au/api/reviews" \
+//   -H "Content-Type: application/json" \
+//   -H "x-api-key: your_api_key_here" \
+//   -d '{
+//     "bubblerId": 123,
+//     "rating": 4.5,
+//     "comment": "Great fountain, very clean!"
+//   }'
+
 
 export async function POST(request: Request) {
   try {
@@ -48,26 +61,50 @@ export async function POST(request: Request) {
   }
 }
 
+// curl -X DELETE "https://waternearme.linus.id.au/api/reviews?reviewId=456" \
+//   -H "x-api-key: your_api_key_here"
+
+
 export async function DELETE(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
+    const apiKey = request.headers.get("x-api-key");
+    let authorized = false;
+    let sessionUserId: string | null = null;
+
+    // Allow either API key or logged-in user
+    if (apiKey && apiKey === process.env.API_KEY) {
+      authorized = true;
+    } else {
+      const session = await getServerSession(authOptions);
+      if (session?.user?.id) {
+        authorized = true;
+        sessionUserId = session.user.id;
+      }
+    }
+
+    if (!authorized) return new NextResponse("Unauthorized", { status: 401 });
 
     const url = new URL(request.url);
-    const reviewId = url.searchParams.get("reviewId");
-    if (!reviewId) return new NextResponse("Missing reviewId", { status: 400 });
+    const reviewIdParam = url.searchParams.get("reviewId");
+    if (!reviewIdParam) return new NextResponse("Missing reviewId parameter", { status: 400 });
 
-    const id = parseInt(reviewId, 10);
-    if (isNaN(id)) return new NextResponse("Invalid reviewId", { status: 400 });
+    const reviewId = parseInt(reviewIdParam, 10);
+    if (isNaN(reviewId)) return new NextResponse("Invalid reviewId parameter", { status: 400 });
 
-    const review = await prisma.review.findUnique({ where: { id } });
+    // Fetch review to check ownership
+    const review = await prisma.review.findUnique({ where: { id: reviewId } });
     if (!review) return new NextResponse("Review not found", { status: 404 });
-    if (review.userId !== session.user.id) return new NextResponse("Forbidden", { status: 403 });
 
-    await prisma.review.delete({ where: { id } });
-    return new NextResponse("Review deleted", { status: 200 });
+    // If using session, ensure the user owns the review
+    if (sessionUserId && review.userId !== sessionUserId) {
+      return new NextResponse("Forbidden: you can only delete your own reviews", { status: 403 });
+    }
+
+    await prisma.review.delete({ where: { id: reviewId } });
+
+    return NextResponse.json({ message: `Deleted review ${reviewId}` });
   } catch (err) {
     console.error(err);
-    return new NextResponse("Failed to delete review", { status: 500 });
+    return new NextResponse("Error deleting review", { status: 500 });
   }
 }

@@ -1,6 +1,6 @@
 # WaterNearMe: Mapping out Australia's water fountains
 
-**WaterNearMe** is an all-in-one app designed to help you locate your nearest water fountain, and contribute to the largest database of water fountains in Australia - completely for free! This was my app attempt for the Premiers Coding Competition QLD 2025.
+**WaterNearMe** is an all-in-one app designed to help you locate your nearest water fountain. You can also add to our repository and contribute to the largest database of water fountains in Australia - completely for free! This was my app attempt for the Premiers Coding Competition QLD 2025.
 
 You can access **WaterNearMe** at https://waternearme.au
 

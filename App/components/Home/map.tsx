@@ -290,7 +290,7 @@ export default function WaterMap() {
         <Button
           variant="outline"
           size="icon"
-          className="h-14 w-14 bg-white shadow-lg rounded-full border-gray-200"
+          className="h-14 w-14 bg-white shadow-lg rounded-full border-gray-200 cursor-pointer"
           title="Show my location"
           onClick={() => {
             const geolocateControl = map.current?._controls.find((c: any) => c instanceof maplibregl.GeolocateControl)

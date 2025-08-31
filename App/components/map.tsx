@@ -171,18 +171,37 @@ export default function WaterMap() {
     if (!map.current) return
     setSelectedWaypoint(w)
     showRedMarker(w)
+
     if (popupRef.current) popupRef.current.remove()
-    popupRef.current = new maplibregl.Popup({ offset: 25, closeOnClick: true })
+
+    const htmlContent = `
+      <div class="max-w-xs relative">
+        <button id="close-popup" class="absolute top-0 right-0 text-gray-500 hover:text-gray-700 font-bold px-2">×</button>
+        <h3 class="font-bold text-blue-600">${w.name || "Unknown"}</h3>
+        ${w.description ? `<p class="text-sm">${w.description}</p>` : ""}
+        ${w.address ? `<p class="text-sm"><strong>Address:</strong> ${w.address}</p>` : ""}
+        ${w.addedby ? `<p class="text-sm"><strong>Added by:</strong> ${w.addedby}</p>` : ""}
+        ${w.hours ? `<p class="text-sm"><strong>Hours:</strong> ${w.hours}</p>` : ""}
+        ${w.rating ? `<p class="text-sm"><strong>Rating:</strong> ${w.rating} / 5 (${w.reviewCount || 0} reviews)</p>` : ""}
+        ${w.accessibility ? `<p class="text-sm"><strong>Accessibility:</strong> ${w.accessibility}</p>` : ""}
+      </div>
+    `
+
+    popupRef.current = new maplibregl.Popup({ offset: 25, closeOnClick: false, closeButton: false }) // keep popup open
       .setLngLat([w.longitude, w.latitude])
-      .setHTML(`
-        <div class="max-w-xs">
-          <h3 class="font-bold text-blue-600">${w.name}</h3>
-          ${w.address ? `<p class="text-sm">${w.address}</p>` : ""}
-          ${w.description ? `<p class="text-sm">${w.description}</p>` : ""}
-          ${w.website ? `<a href="${w.website}" target="_blank" class="text-sm text-blue-500 underline">Website</a>` : ""}
-        </div>
-      `)
+      .setHTML(htmlContent)
       .addTo(map.current)
+
+    // Attach click handler to close button
+    const closeBtn = document.getElementById("close-popup")
+    closeBtn?.addEventListener("click", () => {
+      if (popupRef.current) {
+        popupRef.current.remove()
+        popupRef.current = null
+        setSelectedWaypoint(null)
+        hideRedMarker()
+      }
+    })
   }
 
   const showRedMarker = (w: Waypoint) => {

@@ -56,7 +56,7 @@ export default function WaterMap() {
 
     map.current = new maplibregl.Map({
       container: mapContainer.current,
-      style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/openstreetmap/style.json`,
+      style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/${process.env.NEXT_PUBLIC_MAP_STYLE}/style.json`,
       center: [153.028295, -27.474188],
       zoom: 13,
     })
@@ -74,14 +74,8 @@ export default function WaterMap() {
     const button = document.querySelector('.maplibregl-ctrl-geolocate') as HTMLElement | null;
     if (button) button.style.display = 'none';
 
-    map.current.on("load", () => {
-      console.log("Map loaded successfully")
-      setMapLoaded(true)
-    })
-
-    map.current.on("error", (e) => {
-      console.error("Map error:", e)
-    })
+    map.current.on("load", () => { console.log("[WaterNearMe] Map data loaded successfully"); setMapLoaded(true) })
+    map.current.on("error", (e) => { console.error("[ERROR] Failed to load map data:", e) })
 
     return () => {
       if (map.current) {
@@ -96,9 +90,7 @@ export default function WaterMap() {
     console.log("[WaterNearMe] Fetching waypoints...")
     fetch("/api/waypoints")
       .then((res) => {
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`)
-        }
+        if (!res.ok) { throw new Error(`HTTP error! status: ${res.status}`) }
         return res.json()
       })
       .then((data) => {

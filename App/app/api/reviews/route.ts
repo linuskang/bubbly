@@ -25,13 +25,11 @@ export async function GET(request: Request) {
 
 // curl -X POST "https://waternearme.linus.id.au/api/reviews" \
 //   -H "Content-Type: application/json" \
-//   -H "x-api-key: your_api_key_here" \
 //   -d '{
 //     "bubblerId": 123,
 //     "rating": 4.5,
 //     "comment": "Great fountain, very clean!"
 //   }'
-
 
 export async function POST(request: Request) {
   try {

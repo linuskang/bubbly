@@ -391,12 +391,14 @@ export default function WaterMap() {
       )}
 
       {selectedWaypoint && (
+      <div className="w-96 border-r bg-white shadow-lg z-20 flex-shrink-0">
         <WaypointInfoPanel
           selectedWaypoint={selectedWaypoint}
           setSelectedWaypoint={setSelectedWaypoint}
           hideRedMarker={hideRedMarker}
         />
-      )}
+      </div>
+    )}
     </div>
   )
 }

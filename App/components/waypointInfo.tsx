@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import type { Waypoint } from "@/types" // adjust the import path
+import type { Waypoint } from "@/types"
 import type { Dispatch, SetStateAction } from "react"
 
 interface WaypointInfoPanelProps {
@@ -16,50 +16,58 @@ export default function WaypointInfoPanel({
   hideRedMarker,
 }: WaypointInfoPanelProps) {
   return (
-    <div className="absolute top-20 left-5 z-20 w-80 bg-white shadow-lg rounded-lg p-4 max-h-[80vh] overflow-y-auto">
-      <button
-        className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 font-bold"
-        onClick={() => {
-          setSelectedWaypoint(null)
-          hideRedMarker()
-        }}
-      >
-        ×
-      </button>
+    <div className="fixed top-0 left-0 z-5 h-full w-107 bg-white shadow-xl border-r border-gray-200 flex flex-col">
+      <div className="flex justify-between items-center p-4 border-b border-gray-200">
+        <h3 className="font-bold text-blue-600 text-lg truncate">
+          {selectedWaypoint.name || "Unknown"}
+        </h3>
+        <button
+          className="text-gray-500 hover:text-gray-700 font-bold"
+          onClick={() => {
+            setSelectedWaypoint(null)
+            hideRedMarker()
+          }}
+        >
+          ×
+        </button>
+      </div>
 
-      <h3 className="font-bold text-blue-600 text-lg">
-        {selectedWaypoint.name || "Unknown"}
-      </h3>
-
-      {selectedWaypoint.description && (
+      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+        {selectedWaypoint.description && (
+          <p>
+            <strong>Description:</strong> {selectedWaypoint.description}
+          </p>
+        )}
+        {selectedWaypoint.addedby && (
+          <p>
+            <strong>Added by:</strong> {selectedWaypoint.addedby}
+          </p>
+        )}
+        {selectedWaypoint.verified !== undefined && (
+          <p>
+            <strong>Verified:</strong>{" "}
+            {selectedWaypoint.verified ? "Yes" : "No"}
+          </p>
+        )}
         <p>
-          <strong>Description:</strong> {selectedWaypoint.description}
+          <strong>Accessible:</strong>{" "}
+          {selectedWaypoint.isaccessible ? "Yes" : "No"}
         </p>
-      )}
-      {selectedWaypoint.addedby && (
         <p>
-          <strong>Added by:</strong> {selectedWaypoint.addedby}
+          <strong>Dog Friendly:</strong>{" "}
+          {selectedWaypoint.dogfriendly ? "Yes" : "No"}
         </p>
-      )}
-      {selectedWaypoint.verified !== undefined && (
         <p>
-          <strong>Verified:</strong> {selectedWaypoint.verified ? "Yes" : "No"}
+          <strong>Bottle Filler:</strong>{" "}
+          {selectedWaypoint.hasbottlefiller ? "Yes" : "No"}
         </p>
-      )}
-      <p>
-        <strong>Accessible:</strong> {selectedWaypoint.isaccessible ? "Yes" : "No"}
-      </p>
-      <p>
-        <strong>Dog Friendly:</strong> {selectedWaypoint.dogfriendly ? "Yes" : "No"}
-      </p>
-      <p>
-        <strong>Bottle Filler:</strong> {selectedWaypoint.hasbottlefiller ? "Yes" : "No"}
-      </p>
-      {selectedWaypoint.createdAt && (
-        <p>
-          <strong>Created at:</strong> {new Date(selectedWaypoint.createdAt).toLocaleString()}
-        </p>
-      )}
+        {selectedWaypoint.createdAt && (
+          <p>
+            <strong>Created at:</strong>{" "}
+            {new Date(selectedWaypoint.createdAt).toLocaleString()}
+          </p>
+        )}
+      </div>
     </div>
   )
 }

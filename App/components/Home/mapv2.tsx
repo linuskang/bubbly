@@ -87,13 +87,20 @@ export default function WaterMap() {
 
   useEffect(() => {
     console.log("[ WaterNearMe", process.env.NEXT_PUBLIC_VERSION, "]");
-    if (map.current || !mapContainer.current) return
     console.log("Loading map data...")
+    
+    const url = new URL(window.location.href);
+    const lng = parseFloat(url.searchParams.get("lng") || "153.028295");
+    const lat = parseFloat(url.searchParams.get("lat") || "-27.474188");
+    const zoom = parseFloat(url.searchParams.get("zoom") || "13");
+
+    if (map.current || !mapContainer.current) return
+    
     map.current = new maplibregl.Map({
       container: mapContainer.current,
       style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/${process.env.NEXT_PUBLIC_MAP_STYLE}/style.json`,
-      center: [153.028295, -27.474188],
-      zoom: 13,
+      center: [lng, lat],
+      zoom,
     })
 
     const geolocateControl = new maplibregl.GeolocateControl({
@@ -121,6 +128,28 @@ export default function WaterMap() {
       setMapLoaded(false)
     }
   }, [])
+
+  useEffect(() => {
+  if (!map.current) return;
+
+  const updateUrl = () => {
+    const center = map.current!.getCenter();
+    const zoom = map.current!.getZoom();
+
+    const url = new URL(window.location.href);
+    url.searchParams.set("lng", center.lng.toFixed(5));
+    url.searchParams.set("lat", center.lat.toFixed(5));
+    url.searchParams.set("zoom", zoom.toFixed(2));
+
+    window.history.replaceState({}, "", url.toString());
+  };
+
+  map.current.on("moveend", updateUrl);
+
+  return () => {
+    map.current?.off("moveend", updateUrl);
+  };
+}, [map.current]);
 
   useEffect(() => {
     console.log("Fetching waypoints...")

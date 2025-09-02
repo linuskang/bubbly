@@ -35,6 +35,7 @@ export default function WaterMap() {
   const router = useRouter()
   const [showAddForm, setShowAddForm] = useState(false);
   const addBubblerPopupRef = useRef<maplibregl.Popup | null>(null);
+  const userId = session?.user?.id
 
   const showAddBubblerMenu = (lngLat: maplibregl.LngLat) => {
     if (addBubblerPopupRef.current) {
@@ -391,14 +392,15 @@ export default function WaterMap() {
       )}
 
       {selectedWaypoint && (
-      <div className="w-96 border-r bg-white shadow-lg z-20 flex-shrink-0">
-        <WaypointInfoPanel
-          selectedWaypoint={selectedWaypoint}
-          setSelectedWaypoint={setSelectedWaypoint}
-          hideRedMarker={hideRedMarker}
-        />
-      </div>
-    )}
+        <div className="w-96 border-r bg-white shadow-lg z-20 flex-shrink-0">
+          <WaypointInfoPanel
+            selectedWaypoint={selectedWaypoint}
+            setSelectedWaypoint={setSelectedWaypoint}
+            hideRedMarker={hideRedMarker}
+            currentUserId={userId}
+          />
+        </div>
+      )}
     </div>
   )
 }

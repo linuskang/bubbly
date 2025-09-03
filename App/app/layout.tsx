@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Water Near Me",
-  description: "An open source map of water bubblers in Australia. Find a water bubbler near you!",
+  title: "Bubbly",
+  description: "Mapping Australia's water fountains. Find a water bubbler near you!",
   icons: {
     icon: "/favicon.ico",
   },

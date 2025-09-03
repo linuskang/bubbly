@@ -101,7 +101,16 @@ export default function WaterMap() {
       style: `${process.env.NEXT_PUBLIC_TILESERVER_URL}/styles/${process.env.NEXT_PUBLIC_MAP_STYLE}/style.json`,
       center: [lng, lat],
       zoom,
+      attributionControl: false,
     })
+
+    map.current.addControl(
+      new maplibregl.AttributionControl({
+        compact: false,
+        customAttribution: "© Linus Kang"
+      }),
+      "bottom-right"
+    );
 
     const geolocateControl = new maplibregl.GeolocateControl({
       positionOptions: { enableHighAccuracy: true },

@@ -44,7 +44,7 @@ export default function MapControls({
       <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">
         <Button
           size="icon"
-          className="h-14 w-14 bg-blue-600 hover:bg-blue-700 shadow-lg rounded-full cursor-pointer"
+          className="h-14 w-14 bg-gray-800 hover:bg-gray-900 shadow-lg rounded-full cursor-pointer"
           title="Contribute"
           onClick={() => setShowCommandDeck(true)}
         >

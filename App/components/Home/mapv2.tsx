@@ -14,7 +14,6 @@ import SearchV2 from "@/components/searchBar"
 import MapControls from "@/components/mapControls"
 import AddWaypointModal from "@/components/addWaypoint"
 import WaypointInfoPanel from "@/components/waypointInfo"
-import Weather from "@/components/weather";
 
 import type { Waypoint } from '@/types';
 
@@ -432,7 +431,6 @@ export default function WaterMap() {
         </div>
       )}
 
-      {mapLoaded && <Weather />}
     </div>
   )
 }

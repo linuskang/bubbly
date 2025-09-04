@@ -16,24 +16,44 @@ You can access **Bubbly** at https://bubbly.linuskang.au
 
 ## Self hosting
 
-**WaterNearMe** is broken up into 2 parts: The tile server and main Next.js app.
-
-For the Tile Server, you can use the existing one at https://tiles.linus.id.au or self host TileServer GL using docker. All the tile server info is in ``WaterNearMe/TileServer``. Please note that you will need to add your own ``.mbtiles`` file for the map data inside ``/data``.
-
-### Cloning repo
+To self host **Bubbly**, clone the repository and follow the steps below.
 
 ```bash
-git clone https://github.com/linuskang/waternearme
-cd waternearme
+git clone https://github.com/linuskang/bubbly
+```
+
+### Tile server
+
+![info] If you already have a map tile server, you can skip this step and move onto app hosting.
+
+```bash
+cd TileServer
+cd data # add your .mbtiles and styling here
+cd ..
+sudo docker compose up # access at 0.0.0.0:8080
+```
+
+### App
+
+Setup your MySQL database:
+
+```bash
+sudo mysql
+create database Bubbly
+```
+
+After, install the app dependencies.
+
+```bash
 cd App
-cp .env.example .env # edit values
+cp .env.example .env # edit values to your own
 npm install
 npx prisma migrate deploy
 npx prisma generate
 npm run dev
 ```
 
-Access **WaterNearMe** at https://localhost:3000.
+Access **Bubbly** at https://localhost:3400.
 
 ## License
 

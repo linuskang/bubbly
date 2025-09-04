@@ -29,7 +29,7 @@ jobs:
             --platform linux/arm64 \ # for Raspberry Pi 5
             -t ghcr.io/${{ github.repository }}/bubbly:${{ env.VERSION }} \
             -t ghcr.io/${{ github.repository }}/bubbly:latest \
-            --push .
+            --push ./App
 
       - name: Push Docker image
         run: |

@@ -1,3 +1,7 @@
+// © 2025 Linus Kang
+// Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+// THIS ENDPOINT IS DEPRECATED. USER SETTINGS ARE NOW HANDLED IN THE FRONTEND
+
 "use client"
 
 import { useEffect, useState } from "react"
@@ -52,7 +56,6 @@ export default function SettingsPage() {
   async function handleDelete() {
     if (!confirm("Are you sure you want to delete your account? This cannot be undone.")) return
     await fetch("/api/user/delete", { method: "DELETE" })
-    // optionally redirect or signOut()
   }
 
   if (!user) return <p className="p-6 text-muted-foreground">Loading...</p>
@@ -79,8 +82,6 @@ export default function SettingsPage() {
               </p>
             </div>
           </div>
-
-          {/* Editable Fields */}
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input

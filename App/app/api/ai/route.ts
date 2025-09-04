@@ -4,12 +4,12 @@ export async function POST(req: Request) {
   try {
     const { prompt } = await req.json()
 
-    const response = await fetch(`http://ollama.linus.id.au:11434/api/generate`, {
+    const response = await fetch(`${process.env.OLLAMA_API_URL}/api/generate`, {
       method: "POST",
 
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "llama3.2",
+        model: "gpt-oss:20b",
         prompt,
         stream: false
       }),

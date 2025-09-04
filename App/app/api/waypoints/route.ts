@@ -1,3 +1,6 @@
+// © 2025 Linus Kang
+// Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
@@ -8,9 +11,9 @@ export async function GET() {
   return NextResponse.json(bubblers);
 }
 
-// curl -X POST http://localhost:3000/api/waypoints \
+// curl -X POST https://waternearme.linus.id.au/api/waypoints \
 //  -H "Content-Type: application/json" \
-//  -H "x-api-key: your_api_key_here" \  (or use Cookie: next-auth.session-token=... if logged in)
+//  -H "x-api-key: your_api_key_here" \
 //  -d '{
 //    "name": "Calamvale District Park Fountain",
 //    "latitude": -27.621276,
@@ -31,15 +34,13 @@ export async function POST(request: Request) {
     let authorized = false;
     let userId: string | null = null;
 
-    // 🔑 Allow either API key or logged-in user
     if (apiKey && apiKey === process.env.API_KEY) {
       authorized = true;
-      // API key usage must include addedbyuserid in the body
     } else {
       const session = await getServerSession(authOptions);
       if (session?.user?.id) {
         authorized = true;
-        userId = session.user.id; // use the logged-in user id
+        userId = session.user.id;
       }
     }
 
@@ -55,9 +56,9 @@ export async function POST(request: Request) {
       latitude,
       longitude,
       description,
-      addedby,       // display name or username (optional metadata)
+      addedby,
       type,
-      addedbyuserid, // only needed if using API key
+      addedbyuserid,
       verified = false,
       isaccessible = false,
       dogfriendly = false,
@@ -71,7 +72,6 @@ export async function POST(request: Request) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
 
-    // Determine final userId
     const finalUserId = userId || addedbyuserid;
     if (!finalUserId) {
       return new NextResponse("Missing addedbyuserid or session user", { status: 400 });
@@ -129,6 +129,6 @@ export async function DELETE(request: Request) {
 
     return new NextResponse(`Deleted bubbler with id ${id}`, { status: 200 });
   } catch (error) {
-    return new NextResponse("Error deleting bubbler", { status: 500 });
+    return new NextResponse("An error occured whilst deleting bubbler. Please contact support.", { status: 500 });
   }
 }

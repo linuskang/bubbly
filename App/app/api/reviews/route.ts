@@ -1,8 +1,10 @@
+// © 2025 Linus Kang
+// Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-
 
 // curl -X GET "https://waternearme.linus.id.au/api/reviews?bubblerId=123"
 
@@ -62,14 +64,12 @@ export async function POST(request: Request) {
 // curl -X DELETE "https://waternearme.linus.id.au/api/reviews?reviewId=456" \
 //   -H "x-api-key: your_api_key_here"
 
-
 export async function DELETE(request: Request) {
   try {
     const apiKey = request.headers.get("x-api-key");
     let authorized = false;
     let sessionUserId: string | null = null;
 
-    // Allow either API key or logged-in user
     if (apiKey && apiKey === process.env.API_KEY) {
       authorized = true;
     } else {
@@ -89,11 +89,9 @@ export async function DELETE(request: Request) {
     const reviewId = parseInt(reviewIdParam, 10);
     if (isNaN(reviewId)) return new NextResponse("Invalid reviewId parameter", { status: 400 });
 
-    // Fetch review to check ownership
     const review = await prisma.review.findUnique({ where: { id: reviewId } });
     if (!review) return new NextResponse("Review not found", { status: 404 });
 
-    // If using session, ensure the user owns the review
     if (sessionUserId && review.userId !== sessionUserId) {
       return new NextResponse("Forbidden: you can only delete your own reviews", { status: 403 });
     }
@@ -103,6 +101,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ message: `Deleted review ${reviewId}` });
   } catch (err) {
     console.error(err);
-    return new NextResponse("Error deleting review", { status: 500 });
+    return new NextResponse("An error occured whilst deleting review. Please contact support.", { status: 500 });
   }
 }

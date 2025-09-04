@@ -1,8 +1,8 @@
-# WaterNearMe: Mapping out Australia's water fountains
+# Bubbly: Mapping out Australia's water fountains
 
-**WaterNearMe** is an all-in-one app designed to help you locate your nearest water fountain. You can also add to our repository and contribute to the largest database of water fountains in Australia - completely for free! This was my app attempt for the Premiers Coding Competition QLD 2025.
+**Bubbly** is an all-in-one app designed to help you locate your nearest water fountain. Open sourced.
 
-You can access **WaterNearMe** at https://waternearme.au
+You can access **Bubbly** at https://bubbly.linuskang.au
 
 ## Tech stack
 

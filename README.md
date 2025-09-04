@@ -61,4 +61,4 @@ Access **Bubbly** at https://localhost:3400.
 
 ## Credit
 
-**Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at [mailto:email@linus.id.au](email@linus.id.au)
+**Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**

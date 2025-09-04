@@ -2,7 +2,7 @@
 
 **Bubbly** is an all-in-one app designed to help you locate your nearest water fountain. Open sourced.
 
-You can access **Bubbly** at https://bubbly.linuskang.au
+You can access **Bubbly** at https://bubbly.linuskang.au.
 
 ## Tech stack
 
@@ -24,7 +24,7 @@ git clone https://github.com/linuskang/bubbly
 
 ### Tile server
 
-![info] If you already have a map tile server, you can skip this step and move onto app hosting.
+If you already have a map tile server, you can skip this step and move onto app hosting.
 
 ```bash
 cd TileServer
@@ -39,7 +39,7 @@ Setup your MySQL database:
 
 ```bash
 sudo mysql
-create database Bubbly
+create database Bubbly;
 ```
 
 After, install the app dependencies.
@@ -57,8 +57,8 @@ Access **Bubbly** at https://localhost:3400.
 
 ## License
 
-**WaterNearMe** is under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**. See [LICENSE](LICENSE) file for more details.
+**Bubbly** is under **CC BY-NC 4.0**. See [LICENSE](LICENSE) for more details.
 
 ## Credit
 
-**WaterNearMe** is a project by **Linus Kang**.
+**Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at [mailto:email@linus.id.au](email@linus.id.au)

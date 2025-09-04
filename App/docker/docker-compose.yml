@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  app:
+    image: ghcr.io/linuskang/bubbly:latest
+    container_name: bubbly
+    restart: unless-stopped
+    ports:
+      - "3400:3400"
+    environment:
+      DATABASE_URL: mysql://user:password@db:3306/bubbly
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      API_KEY: ${API_KEY}
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: waternearme-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: waternearme
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --interval 300  # check every 5 minutes
+
+volumes:
+  db_data:

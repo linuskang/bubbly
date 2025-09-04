@@ -12,6 +12,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
@@ -23,15 +26,10 @@ jobs:
         id: get_version
         run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      - name: Build Docker image
+      - name: Build & push Docker image
         run: |
           docker buildx build \
-            --platform linux/arm64 \ # for Raspberry Pi 5
+            --platform linux/arm64 \
             -t ghcr.io/${{ github.repository }}/bubbly:${{ env.VERSION }} \
             -t ghcr.io/${{ github.repository }}/bubbly:latest \
             --push ./App
-
-      - name: Push Docker image
-        run: |
-          docker push ghcr.io/${{ github.repository }}/bubbly:${{ env.VERSION }}
-          docker push ghcr.io/${{ github.repository }}/bubbly:latest

@@ -27,11 +27,11 @@ jobs:
         run: |
           docker build \
             --platform linux/arm64 \ # for Raspberry Pi 5
-            -t ghcr.io/${{ github.repository }}/waternearme:${{ env.VERSION }} \
-            -t ghcr.io/${{ github.repository }}/waternearme:latest \
+            -t ghcr.io/${{ github.repository }}/bubbly:${{ env.VERSION }} \
+            -t ghcr.io/${{ github.repository }}/bubbly:latest \
             .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ github.repository }}/waternearme:${{ env.VERSION }}
-          docker push ghcr.io/${{ github.repository }}/waternearme:latest
+          docker push ghcr.io/${{ github.repository }}/bubbly:${{ env.VERSION }}
+          docker push ghcr.io/${{ github.repository }}/bubbly:latest

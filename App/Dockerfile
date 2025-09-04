@@ -24,7 +24,6 @@ RUN npx prisma generate
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED=1
-COPY next.config.js tsconfig.json ./
 RUN npm run build
 
 # Production image, copy all the files and run next

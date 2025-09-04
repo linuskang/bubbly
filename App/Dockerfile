@@ -19,6 +19,7 @@ RUN \
 
 
 # Rebuild the source code only when needed
+COPY next.config.js tsconfig.json ./
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules

@@ -25,11 +25,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build \
+          docker buildx build \
             --platform linux/arm64 \ # for Raspberry Pi 5
             -t ghcr.io/${{ github.repository }}/bubbly:${{ env.VERSION }} \
             -t ghcr.io/${{ github.repository }}/bubbly:latest \
-            .
+            --push.
 
       - name: Push Docker image
         run: |

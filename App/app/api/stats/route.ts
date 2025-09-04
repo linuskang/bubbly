@@ -8,7 +8,7 @@ export async function GET() {
   try {
     const totalWaterFountains = await prisma.bubbler.count();
     
-    const contributorsRaw = await prisma.bubbler.findMany({
+    const contributorsRaw: { addedby: string | null }[] = await prisma.bubbler.findMany({
       select: { addedby: true },
       where: { addedby: { not: null } },
       distinct: ["addedby"],

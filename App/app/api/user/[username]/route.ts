@@ -6,13 +6,17 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
+interface Props {
+  params: any;
+}
+
 // curl -H "x-api-key: YOUR_API_KEY" https://waternearme.linus.id.au/api/user/linuskang
 
 export async function GET(
   req: Request,
-  context: { params: { username: string } }
+  { params }: Props,
 ) {
-  const { username } = context.params;
+  const { username } = params;
   const apiKey = req.headers.get("x-api-key");
   let authenticated = false;
 

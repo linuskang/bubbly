@@ -33,7 +33,7 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.10.1",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "react-dom": "19.1.1",
     "redis": "^5.8.2",
     "resend": "^6.0.2",
     "tailwind-merge": "^3.3.1"

@@ -22,15 +22,15 @@ ENV DATABASE_URL="mysql://dummy:dummy@localhost:3306/dummy"
 ENV NEXTAUTH_SECRET="dummy_secret"
 ENV NEXTAUTH_URL="http://localhost:3400"
 
-ENV NEXT_PUBLIC_MAP_STYLE="dummy_style"
-ENV NEXT_PUBLIC_TILESERVER_URL="https://dummy.url"
+ENV NEXT_PUBLIC_MAP_STYLE="openstreetmap"
+ENV NEXT_PUBLIC_TILESERVER_URL="https://tiles.linus.id.au"
 
 ENV RESEND_API_KEY="dummy_key"
 
 ENV API_KEY="dummy_api_key"
 ENV OLLAMA_API_URL="https://dummy.api.url"
 
-ENV NEXT_PUBLIC_VERSION="1.2.1"
+ENV NEXT_PUBLIC_VERSION="1.5.0"
 
 RUN npx prisma generate
 

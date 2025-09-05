@@ -18,6 +18,20 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV DATABASE_URL="mysql://dummy:dummy@localhost:3306/dummy"
+ENV NEXTAUTH_SECRET="dummy_secret"
+ENV NEXTAUTH_URL="http://localhost:3400"
+
+ENV NEXT_PUBLIC_MAP_STYLE="dummy_style"
+ENV NEXT_PUBLIC_TILESERVER_URL="https://dummy.url"
+
+ENV RESEND_API_KEY="dummy_key"
+
+ENV API_KEY="dummy_api_key"
+ENV OLLAMA_API_URL="https://dummy.api.url"
+
+ENV NEXT_PUBLIC_VERSION="1.2.1"
+
 RUN npx prisma generate
 
 # Next.js collects completely anonymous telemetry data about general usage.

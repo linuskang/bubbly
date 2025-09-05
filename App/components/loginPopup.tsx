@@ -69,7 +69,7 @@ export default function MagicLinkPopup({ isOpen, onClose }: MagicLinkPopupProps)
           <div className="w-12 h-12 bg-blue-200 rounded-full flex items-center justify-center mx-auto mb-4">
             <Droplet className="w-6 h-6 text-blue-600 fill-current" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Sign in to WaterNearMe</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">Sign in to Bubbly</h2>
           <p className="text-gray-600 text-sm">Enter your email to continue</p>
         </div>
 
@@ -112,7 +112,7 @@ export default function MagicLinkPopup({ isOpen, onClose }: MagicLinkPopupProps)
             </Button>
 
             <p className="text-xs text-gray-500 text-center">
-              By continuing, you agree to the TOS and Privacy Policy.
+              By continuing, you agree to the Terms and Privacy Policy.
             </p>
           </form>
         )}

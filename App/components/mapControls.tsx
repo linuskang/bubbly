@@ -23,12 +23,11 @@ export default function MapControls({
 }: MapControlsProps) {
   return (
     <>
-      {/* Top-right user button */}
       <div className="absolute top-5 right-5 z-30 flex items-center gap-2">
         {!session ? (
           <button
             onClick={() => setIsPopupOpen(true)}
-            className="px-4 py-2 bg-blue-600 text-white shadow hover:bg-blue-700 rounded-full"
+            className="px-4 py-2 bg-blue-700 text-white shadow-lg hover:bg-blue-800 rounded-full transition cursor-pointer"
           >
             Sign In
           </button>
@@ -40,11 +39,10 @@ export default function MapControls({
         )}
       </div>
 
-      {/* Bottom-right action buttons */}
       <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">
         <Button
           size="icon"
-          className="h-14 w-14 bg-gray-800 hover:bg-gray-900 shadow-lg rounded-full cursor-pointer"
+          className="h-14 w-14 bg-blue-700 hover:bg-blue-800 shadow-lg rounded-full cursor-pointer"
           title="Contribute"
           onClick={() => setShowCommandDeck(true)}
         >

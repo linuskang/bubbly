@@ -6,7 +6,7 @@ import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
-export async function POST(request: Request, { params }: { params: { username: string } }) {
+export async function POST(request: Request, { params }: { params: any }) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });

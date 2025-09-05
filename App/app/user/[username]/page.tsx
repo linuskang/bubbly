@@ -3,11 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import ReportUserButton from "@/components/reportUser";
 
-interface Params {
-  username: string;
-}
-
-export default async function UserProfilePage({ params }: { params: Params }) {
+export default async function UserProfilePage({ params }: { params: any }) {
   const username = params.username;
 
   const user = await prisma.user.findUnique({
@@ -36,7 +32,6 @@ export default async function UserProfilePage({ params }: { params: Params }) {
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4 space-y-6">
-      {/* User Info */}
       <div className="flex items-center space-x-4">
         <Avatar className="h-20 w-20">
           <AvatarImage src={user.image || ""} />

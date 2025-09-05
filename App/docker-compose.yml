@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  bubbly:
+    image: ghcr.io/linuskang/bubbly/bubbly:latest
+    container_name: bubbly
+    ports:
+      - "3400:3400"
+    environment:
+      DATABASE_URL: "mysql://lkang:linuskang@localhost:3306/WaterNearMe"
+      NEXTAUTH_SECRET: "0KprtXWjpbLzIAnNR+BUREhglOjCUvnjIMki5Uq+JMs="
+      NEXTAUTH_URL: "https://waternearme.linus.id.au"
+      NEXT_PUBLIC_MAP_STYLE: "openstreetmap"
+      NEXT_PUBLIC_TILESERVER_URL: "https://tiles.linus.id.au"
+      RESEND_API_KEY: "re_QQd7Gj6m_Di8aGWdYx2ma5LiBU2Bc2D7b"
+      API_KEY: "1f3870be274f6c49b3e31a0c6728957f"
+      OLLAMA_API_URL: "https://ollama.linus.id.au"

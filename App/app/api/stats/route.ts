@@ -1,6 +1,35 @@
 // © 2025 Linus Kang
 // Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
+/**
+ * @openapi
+ * /api/stats:
+ *   get:
+ *     summary: Get site statistics
+ *     description: Returns the total number of water fountains and contributors.
+ *     responses:
+ *       200:
+ *         description: Statistics fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_water_fountains:
+ *                   type: integer
+ *                   description: Total number of water fountains in the database
+ *                 total_contributors:
+ *                   type: integer
+ *                   description: Total number of unique contributors
+ *                 contributors:
+ *                   type: array
+ *                   description: List of contributor usernames
+ *                   items:
+ *                     type: string
+ *       500:
+ *         description: Failed to fetch stats
+ */
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 

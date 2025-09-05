@@ -9,6 +9,51 @@ import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
+/**
+ * @openapi
+ * /api/report-review:
+ *   post:
+ *     summary: Report a review
+ *     description: Allows an authenticated user to report a review. Sends details to Discord for moderation.
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - reviewId
+ *               - reason
+ *             properties:
+ *               reviewId:
+ *                 type: string
+ *                 description: The ID of the review being reported.
+ *               reason:
+ *                 type: string
+ *                 description: The reason why the review is being reported.
+ *     responses:
+ *       200:
+ *         description: Report submitted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Report submitted
+ *       400:
+ *         description: Missing required fields
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Review not found
+ *       500:
+ *         description: Failed to process report
+ */
+
 export async function POST(request: Request) {
   try {
     const session = await getServerSession(authOptions);

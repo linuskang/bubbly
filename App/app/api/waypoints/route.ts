@@ -9,6 +9,122 @@ import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
+// © 2025 Linus Kang
+// Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+/**
+ * @openapi
+ * /api/waypoints:
+ *   get:
+ *     summary: Get all waypoints
+ *     description: Returns a list of all water fountains (bubblers) in the database.
+ *     responses:
+ *       200:
+ *         description: List of waypoints
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   latitude:
+ *                     type: number
+ *                   longitude:
+ *                     type: number
+ *                   description:
+ *                     type: string
+ *                   type:
+ *                     type: string
+ *                   addedby:
+ *                     type: string
+ *                   addedbyuserid:
+ *                     type: string
+ *                   verified:
+ *                     type: boolean
+ *                   isaccessible:
+ *                     type: boolean
+ *                   dogfriendly:
+ *                     type: boolean
+ *                   hasbottlefiller:
+ *                     type: boolean
+ *
+ *   post:
+ *     summary: Create a new waypoint
+ *     description: Creates a new water fountain entry. Requires authentication (session or API key).
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - latitude
+ *               - longitude
+ *               - type
+ *               - addedbyuserid
+ *             properties:
+ *               name:
+ *                 type: string
+ *               latitude:
+ *                 type: number
+ *               longitude:
+ *                 type: number
+ *               description:
+ *                 type: string
+ *               type:
+ *                 type: string
+ *               addedby:
+ *                 type: string
+ *               addedbyuserid:
+ *                 type: string
+ *               verified:
+ *                 type: boolean
+ *               isaccessible:
+ *                 type: boolean
+ *               dogfriendly:
+ *                 type: boolean
+ *               hasbottlefiller:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Waypoint created successfully
+ *       400:
+ *         description: Invalid data or missing required fields
+ *       401:
+ *         description: Unauthorized — API key or session required
+ *
+ *   delete:
+ *     summary: Delete a waypoint
+ *     description: Deletes a waypoint by ID. Requires API key authentication.
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the waypoint to delete
+ *     responses:
+ *       200:
+ *         description: Waypoint deleted successfully
+ *       400:
+ *         description: Missing or invalid id parameter
+ *       401:
+ *         description: Unauthorized — API key required
+ *       500:
+ *         description: Failed to delete waypoint
+ */
+
 // Waypoints API
 // GET: Get all waypoints
 // POST: Create a new waypoint (requires authentication or API key)

@@ -9,6 +9,65 @@ import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
+// © 2025 Linus Kang
+// Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+/**
+ * @openapi
+ * /api/user:
+ *   post:
+ *     summary: Update authenticated user profile
+ *     description: Allows an authenticated user (via session or API key) to update their name, username, and profile image. Sends an update notification to Discord.
+ *     security:
+ *       - BearerAuth: []
+ *       - ApiKeyAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The new display name for the user.
+ *               username:
+ *                 type: string
+ *                 description: The new username for the user.
+ *               image:
+ *                 type: string
+ *                 description: URL of the new profile image.
+ *     responses:
+ *       200:
+ *         description: User profile updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 username:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 image:
+ *                   type: string
+ *                   nullable: true
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *       403:
+ *         description: Forbidden — invalid API key or session required
+ *       500:
+ *         description: Failed to update user profile
+ */
+
 // curl -X POST https://waternearme.linus.id.au/api/user \
 // -H "x-api-key: apikeyhere" \
 // -H "Content-Type: application/json" \

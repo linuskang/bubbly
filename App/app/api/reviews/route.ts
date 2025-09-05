@@ -9,6 +9,103 @@ import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
+/**
+ * @openapi
+ * /api/reviews:
+ *   get:
+ *     summary: Get reviews for a bubbler
+ *     description: Returns a list of reviews for a specific bubbler.
+ *     parameters:
+ *       - in: query
+ *         name: bubblerId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the bubbler.
+ *     responses:
+ *       200:
+ *         description: A list of reviews
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   bubblerId:
+ *                     type: integer
+ *                   rating:
+ *                     type: number
+ *                   comment:
+ *                     type: string
+ *                   user:
+ *                     type: object
+ *                     properties:
+ *                       username:
+ *                         type: string
+ *       400:
+ *         description: Missing or invalid bubblerId
+ *
+ *   post:
+ *     summary: Create a new review
+ *     description: Allows an authenticated user to submit a review.
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - bubblerId
+ *               - rating
+ *             properties:
+ *               bubblerId:
+ *                 type: integer
+ *               rating:
+ *                 type: number
+ *               comment:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Review created successfully
+ *       400:
+ *         description: Missing required fields
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Failed to create review
+ *
+ *   delete:
+ *     summary: Delete a review
+ *     description: Allows the review owner or an API key to delete a review.
+ *     security:
+ *       - BearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: reviewId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the review to delete.
+ *     responses:
+ *       200:
+ *         description: Review deleted successfully
+ *       400:
+ *         description: Missing or invalid reviewId
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden — can only delete your own reviews
+ *       404:
+ *         description: Review not found
+ *       500:
+ *         description: Failed to delete review
+ */
+
 // Reviews API
 // GET: Get reviews for a bubbler
 // POST: Create a new review (requires authentication)

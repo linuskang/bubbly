@@ -5,6 +5,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { sendDiscordWebhook } from "@/lib/discord";
+
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
 // curl -X POST https://waternearme.linus.id.au/api/user \
 // -H "x-api-key: apikeyhere" \
@@ -52,6 +55,24 @@ export async function POST(req: Request) {
         image: image ?? undefined,
         username: username ?? undefined,
       },
+    });
+
+    await sendDiscordWebhook(webhookUrl, {
+      username: "Bubbly",
+      content: `User profile updated: ${session.user.email}`,
+      embeds: [
+        {
+          title: "Profile Updated",
+          color: 0x00ffcc,
+          fields: [
+            { name: "Email", value: session.user.email, inline: true },
+            { name: "Name", value: name ?? "No change", inline: true },
+            { name: "Username", value: username ?? "No change", inline: true },
+            { name: "Image URL", value: image ?? "No change" },
+          ],
+          timestamp: new Date().toISOString(),
+        },
+      ],
     });
 
     return NextResponse.json(updatedUser);

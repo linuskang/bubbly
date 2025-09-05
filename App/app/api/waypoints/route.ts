@@ -5,6 +5,14 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { sendDiscordWebhook } from "@/lib/discord";
+
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
+
+// Waypoints API
+// GET: Get all waypoints
+// POST: Create a new waypoint (requires authentication or API key)
+// DELETE: Delete a waypoint (requires API key)
 
 export async function GET() {
   const bubblers = await prisma.bubbler.findMany();
@@ -93,6 +101,27 @@ export async function POST(request: Request) {
       },
     });
 
+    await sendDiscordWebhook(webhookUrl, {
+      username: "Bubbly",
+      content: `A new bubbler was added: ${name}`,
+      embeds: [
+        {
+          title: "New Bubbler Added",
+          color: 0x00ffcc,
+          fields: [
+            { name: "Name", value: name, inline: true },
+            { name: "Type", value: type, inline: true },
+            { name: "Added By User ID", value: finalUserId, inline: true },
+            { name: "Coordinates", value: `${latitude}, ${longitude}` },
+            { name: "Verified", value: verified.toString(), inline: true },
+            { name: "Dog Friendly", value: dogfriendly.toString(), inline: true },
+            { name: "Bottle Filler", value: hasbottlefiller.toString(), inline: true },
+          ],
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    });
+
     return NextResponse.json(newBubbler);
   } catch (error) {
     console.error("POST error:", error);
@@ -123,8 +152,24 @@ export async function DELETE(request: Request) {
       return new NextResponse("Invalid id parameter", { status: 400 });
     }
 
-    await prisma.bubbler.delete({
+    const deletedBubbler = await prisma.bubbler.delete({
       where: { id },
+    });
+
+    await sendDiscordWebhook(webhookUrl, {
+      username: "Bubbly",
+      content: `A bubbler was deleted: ${deletedBubbler.name}`,
+      embeds: [
+        {
+          title: "Bubbler Deleted",
+          color: 0xff4444,
+          fields: [
+            { name: "ID", value: id.toString(), inline: true },
+            { name: "Name", value: deletedBubbler.name, inline: true },
+          ],
+          timestamp: new Date().toISOString(),
+        },
+      ],
     });
 
     return new NextResponse(`Deleted bubbler with id ${id}`, { status: 200 });

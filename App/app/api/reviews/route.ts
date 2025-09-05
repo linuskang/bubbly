@@ -5,6 +5,14 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { sendDiscordWebhook } from "@/lib/discord";
+
+const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
+
+// Reviews API
+// GET: Get reviews for a bubbler
+// POST: Create a new review (requires authentication)
+// DELETE: Delete a review (requires authentication or API key)
 
 // curl -X GET "https://waternearme.linus.id.au/api/reviews?bubblerId=123"
 
@@ -54,6 +62,23 @@ export async function POST(request: Request) {
       },
     });
 
+    await sendDiscordWebhook(webhookUrl, {
+      username: "Bubbly",
+      content: `New review by ${session.user.id}`,
+      embeds: [
+        {
+          title: "New Review Submitted",
+          fields: [
+            { name: "Bubbler ID", value: String(bubblerId), inline: true },
+            { name: "Rating", value: String(rating), inline: true },
+            { name: "Comment", value: comment || "No comment" },
+          ],
+          color: 0x00ff00,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    });
+
     return NextResponse.json(review);
   } catch (err) {
     console.error(err);
@@ -97,6 +122,24 @@ export async function DELETE(request: Request) {
     }
 
     await prisma.review.delete({ where: { id: reviewId } });
+
+    await sendDiscordWebhook(webhookUrl, {
+      username: "Bubbly",
+      content: `Review deleted by ${sessionUserId || "API Key"}`,
+      embeds: [
+        {
+          title: "Review Deleted",
+          fields: [
+            { name: "Review ID", value: String(reviewId), inline: true },
+            { name: "Bubbler ID", value: String(review.bubblerId), inline: true },
+            { name: "User ID", value: review.userId, inline: true },
+            { name: "Comment", value: review.comment || "No comment" },
+          ],
+          color: 0xff0000,
+          timestamp: new Date().toISOString(),
+        },
+      ],
+    });
 
     return NextResponse.json({ message: `Deleted review ${reviewId}` });
   } catch (err) {

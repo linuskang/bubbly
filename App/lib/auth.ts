@@ -14,22 +14,38 @@ export const authOptions: AuthOptions = {
       async sendVerificationRequest({ identifier: email, url, provider }) {
         // Send your custom email using Resend
         await resend.emails.send({
-          from: "WaterNearMe by Linus <waternearme@mail.linus.id.au>",
+          from: "Bubbly <bubbly@mail.linus.id.au>",
           to: email,
           subject: "Your Account Sign-in Link",
           html: `
-            <div style="font-family: 'Segoe UI', Roboto, sans-serif; max-width: 600px; margin: auto; padding: 24px; background: #ffffff; color: #111;">
-              <h1 style="font-size: 28px; color: #000;">Sign in to <span style="color: #6366f1;">WaterNearMe</span> 👋</h1>
-              <p style="font-size: 16px; line-height: 1.6;">
-                Click the button below to sign in. This link will expire in 10 minutes.
-              </p>
-              <div style="text-align: center; margin: 32px 0;">
-                <a href="${url}" style="background-color: #6366f1; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Sign in</a>
+            <div style="font-family: 'Segoe UI', Roboto, sans-serif; background: #f9fafb; padding: 40px 0;">
+              <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                
+                <div style="text-align: center; margin-bottom: 24px;">
+                  <h1 style="margin: 0; font-size: 26px; color: #111; font-weight: 600;">
+                    Sign in to <span style="color: #6366f1;">WaterNearMe</span> 👋
+                  </h1>
+                </div>
+
+                <p style="font-size: 16px; line-height: 1.6; color: #444; text-align: center;">
+                  Welcome back! Click the button below to securely sign in. <br/>
+                  <strong>This link expires in 10 minutes.</strong>
+                </p>
+
+                <div style="text-align: center; margin: 32px 0;">
+                  <a href="${url}" 
+                    style="display: inline-block; background-color: #6366f1; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 3px 6px rgba(0,0,0,0.1);">
+                    Sign in
+                  </a>
+                </div>
+
+                <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;" />
+
+                <p style="font-size: 14px; color: #888; line-height: 1.5; text-align: center;">
+                  Didn’t request this email? You can safely ignore it.<br/>
+                  For security reasons, never share this link.
+                </p>
               </div>
-              <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;" />
-              <p style="font-size: 12px; color: #999;">
-                If you didn't request this email, you can safely ignore it.
-              </p>
             </div>
           `,
         })

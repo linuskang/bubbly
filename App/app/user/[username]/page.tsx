@@ -1,13 +1,14 @@
-import { notFound } from "next/navigation"
-import { prisma } from "@/lib/prisma"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import ReportUserButton from "@/components/reportUser";
 
 interface Params {
-  username: string
+  username: string;
 }
 
-export default async function UserProfilePage({ params }: { params: any }) {
-  const username = await params.username; // extract safely
+export default async function UserProfilePage({ params }: { params: Params }) {
+  const username = params.username;
 
   const user = await prisma.user.findUnique({
     where: { username },
@@ -31,11 +32,7 @@ export default async function UserProfilePage({ params }: { params: any }) {
     },
   });
 
-  if (!user) return notFound();
-
-  // render the profile...
-
-  if (!user) return notFound()
+  if (!user) notFound();
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4 space-y-6">
@@ -51,6 +48,7 @@ export default async function UserProfilePage({ params }: { params: any }) {
           <p className="text-xs text-muted-foreground">
             Joined {new Date(user.createdAt).toLocaleDateString()}
           </p>
+          <ReportUserButton username={user.username!} />
         </div>
       </div>
 
@@ -61,11 +59,17 @@ export default async function UserProfilePage({ params }: { params: any }) {
         ) : (
           <ul className="space-y-3">
             {user.bubblers.map((bubbler) => (
-              <li key={bubbler.id} className="border rounded-lg p-3 shadow-sm hover:shadow-md transition">
+              <li
+                key={bubbler.id}
+                className="border rounded-lg p-3 shadow-sm hover:shadow-md transition"
+              >
                 <p className="font-medium">{bubbler.name}</p>
-                {bubbler.description && <p className="text-sm text-gray-600">{bubbler.description}</p>}
+                {bubbler.description && (
+                  <p className="text-sm text-gray-600">{bubbler.description}</p>
+                )}
                 <p className="text-xs text-muted-foreground">
-                  {bubbler.verified ? "Verified" : ""} • Added {new Date(bubbler.createdAt).toLocaleDateString()}
+                  {bubbler.verified ? "Verified" : ""} • Added{" "}
+                  {new Date(bubbler.createdAt).toLocaleDateString()}
                 </p>
               </li>
             ))}
@@ -73,5 +77,5 @@ export default async function UserProfilePage({ params }: { params: any }) {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -9,18 +9,28 @@ import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 
-// © 2025 Linus Kang
-// Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
-
 /**
  * @openapi
  * /api/waypoints:
  *   get:
- *     summary: Get all waypoints
- *     description: Returns a list of all water fountains (bubblers) in the database.
+ *     summary: Get waypoints
+ *     description: Returns a list of water fountains (bubblers). Supports filtering by ID or name.
+ *     parameters:
+ *       - in: query
+ *         name: bubblerId
+ *         required: false
+ *         schema:
+ *           type: integer
+ *         description: Return a single bubbler with this ID.
+ *       - in: query
+ *         name: name
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Search for bubblers containing this name (case-insensitive).
  *     responses:
  *       200:
- *         description: List of waypoints
+ *         description: List of matching waypoints
  *         content:
  *           application/json:
  *             schema:
@@ -52,6 +62,10 @@ const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
  *                     type: boolean
  *                   hasbottlefiller:
  *                     type: boolean
+ *       404:
+ *         description: No bubblers found for the given query
+ *       500:
+ *         description: Failed to fetch bubblers
  *
  *   post:
  *     summary: Create a new waypoint
@@ -130,10 +144,53 @@ const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 // POST: Create a new waypoint (requires authentication or API key)
 // DELETE: Delete a waypoint (requires API key)
 
-export async function GET() {
-  const bubblers = await prisma.bubbler.findMany();
-  return NextResponse.json(bubblers);
+export async function GET(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const bubblerIdParam = url.searchParams.get("bubblerId");
+    const nameParam = url.searchParams.get("name");
+
+    if (bubblerIdParam) {
+      const id = parseInt(bubblerIdParam, 10);
+      if (isNaN(id)) {
+        return new NextResponse("Invalid bubblerId parameter", { status: 400 });
+      }
+
+      const bubbler = await prisma.bubbler.findUnique({
+        where: { id },
+      });
+
+      if (!bubbler) {
+        return new NextResponse(`No bubbler found with id ${id}`, { status: 404 });
+      }
+
+      return NextResponse.json(bubbler);
+    }
+
+    if (nameParam) {
+      const bubblers = await prisma.bubbler.findMany({
+        where: {
+          name: {
+            contains: nameParam,
+          },
+        },
+      });
+
+      if (bubblers.length === 0) {
+        return new NextResponse(`No bubblers found with name containing "${nameParam}"`, { status: 404 });
+      }
+
+      return NextResponse.json(bubblers);
+    }
+
+    const bubblers = await prisma.bubbler.findMany();
+    return NextResponse.json(bubblers);
+  } catch (error) {
+    console.error("GET bubblers error:", error);
+    return new NextResponse("Failed to fetch bubblers", { status: 500 });
+  }
 }
+
 
 // curl -X POST https://waternearme.linus.id.au/api/waypoints \
 //  -H "Content-Type: application/json" \

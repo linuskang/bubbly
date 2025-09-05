@@ -261,6 +261,56 @@ export default function WaypointInfoPanel({
             ))
           )}
         </div>
+        {!userReview && (
+        <div className="border-t border-gray-200 p-4">
+          <form onSubmit={handleSubmit} className="space-y-3">
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Rating
+              </label>
+              <select
+                value={rating}
+                onChange={(e) => setRating(Number(e.target.value))}
+                className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                required
+              >
+                <option value={0} disabled>
+                  Select rating
+                </option>
+                {[1, 2, 3, 4, 5].map((r) => (
+                  <option key={r} value={r}>
+                    {r} Star{r > 1 ? "s" : ""}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Comment
+                </label>
+                <textarea
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  rows={3}
+                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                  placeholder="Write your review..."
+                />
+              </div>
+
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+              {success && <p className="text-green-600 text-sm">{success}</p>}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+              >
+                {loading ? "Submitting..." : "Submit Review"}
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -1,0 +1,32 @@
+# Image store server API Usage Examples
+# Base URL:
+# http://localhost:3000
+
+# ============================
+# 1. Get server info (public)
+# ============================
+curl http://localhost:3000/
+
+# ============================
+# 2. Upload an image (requires API key)
+# ============================
+curl -X POST http://localhost:3000/upload \
+  -H "Authorization: Bearer YOUR_API_KEY_HERE" \
+  -F "image=@/path/to/your/image.jpg"
+
+# ============================
+# 3. List all images (public)
+# ============================
+curl http://localhost:3000/images
+
+# ============================
+# 4. Delete an image by filename (requires API key)
+# ============================
+curl -X DELETE http://localhost:3000/images/your-image-filename.jpg \
+  -H "Authorization: Bearer YOUR_API_KEY_HERE"
+
+# ============================
+# 5. Access an image directly (public)
+# ============================
+# Open this URL in browser or curl to download
+curl http://localhost:3000/images/your-image-filename.jpg

@@ -2,7 +2,9 @@
 
 **Bubbly** is an all-in-one app designed to help you locate your nearest water fountain. Open sourced.
 
-You can access **Bubbly** at https://bubbly.linuskang.au.
+This was my submission for the 2025 Premier Coding Comp, Australia.
+
+You can access **Bubbly** at https://bubbly.lkang.au.
 
 ## Tech stack
 
@@ -13,6 +15,8 @@ You can access **Bubbly** at https://bubbly.linuskang.au.
 - MapLibre GL - Map library
 - Shadcn/ui - UI framework
 - TileServer GL - Map tile server
+
+<img width="2153" height="982" alt="server-infra-bubbly" src="https://github.com/user-attachments/assets/8882dcac-1304-48f8-9c31-d0e1fabb491b" />
 
 ## Self hosting
 
@@ -62,3 +66,4 @@ Access **Bubbly** at https://localhost:3400.
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+

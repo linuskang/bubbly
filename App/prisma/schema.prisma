@@ -59,6 +59,7 @@ model Bubbler {
   hasbottlefiller Boolean        @default(false)
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
+  imageUrl        String?
   Review          Review[]
   Favorite        Favorite[]
   User            User?          @relation(fields: [addedbyuserid], references: [id])

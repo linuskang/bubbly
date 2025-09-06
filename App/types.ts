@@ -12,4 +12,5 @@ export interface Waypoint {
   hasbottlefiller?: boolean
   createdAt?: string
   type?: string
+  imageUrl?: string
 }

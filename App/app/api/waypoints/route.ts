@@ -367,6 +367,15 @@ export async function POST(request: Request) {
       ],
     });
 
+    await prisma.bubblerAuditLog.create({
+      data: {
+        bubblerId: newBubbler.id,
+        userId: finalUserId,
+        action: "CREATE",
+        changes: newBubbler, // entire object on creation
+      },
+    });
+
     return NextResponse.json(newBubbler);
   } catch (error) {
     console.error("POST error:", error);
@@ -429,7 +438,6 @@ export async function DELETE(request: Request) {
 // -d '{
 //   "name": "Updated Fountain Name",
 //   "description": "Updated description for this bubbler",
-//   "verified": true,
 //   "imageUrl": "https://example.com/new-image.jpg"
 // }'
 
@@ -472,29 +480,43 @@ export async function PATCH(request: Request) {
       longitude,
       description,
       type,
-      verified,
       isaccessible,
       dogfriendly,
       hasbottlefiller,
       imageUrl,
     } = body;
 
-    // Only include fields that are defined in the update
     const dataToUpdate: any = {};
     if (name !== undefined) dataToUpdate.name = name;
     if (latitude !== undefined) dataToUpdate.latitude = latitude;
     if (longitude !== undefined) dataToUpdate.longitude = longitude;
     if (description !== undefined) dataToUpdate.description = description;
     if (type !== undefined) dataToUpdate.type = type;
-    if (verified !== undefined) dataToUpdate.verified = verified;
     if (isaccessible !== undefined) dataToUpdate.isaccessible = isaccessible;
     if (dogfriendly !== undefined) dataToUpdate.dogfriendly = dogfriendly;
     if (hasbottlefiller !== undefined) dataToUpdate.hasbottlefiller = hasbottlefiller;
     if (imageUrl !== undefined) dataToUpdate.imageUrl = imageUrl;
 
+    const oldBubbler = await prisma.bubbler.findUnique({ where: { id } });
+
     const updatedBubbler = await prisma.bubbler.update({
       where: { id },
       data: dataToUpdate,
+    });
+
+    const changes: Record<string, { old: any; new: any }> = {};
+    for (const key of Object.keys(dataToUpdate)) {
+      changes[key] = { old: (oldBubbler as any)[key], new: (updatedBubbler as any)[key] };
+    }
+
+    // Save audit log
+    await prisma.bubblerAuditLog.create({
+      data: {
+        bubblerId: id,
+        userId: userId || null,
+        action: "UPDATE",
+        changes,
+      },
     });
 
     await sendDiscordWebhook(webhookUrl, {

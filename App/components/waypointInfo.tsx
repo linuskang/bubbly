@@ -38,6 +38,29 @@ export default function WaypointInfoPanel({
   const [reviews, setReviews] = useState<Review[]>([]);
   const [avgRating, setAvgRating] = useState<number>(0);
   const [userReview, setUserReview] = useState<Review | null>(null);
+  const [logs, setLogs] = useState<any[]>([]);
+
+  useEffect(() => {
+  if (!selectedWaypoint?.id) return;
+
+  async function fetchLogs() {
+    try {
+      const res = await fetch(`/api/waypoints/logs?bubblerId=${selectedWaypoint.id}`, {
+        headers: {
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY || "",
+        },
+      });
+      if (!res.ok) throw new Error("Failed to fetch logs");
+
+      const data = await res.json();
+      setLogs(data);
+    } catch (err: any) {
+      console.error(err);
+    }
+  }
+
+  fetchLogs();
+}, [selectedWaypoint?.id]);
 
   useEffect(() => {
     if (!selectedWaypoint?.id) return;
@@ -144,12 +167,27 @@ export default function WaypointInfoPanel({
         <h3 className="font-bold text-blue-600 text-lg truncate">
           {selectedWaypoint.name || "Unknown"}
         </h3>
-        <button
-          onClick={() => setShowEditForm((prev) => !prev)}
-          className="text-sm text-white bg-blue-600 px-2 py-1 rounded hover:bg-blue-700"
-        >
-          {showEditForm ? "Close Edit" : "Edit Bubbler"}
-        </button>
+        <div className="flex gap-2">
+    {/* Share button */}
+    <button
+      onClick={() => {
+        const url = `${window.location.origin}/?waypoint=${selectedWaypoint.id}`
+        navigator.clipboard.writeText(url)
+        alert("Link copied to clipboard!")
+      }}
+      className="text-sm text-white bg-gray-600 px-2 py-1 rounded hover:bg-gray-700"
+    >
+      Share
+    </button>
+
+    {/* Edit toggle button */}
+    <button
+      onClick={() => setShowEditForm((prev) => !prev)}
+      className="text-sm text-white bg-blue-600 px-2 py-1 rounded hover:bg-blue-700"
+    >
+      {showEditForm ? "Close Edit" : "Edit"}
+    </button>
+  </div>
       </div>
 
       {showEditForm && (
@@ -159,8 +197,6 @@ export default function WaypointInfoPanel({
           hideForm={() => setShowEditForm(false)}
         />
       )}
-
-      {/* --- Existing Waypoint Info & Reviews --- */}
       <div className="flex-1 overflow-y-auto p-4 space-y-2">
         {selectedWaypoint.description && (
           <p>
@@ -279,6 +315,37 @@ export default function WaypointInfoPanel({
             ))
           )}
         </div>
+<div className="mt-4">
+  <h4 className="font-semibold text-lg">Change Logs</h4>
+  {logs.length === 0 ? (
+    <p className="text-gray-500 text-sm">No logs available.</p>
+  ) : (
+    logs.map((log) => (
+      <div key={log.id} className="border rounded-md p-2 text-sm bg-gray-50 mb-2">
+        <p>
+          <strong>{log.action}</strong> by {log.userId || "Unknown"} on{" "}
+          {new Date(log.createdAt).toLocaleString()}
+        </p>
+        <ul className="ml-2 list-disc">
+          {log.action === "CREATE"
+            ? Object.entries(log.changes).map(([field, value]) => (
+                <li key={field}>
+                  <strong>{field}:</strong> {String(value)}
+                </li>
+              ))
+            : Object.entries(log.changes)
+                .filter(([_, change]: any) => change.old !== change.new) // only actual changes
+                .map(([field, change]: any) => (
+                  <li key={field}>
+                    <strong>{field}:</strong> {String(change.old)} → {String(change.new)}
+                  </li>
+                ))}
+        </ul>
+      </div>
+    ))
+  )}
+</div>
+
 
       </div>
     </div>
@@ -355,7 +422,7 @@ function EditBubblerForm({ selectedWaypoint, setSelectedWaypoint, hideForm }: Ed
           />
         </div>
         <div className="flex flex-col space-y-2">
-          {["verified", "isaccessible", "dogfriendly", "hasbottlefiller"].map((key) => (
+          {["isaccessible", "dogfriendly", "hasbottlefiller"].map((key) => (
             <label key={key} className="inline-flex items-center gap-2 text-sm">
               <input
                 type="checkbox"

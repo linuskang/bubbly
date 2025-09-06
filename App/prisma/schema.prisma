@@ -45,7 +45,7 @@ model Account {
 }
 
 model Bubbler {
-  id              Int            @id @default(autoincrement())
+  id              Int               @id @default(autoincrement())
   name            String
   latitude        Float
   longitude       Float
@@ -53,17 +53,28 @@ model Bubbler {
   addedby         String?
   addedbyuserid   String
   type            String
-  verified        Boolean        @default(false)
-  isaccessible    Boolean        @default(false)
-  dogfriendly     Boolean        @default(false)
-  hasbottlefiller Boolean        @default(false)
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  verified        Boolean           @default(false)
+  isaccessible    Boolean           @default(false)
+  dogfriendly     Boolean           @default(false)
+  hasbottlefiller Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
   imageUrl        String?
   Review          Review[]
   Favorite        Favorite[]
-  User            User?          @relation(fields: [addedbyuserid], references: [id])
+  User            User?             @relation(fields: [addedbyuserid], references: [id])
   userId          String?
+  BubblerAuditLog BubblerAuditLog[]
+}
+
+model BubblerAuditLog {
+  id        Int      @id @default(autoincrement())
+  bubblerId Int
+  userId    String?
+  action    String
+  changes   Json?
+  createdAt DateTime @default(now())
+  bubbler   Bubbler  @relation(fields: [bubblerId], references: [id])
 }
 
 model Review {

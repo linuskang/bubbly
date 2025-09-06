@@ -15,7 +15,7 @@ import MapControls from "@/components/mapControls"
 import AddWaypointModal from "@/components/addWaypoint"
 import WaypointInfoPanel from "@/components/waypointInfo"
 
-import type { Waypoint } from '@/types';
+import type { Waypoint } from "@/types"
 
 export default function WaterMap() {
   const mapContainer = useRef<HTMLDivElement | null>(null)
@@ -33,41 +33,41 @@ export default function WaterMap() {
   const [selectedWaypoint, setSelectedWaypoint] = useState<Waypoint | null>(null)
   const [showSettings, setShowSettings] = useState(false)
   const router = useRouter()
-  const [showAddForm, setShowAddForm] = useState(false);
-  const addBubblerPopupRef = useRef<maplibregl.Popup | null>(null);
+  const [showAddForm, setShowAddForm] = useState(false)
+  const addBubblerPopupRef = useRef<maplibregl.Popup | null>(null)
   const userId = session?.user?.id
 
   const showAddBubblerMenu = (lngLat: maplibregl.LngLat) => {
     if (addBubblerPopupRef.current) {
-      addBubblerPopupRef.current.remove();
-      addBubblerPopupRef.current = null;
+      addBubblerPopupRef.current.remove()
+      addBubblerPopupRef.current = null
     }
 
-    const popupContent = document.createElement("div");
+    const popupContent = document.createElement("div")
     popupContent.innerHTML = `
       <button id="add-bubbler-btn" class="bg-blue-600 text-white px-3 py-1 rounded">
         Add Water Fountain
       </button>
-    `;
+    `
 
     const popup = new maplibregl.Popup({ offset: 25, closeOnClick: true })
       .setLngLat(lngLat)
       .setDOMContent(popupContent)
-      .addTo(map.current!);
+      .addTo(map.current!)
 
     popupContent.querySelector("#add-bubbler-btn")?.addEventListener("click", () => {
-      popup.remove();
-      addBubblerPopupRef.current = null;
-      openAddBubblerForm(lngLat);
-    });
+      popup.remove()
+      addBubblerPopupRef.current = null
+      openAddBubblerForm(lngLat)
+    })
 
-    addBubblerPopupRef.current = popup;
-  };
+    addBubblerPopupRef.current = popup
+  }
 
   const openAddBubblerForm = (lngLat: maplibregl.LngLat) => {
     if (!session?.user) {
-      alert("You must be signed in to add a water fountain.");
-      return;
+      alert("You must be signed in to add a water fountain.")
+      return
     }
     setSelectedWaypoint({
       id: -1,
@@ -81,18 +81,18 @@ export default function WaterMap() {
       dogfriendly: false,
       hasbottlefiller: false,
       type: "fountain",
-    });
-    setShowAddForm(true);
-  };
+    })
+    setShowAddForm(true)
+  }
 
   useEffect(() => {
-    console.log("[ WaterNearMe", process.env.NEXT_PUBLIC_VERSION, "]");
+    console.log("[ WaterNearMe", process.env.NEXT_PUBLIC_VERSION, "]")
     console.log("Loading map data...")
 
-    const url = new URL(window.location.href);
-    const lng = parseFloat(url.searchParams.get("lng") || "153.028295");
-    const lat = parseFloat(url.searchParams.get("lat") || "-27.474188");
-    const zoom = parseFloat(url.searchParams.get("zoom") || "13");
+    const url = new URL(window.location.href)
+    const lng = Number.parseFloat(url.searchParams.get("lng") || "153.028295")
+    const lat = Number.parseFloat(url.searchParams.get("lat") || "-27.474188")
+    const zoom = Number.parseFloat(url.searchParams.get("zoom") || "13")
 
     if (map.current || !mapContainer.current) return
 
@@ -107,10 +107,10 @@ export default function WaterMap() {
     map.current.addControl(
       new maplibregl.AttributionControl({
         compact: false,
-        customAttribution: "© Linus Kang"
+        customAttribution: "© Linus Kang",
       }),
-      "bottom-right"
-    );
+      "bottom-right",
+    )
 
     const geolocateControl = new maplibregl.GeolocateControl({
       positionOptions: { enableHighAccuracy: true },
@@ -121,13 +121,13 @@ export default function WaterMap() {
 
     map.current.addControl(new maplibregl.ScaleControl(), "bottom-left")
     map.current.addControl(geolocateControl)
-    const button = document.querySelector('.maplibregl-ctrl-geolocate') as HTMLElement | null
-    if (button) button.style.display = 'none'
+    const button = document.querySelector(".maplibregl-ctrl-geolocate") as HTMLElement | null
+    if (button) button.style.display = "none"
 
     map.current.on("load", () => {
-      setMapLoaded(true);
-      console.log("Map data loaded");
-    });
+      setMapLoaded(true)
+      console.log("Map data loaded")
+    })
 
     map.current.on("error", (e) => console.error("[ERROR] Failed to load map data:", e))
 
@@ -139,34 +139,60 @@ export default function WaterMap() {
   }, [])
 
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current) return
 
     const updateUrl = () => {
-      const center = map.current!.getCenter();
-      const zoom = map.current!.getZoom();
+      const center = map.current!.getCenter()
+      const zoom = map.current!.getZoom()
 
-      const url = new URL(window.location.href);
-      url.searchParams.set("lng", center.lng.toFixed(5));
-      url.searchParams.set("lat", center.lat.toFixed(5));
-      url.searchParams.set("zoom", zoom.toFixed(2));
+      const url = new URL(window.location.href)
+      url.searchParams.set("lng", center.lng.toFixed(5))
+      url.searchParams.set("lat", center.lat.toFixed(5))
+      url.searchParams.set("zoom", zoom.toFixed(2))
 
-      window.history.replaceState({}, "", url.toString());
-    };
+      if (selectedWaypoint && selectedWaypoint.id !== -1) {
+        url.searchParams.set("waypoint", selectedWaypoint.id.toString())
+      }
 
-    map.current.on("moveend", updateUrl);
+      window.history.replaceState({}, "", url.toString())
+    }
+
+    map.current.on("moveend", updateUrl)
 
     return () => {
-      map.current?.off("moveend", updateUrl);
-    };
-  }, [map.current]);
+      map.current?.off("moveend", updateUrl)
+    }
+  }, [map.current, selectedWaypoint])
 
   useEffect(() => {
     console.log("Fetching waypoints...")
     fetch("/api/waypoints")
-      .then(res => res.ok ? res.json() : Promise.reject(`HTTP error! status: ${res.status}`))
+      .then((res) => (res.ok ? res.json() : Promise.reject(`HTTP error! status: ${res.status}`)))
       .then(setWaypoints)
-      .catch(err => { console.error(err); alert("Error fetching waypoints") })
+      .catch((err) => {
+        console.error(err)
+        alert("Error fetching waypoints")
+      })
   }, [])
+
+  useEffect(() => {
+    if (waypoints.length === 0 || !map.current) return
+
+    const url = new URL(window.location.href)
+    const waypointId = url.searchParams.get("waypoint")
+
+    if (waypointId) {
+      const waypoint = waypoints.find((w) => w.id === Number.parseInt(waypointId))
+      if (waypoint) {
+        // Fly to the waypoint and select it
+        map.current.flyTo({
+          center: [waypoint.longitude, waypoint.latitude],
+          zoom: 16,
+        })
+        selectWaypoint(waypoint)
+      }
+    }
+  }, [waypoints, mapLoaded])
 
   useEffect(() => {
     if (status === "loading") return
@@ -175,34 +201,34 @@ export default function WaterMap() {
 
   useEffect(() => {
     if (!search) return setMatches([])
-    setMatches(waypoints.filter(w => w.name?.toLowerCase().includes(search.toLowerCase())))
+    setMatches(waypoints.filter((w) => w.name?.toLowerCase().includes(search.toLowerCase())))
   }, [search, waypoints])
 
   useEffect(() => {
-    if (!map.current) return;
+    if (!map.current) return
 
     const closePopup = () => {
       if (addBubblerPopupRef.current) {
-        addBubblerPopupRef.current.remove();
-        addBubblerPopupRef.current = null;
+        addBubblerPopupRef.current.remove()
+        addBubblerPopupRef.current = null
       }
-    };
+    }
 
-    map.current.on("click", closePopup);
+    map.current.on("click", closePopup)
     map.current.on("contextmenu", (e) => {
-      closePopup();
-      showAddBubblerMenu(e.lngLat);
-      e.originalEvent.preventDefault();
-    });
+      closePopup()
+      showAddBubblerMenu(e.lngLat)
+      e.originalEvent.preventDefault()
+    })
 
     return () => {
-      map.current?.off("click", closePopup);
-      map.current?.off("contextmenu", showAddBubblerMenu);
-    };
-  }, [mapLoaded]);
+      map.current?.off("click", closePopup)
+      map.current?.off("contextmenu", showAddBubblerMenu)
+    }
+  }, [mapLoaded])
 
   const submitBubbler = async () => {
-    if (!selectedWaypoint || !session?.user) return;
+    if (!selectedWaypoint || !session?.user) return
     try {
       const res = await fetch("/api/waypoints", {
         method: "POST",
@@ -212,32 +238,87 @@ export default function WaterMap() {
           addedby: session.user.username,
           addedbyuserid: session.user.id,
         }),
-      });
-      if (!res.ok) throw new Error("Failed to add water fountain");
-      const newWaypoint = await res.json();
-      setWaypoints(prev => [...prev, newWaypoint]);
-      setShowAddForm(false);
+      })
+      if (!res.ok) throw new Error("Failed to add water fountain")
+      const newWaypoint = await res.json()
+      setWaypoints((prev) => [...prev, newWaypoint])
+      setShowAddForm(false)
     } catch (err) {
-      console.error(err);
-      alert("Error adding water fountain");
+      console.error(err)
+      alert("Error adding water fountain")
     }
-  };
+  }
+
+  const selectWaypoint = (w: Waypoint) => {
+    setSelectedWaypoint(w)
+    showRedMarker(w)
+    setSearch(w.name || "")
+    setMatches([])
+    setIsFocused(false)
+  }
+
+  const deselectWaypoint = () => {
+    setSelectedWaypoint(null)
+    hideRedMarker()
+
+    // Remove waypoint parameter from URL
+    const url = new URL(window.location.href)
+    url.searchParams.delete("waypoint")
+    window.history.replaceState({}, "", url.toString())
+  }
+
+  useEffect(() => {
+    if (!map.current) return
+
+    const handleMapClick = (e: maplibregl.MapMouseEvent) => {
+      const features = map.current!.queryRenderedFeatures(e.point, { layers: ["unclustered-point", "clusters"] })
+      if (features.length === 0) {
+        deselectWaypoint()
+        if (addBubblerPopupRef.current) {
+          addBubblerPopupRef.current.remove()
+          addBubblerPopupRef.current = null
+        }
+      }
+    }
+
+    map.current.on("click", handleMapClick)
+
+    map.current.on("contextmenu", (e) => {
+      if (addBubblerPopupRef.current) {
+        addBubblerPopupRef.current.remove()
+        addBubblerPopupRef.current = null
+      }
+      showAddBubblerMenu(e.lngLat)
+      e.originalEvent.preventDefault()
+    })
+
+    return () => {
+      map.current?.off("click", handleMapClick)
+      map.current?.off("contextmenu", showAddBubblerMenu)
+    }
+  }, [mapLoaded])
 
   useEffect(() => {
     if (!map.current || !mapLoaded || waypoints.length === 0) return
     if (map.current.getSource("waypoints")) {
-      ["clusters", "cluster-count", "unclustered-point"].forEach(layer => map.current?.removeLayer(layer))
+      ;["clusters", "cluster-count", "unclustered-point"].forEach((layer) => map.current?.removeLayer(layer))
       map.current.removeSource("waypoints")
     }
 
     const features: Feature<Point, { id: number; name?: string; description?: string; addedby?: string }>[] =
-      waypoints.map(w => ({
+      waypoints.map((w) => ({
         type: "Feature",
         geometry: { type: "Point", coordinates: [w.longitude, w.latitude] },
         properties: { id: w.id, name: w.name, description: w.description, addedby: w.addedby },
       }))
 
-    map.current.addSource("waypoints", { type: "geojson", data: { type: "FeatureCollection", features }, cluster: true, clusterMaxZoom: 14, clusterRadius: 50 })
+    map.current.addSource("waypoints", {
+      type: "geojson",
+      data: { type: "FeatureCollection", features },
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 50,
+    })
 
     map.current.addLayer({
       id: "clusters",
@@ -245,15 +326,7 @@ export default function WaterMap() {
       source: "waypoints",
       filter: ["has", "point_count"],
       paint: {
-        "circle-color": [
-          "step",
-          ["get", "point_count"],
-          "#3b82f6",
-          10,
-          "#1d4ed8",
-          30,
-          "#1e40af",
-        ],
+        "circle-color": ["step", ["get", "point_count"], "#3b82f6", 10, "#1d4ed8", 30, "#1e40af"],
         "circle-radius": ["step", ["get", "point_count"], 18, 100, 24, 750, 30],
         "circle-stroke-width": 2,
         "circle-stroke-color": "#ffffff",
@@ -306,72 +379,42 @@ export default function WaterMap() {
       map.current!.easeTo({ center: (features[0].geometry as any).coordinates, zoom })
     })
 
-    map.current.on("mouseenter", "clusters", () => { map.current!.getCanvas().style.cursor = "pointer" })
-    map.current.on("mouseleave", "clusters", () => { map.current!.getCanvas().style.cursor = "" })
+    map.current.on("mouseenter", "clusters", () => {
+      map.current!.getCanvas().style.cursor = "pointer"
+    })
+    map.current.on("mouseleave", "clusters", () => {
+      map.current!.getCanvas().style.cursor = ""
+    })
   }, [waypoints, mapLoaded])
 
-  const selectWaypoint = (w: Waypoint) => {
-    setSelectedWaypoint(w)
-    showRedMarker(w)
-    setSearch(w.name || "");
-    setMatches([]);
-    setIsFocused(false);
-  }
-  useEffect(() => {
-    if (!map.current) return;
-
-    const handleMapClick = (e: maplibregl.MapMouseEvent) => {
-      const features = map.current!.queryRenderedFeatures(e.point, { layers: ["unclustered-point", "clusters"] });
-      if (features.length === 0) {
-        setSelectedWaypoint(null);
-        hideRedMarker();
-        if (addBubblerPopupRef.current) {
-          addBubblerPopupRef.current.remove();
-          addBubblerPopupRef.current = null;
-        }
-      }
-    };
-
-    map.current.on("click", handleMapClick);
-
-    map.current.on("contextmenu", (e) => {
-      if (addBubblerPopupRef.current) {
-        addBubblerPopupRef.current.remove();
-        addBubblerPopupRef.current = null;
-      }
-      showAddBubblerMenu(e.lngLat);
-      e.originalEvent.preventDefault();
-    });
-
-    return () => {
-      map.current?.off("click", handleMapClick);
-      map.current?.off("contextmenu", showAddBubblerMenu);
-    };
-  }, [mapLoaded]);
-
   const showRedMarker = (w: Waypoint) => {
-    if (!map.current) return;
-    if (redMarkerRef.current) redMarkerRef.current.remove();
-    const el = document.createElement("div");
-    el.style.width = "20px";
-    el.style.height = "20px";
-    el.style.backgroundColor = "#ef4444";
-    el.style.border = "3px solid white";
-    el.style.borderRadius = "50%";
-    el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.3)";
-    el.style.cursor = "pointer";
-    redMarkerRef.current = new maplibregl.Marker(el)
-      .setLngLat([w.longitude, w.latitude])
-      .addTo(map.current);
-  };
+    if (!map.current) return
+    if (redMarkerRef.current) redMarkerRef.current.remove()
+    const el = document.createElement("div")
+    el.style.width = "20px"
+    el.style.height = "20px"
+    el.style.backgroundColor = "#ef4444"
+    el.style.border = "3px solid white"
+    el.style.borderRadius = "50%"
+    el.style.boxShadow = "0 2px 8px rgba(0,0,0,0.3)"
+    el.style.cursor = "pointer"
+    redMarkerRef.current = new maplibregl.Marker(el).setLngLat([w.longitude, w.latitude]).addTo(map.current)
+  }
 
   const hideRedMarker = () => {
-    if (redMarkerRef.current) { redMarkerRef.current.remove(); redMarkerRef.current = null }
-    if (popupRef.current) { popupRef.current.remove(); popupRef.current = null }
+    if (redMarkerRef.current) {
+      redMarkerRef.current.remove()
+      redMarkerRef.current = null
+    }
+    if (popupRef.current) {
+      popupRef.current.remove()
+      popupRef.current = null
+    }
   }
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    const first = waypoints.find(w => w.name?.toLowerCase().includes(search.toLowerCase()))
+    const first = waypoints.find((w) => w.name?.toLowerCase().includes(search.toLowerCase()))
     if (!first || !map.current) return
     map.current.flyTo({ center: [first.longitude, first.latitude], zoom: 16 })
     selectWaypoint(first)
@@ -379,7 +422,6 @@ export default function WaterMap() {
 
   return (
     <div className="relative w-screen h-screen bg-gray-50">
-
       <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
 
       <SearchV2
@@ -412,13 +454,9 @@ export default function WaterMap() {
         }}
       />
 
-      <MagicLinkPopup
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
-      />
+      <MagicLinkPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
 
-      {showSettings && <SettingsPanel onClose={(
-      ) => setShowSettings(false)} />}
+      {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
 
       {showAddForm && selectedWaypoint && (
         <AddWaypointModal
@@ -439,7 +477,6 @@ export default function WaterMap() {
           />
         </div>
       )}
-
     </div>
   )
 }

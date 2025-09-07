@@ -1,7 +1,7 @@
 // © 2025 Linus Kang
 // Licensed under CC BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
@@ -79,6 +79,8 @@ const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
  *                 type: boolean
  *               imageUrl:
  *                 type: string
+ *               maintainer:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Waypoint created successfully
@@ -126,6 +128,8 @@ const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
  *               hasbottlefiller:
  *                 type: boolean
  *               imageUrl:
+ *                 type: string
+ *               maintainer:
  *                 type: string
  *     responses:
  *       200:
@@ -192,7 +196,8 @@ export async function GET(request: Request) {
           isaccessible: true,
           dogfriendly: true,
           hasbottlefiller: true,
-          imageUrl: true, // include optional image
+          imageUrl: true,
+          maintainer: true,
         },
       });
 
@@ -223,7 +228,8 @@ export async function GET(request: Request) {
           isaccessible: true,
           dogfriendly: true,
           hasbottlefiller: true,
-          imageUrl: true, // include optional image
+          imageUrl: true,
+          maintainer: true,
         },
       });
 
@@ -248,7 +254,8 @@ export async function GET(request: Request) {
         isaccessible: true,
         dogfriendly: true,
         hasbottlefiller: true,
-        imageUrl: true, // include optional image
+        imageUrl: true,
+        maintainer: true,
       },
     });
 
@@ -273,7 +280,8 @@ export async function GET(request: Request) {
 //    "dogfriendly": true,
 //    "hasbottlefiller": false,
 //    "addedby": "linus",
-//    "type": "fountain"
+//    "type": "fountain",
+//    "maintainer": "Brisbane City Council",
 //  }'
 
 export async function POST(request: Request) {
@@ -311,6 +319,7 @@ export async function POST(request: Request) {
       isaccessible = false,
       dogfriendly = false,
       hasbottlefiller = false,
+      maintainer,
       imageUrl,
     } = body;
 
@@ -339,6 +348,7 @@ export async function POST(request: Request) {
         isaccessible,
         dogfriendly,
         hasbottlefiller,
+        maintainer,
         imageUrl,
       },
     });
@@ -360,6 +370,7 @@ export async function POST(request: Request) {
             { name: "Bottle Filler", value: hasbottlefiller.toString(), inline: true },
             { name: "Accessible", value: isaccessible.toString(), inline: true },
             { name: "Description", value: description || "N/A" },
+            { name: "Maintainer", value: maintainer || "N/A" },
             { name: "Image URL", value: imageUrl || "N/A" },
           ],
           timestamp: new Date().toISOString(),
@@ -442,8 +453,9 @@ export async function DELETE(request: Request) {
 // }'
 
 
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest, context: {params: any}) {
   try {
+
     const apiKey = request.headers.get("x-api-key");
     let authorized = false;
     let userId: string | null = null;
@@ -484,20 +496,30 @@ export async function PATCH(request: Request) {
       dogfriendly,
       hasbottlefiller,
       imageUrl,
+      maintainer,
     } = body;
 
-    const dataToUpdate: any = {};
-    if (name !== undefined) dataToUpdate.name = name;
-    if (latitude !== undefined) dataToUpdate.latitude = latitude;
-    if (longitude !== undefined) dataToUpdate.longitude = longitude;
-    if (description !== undefined) dataToUpdate.description = description;
-    if (type !== undefined) dataToUpdate.type = type;
-    if (isaccessible !== undefined) dataToUpdate.isaccessible = isaccessible;
-    if (dogfriendly !== undefined) dataToUpdate.dogfriendly = dogfriendly;
-    if (hasbottlefiller !== undefined) dataToUpdate.hasbottlefiller = hasbottlefiller;
-    if (imageUrl !== undefined) dataToUpdate.imageUrl = imageUrl;
-
     const oldBubbler = await prisma.bubbler.findUnique({ where: { id } });
+
+    if (!oldBubbler) {
+      return new NextResponse("failed to find bubbler.", {status: 404});
+    }
+
+    const dataToUpdate: any = {};
+    if (name !== undefined && name !== oldBubbler.name) dataToUpdate.name = name;
+    if (latitude !== undefined && latitude !== oldBubbler.latitude) dataToUpdate.latitude = latitude;
+    if (longitude !== undefined && longitude !== oldBubbler.longitude) dataToUpdate.longitude = longitude;
+    if (description !== undefined && description !== oldBubbler.description) dataToUpdate.description = description;
+    if (type !== undefined && type !== oldBubbler.type) dataToUpdate.type = type;
+    if (isaccessible !== undefined && isaccessible !== oldBubbler.isaccessible) dataToUpdate.isaccessible = isaccessible;
+    if (dogfriendly !== undefined && dogfriendly !== oldBubbler.dogfriendly) dataToUpdate.dogfriendly = dogfriendly;
+    if (hasbottlefiller !== undefined && hasbottlefiller !== oldBubbler.hasbottlefiller) dataToUpdate.hasbottlefiller = hasbottlefiller;
+    if (imageUrl !== undefined && imageUrl !== oldBubbler.imageUrl) dataToUpdate.imageUrl = imageUrl;
+    if (maintainer !== undefined && maintainer !== oldBubbler.maintainer) dataToUpdate.maintainer = maintainer;
+
+    if (Object.keys(dataToUpdate).length === 0) {
+      return new NextResponse("No changes detected", { status: 400 });
+    }
 
     const updatedBubbler = await prisma.bubbler.update({
       where: { id },

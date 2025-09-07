@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 const { logger } = require("./utils/winston");
 const log = logger();
 
@@ -12,6 +13,14 @@ const env = process.env
 
 const app = express();
 const port = env.PORT || 3000;
+
+// Rate limiter: maximum of 100 requests per 15 minutes per IP for GET /upload
+const uploadGetLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,
+  standardHeaders: true, // Return rate limit info in the RateLimit-* headers
+  legacyHeaders: false, // Disable the X-RateLimit-* headers
+});
 
 function requireApiKey(req, res, next) {
   const userKey = req.headers["authorization"];
@@ -77,7 +86,7 @@ app.delete("/images/:filename", requireApiKey, (req, res) => {
   });
 });
 
-app.get("/upload", (req, res) => {
+app.get("/upload", uploadGetLimiter, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 

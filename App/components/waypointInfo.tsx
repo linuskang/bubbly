@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import type { Waypoint } from "@/types"
 import type { Dispatch, SetStateAction } from "react"
 import Link from "next/link"
@@ -22,7 +22,7 @@ interface WaypointInfoPanelProps {
   currentUserId?: string
 }
 
-type TabType = "overview" | "reviews" | "amenities" | "history" | "photos"
+type TabType = "overview" | "reviews" | "amenities" | "history" | "photos" | "ai"
 
 export default function WaypointInfoPanel({
                                             selectedWaypoint,
@@ -313,6 +313,9 @@ export default function WaypointInfoPanel({
                   handleSubmit={handleSubmit}
                   handleDelete={handleDelete}
               />
+          )}
+          {activeTab === "ai" && (
+              <AiTab selectedWaypoint={selectedWaypoint} />
           )}
           {activeTab === "history" && (
               <HistoryTab
@@ -828,6 +831,98 @@ function EditBubblerForm({ selectedWaypoint, setSelectedWaypoint, hideForm }: Ed
             {loading ? "Updating..." : "Save Changes"}
           </button>
         </form>
+      </div>
+  )
+}
+
+interface Message {
+  role: "user" | "assistant"
+  content: string
+}
+
+function AiTab({ selectedWaypoint }: { selectedWaypoint: Waypoint }) {
+  const [messages, setMessages] = useState<Message[]>([])
+  const [input, setInput] = useState("")
+  const [loading, setLoading] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  const sendMessage = async () => {
+    if (!input.trim()) return
+
+    const userMessage: Message = { role: "user", content: input }
+    const updatedMessages = [...messages, userMessage]
+    setMessages(updatedMessages)
+    setInput("")
+    setLoading(true)
+    scrollToBottom()
+
+    try {
+      const res = await fetch("https://ai.lkang.au/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: input,
+          conversation: updatedMessages,
+        }),
+      })
+
+      const data = await res.json()
+      const aiReply: Message = { role: "assistant", content: data.reply || "No response" }
+      setMessages([...updatedMessages, aiReply])
+      scrollToBottom()
+    } catch (err) {
+      const errMessage: Message = { role: "assistant", content: "Error fetching AI response" }
+      setMessages([...updatedMessages, errMessage])
+      scrollToBottom()
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") sendMessage()
+  }
+
+  return (
+      <div className="p-4 space-y-4">
+        <div className="space-y-2 max-h-64 overflow-y-auto rounded-lg">
+          {messages.map((msg, i) => (
+              <div
+                  key={i}
+                  className={`p-2 rounded-lg text-sm ${
+                      msg.role === "user"
+                          ? "bg-blue-600 text-white ml-auto w-fit"
+                          : "bg-gray-200 text-gray-800 mr-auto w-fit"
+                  }`}
+              >
+                {msg.content}
+              </div>
+          ))}
+          {/* Dummy div to scroll to */}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className="flex gap-2">
+          <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder={"Ask Bubbly..."}
+              className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          />
+          <button
+              onClick={sendMessage}
+              disabled={loading || !input.trim()}
+              className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? "..." : "Send"}
+          </button>
+        </div>
       </div>
   )
 }

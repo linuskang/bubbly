@@ -198,6 +198,8 @@ export async function GET(request: Request) {
           hasbottlefiller: true,
           imageUrl: true,
           maintainer: true,
+          createdAt: true,
+          updatedAt: true,
         },
       });
 
@@ -230,6 +232,8 @@ export async function GET(request: Request) {
           hasbottlefiller: true,
           imageUrl: true,
           maintainer: true,
+          createdAt: true,
+          updatedAt: true,
         },
       });
 
@@ -256,6 +260,8 @@ export async function GET(request: Request) {
         hasbottlefiller: true,
         imageUrl: true,
         maintainer: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 

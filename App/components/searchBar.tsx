@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
 import { Search, X } from "lucide-react"
-
+import { useRouter } from "next/navigation"
 interface Waypoint {
   id: number
   name?: string
@@ -49,7 +49,7 @@ export default function SearchV2({
   const [highlightedIndex, setHighlightedIndex] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-
+  const router = useRouter()
   // Handle keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!matches.length) return
@@ -103,6 +103,9 @@ export default function SearchV2({
     setIsFocused(false)
     setHighlightedIndex(-1)
     inputRef.current?.focus()
+    const url = new URL(window.location.href)
+    url.searchParams.delete("waypoint")
+    router.replace(url.toString(), { scroll: false })
   }
 
   // Reset highlighted index when matches change

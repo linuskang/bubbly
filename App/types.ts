@@ -14,4 +14,5 @@ export interface Waypoint {
   type?: string
   imageUrl?: string
   maintainer?: string
+  updatedAt?: string
 }

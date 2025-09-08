@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react"
 import type { Waypoint } from "@/types"
 import type { Dispatch, SetStateAction } from "react"
 import Link from "next/link"
+import MagicLinkPopup from "@/components/loginPopup"
 
 interface Review {
   id: string
@@ -209,8 +210,14 @@ export default function WaypointInfoPanel({
     { id: "ai", label: "Ask AI" },
   ]
 
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
+
   return (
       <div className="fixed top-20 left-17 z-10 w-96 bg-white shadow-xl rounded-2xl border border-gray-200 flex flex-col max-h-[calc(100vh-2rem)] overflow-hidden">
+        <MagicLinkPopup
+            isOpen={isPopupOpen}
+            onClose={() => setIsPopupOpen(false)}
+        />
         <div className="relative">
           {selectedWaypoint.imageUrl && (
               <div className="w-full h-48 overflow-hidden rounded-t-2xl bg-gray-100 relative">
@@ -373,7 +380,19 @@ export default function WaypointInfoPanel({
               />
           )}
           {activeTab === "ai" && (
-              <AiTab selectedWaypoint={selectedWaypoint} />
+              currentUserId ? (
+                  <AiTab selectedWaypoint={selectedWaypoint} />
+              ) : (
+                  <div className="p-4 text-center text-gray-500 space-y-4">
+                    <p>Please sign in to use the AI assistant.</p>
+                    <button
+                        onClick={() => setIsPopupOpen(true)}
+                        className="px-4 py-2 bg-blue-700 text-white shadow-lg hover:bg-blue-800 rounded-full transition cursor-pointer"
+                    >
+                      Sign In
+                    </button>
+                  </div>
+              )
           )}
           {activeTab === "history" && (
               <HistoryTab

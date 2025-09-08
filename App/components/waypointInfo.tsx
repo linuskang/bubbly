@@ -164,7 +164,7 @@ export default function WaypointInfoPanel({
   ]
 
   return (
-      <div className="fixed top-20 left-5 z-10 w-96 bg-white shadow-xl rounded-2xl border border-gray-200 flex flex-col max-h-[calc(100vh-2rem)] overflow-hidden">
+      <div className="fixed top-20 left-17 z-10 w-96 bg-white shadow-xl rounded-2xl border border-gray-200 flex flex-col max-h-[calc(100vh-2rem)] overflow-hidden">
         <div className="relative">
           {selectedWaypoint.imageUrl && (
               <div className="w-full h-48 overflow-hidden rounded-t-2xl bg-gray-100 relative">

@@ -41,12 +41,7 @@ export default function WaterMap() {
   const handleNavigation = (section: string) => {
     switch (section) {
       case "home":
-        if (map.current) {
-          map.current.flyTo({
-            center: [153.028295, -27.474188],
-            zoom: 13,
-          })
-        }
+        console.log("navigate home")
         break
       case "about":
         console.log("Navigate to about page")

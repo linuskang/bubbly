@@ -261,7 +261,6 @@ export default function WaterMap() {
     setSelectedWaypoint(null)
     hideRedMarker()
 
-    // Remove waypoint parameter from URL
     const url = new URL(window.location.href)
     url.searchParams.delete("waypoint")
     window.history.replaceState({}, "", url.toString())
@@ -272,14 +271,26 @@ export default function WaterMap() {
 
     const handleMapClick = (e: maplibregl.MapMouseEvent) => {
       const features = map.current!.queryRenderedFeatures(e.point, { layers: ["unclustered-point", "clusters"] })
+
       if (features.length === 0) {
         deselectWaypoint()
-        if (addBubblerPopupRef.current) {
-          addBubblerPopupRef.current.remove()
-          addBubblerPopupRef.current = null
+
+        if (popupRef.current) {
+          popupRef.current.remove()
+          popupRef.current = null
+        }
+        popupRef.current = new maplibregl.Popup({ offset: 10 })
+            .setLngLat(e.lngLat)
+            .setHTML(`<div>Lng: ${e.lngLat.lng.toFixed(5)}<br>Lat: ${e.lngLat.lat.toFixed(5)}</div>`)
+            .addTo(map.current!)
+      } else {
+        if (popupRef.current) {
+          popupRef.current.remove()
+          popupRef.current = null
         }
       }
     }
+
 
     map.current.on("click", handleMapClick)
 

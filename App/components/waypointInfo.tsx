@@ -865,7 +865,7 @@ function AiTab({ selectedWaypoint }: { selectedWaypoint: Waypoint }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          prompt: input,
+          prompt: `The user is currently viewing bubblerId: ${selectedWaypoint.id} (call it by the name, not id in chat). Do not do anything with this id until the user prompts you to. Please listen to the users instructions before doing anything. The users input is: ${input}. Please give a summary of anything the user asks.`,
           conversation: updatedMessages,
         }),
       })
@@ -902,7 +902,6 @@ function AiTab({ selectedWaypoint }: { selectedWaypoint: Waypoint }) {
                 {msg.content}
               </div>
           ))}
-          {/* Dummy div to scroll to */}
           <div ref={messagesEndRef} />
         </div>
 

@@ -14,6 +14,7 @@ import SearchV2 from "@/components/searchBar"
 import MapControls from "@/components/mapControls"
 import AddWaypointModal from "@/components/addWaypoint"
 import WaypointInfoPanel from "@/components/waypointInfo"
+import NavigationSidebar from "@/components/sidebar"
 
 import type { Waypoint } from "@/types"
 
@@ -37,6 +38,31 @@ export default function WaterMap() {
   const addBubblerPopupRef = useRef<maplibregl.Popup | null>(null)
   const userId = session?.user?.id
 
+  const handleNavigation = (section: string) => {
+    switch (section) {
+      case "home":
+        if (map.current) {
+          map.current.flyTo({
+            center: [153.028295, -27.474188],
+            zoom: 13,
+          })
+        }
+        break
+      case "about":
+        console.log("Navigate to about page")
+        break
+      case "bookmarks":
+        console.log("Show bookmarks")
+        break
+      case "privacy":
+        console.log("Show privacy policy")
+        break
+      case "terms":
+        console.log("Show terms of service")
+        break
+    }
+  }
+
   const showAddBubblerMenu = (lngLat: maplibregl.LngLat) => {
     if (addBubblerPopupRef.current) {
       addBubblerPopupRef.current.remove()
@@ -51,9 +77,9 @@ export default function WaterMap() {
     `
 
     const popup = new maplibregl.Popup({ offset: 25, closeOnClick: true })
-      .setLngLat(lngLat)
-      .setDOMContent(popupContent)
-      .addTo(map.current!)
+        .setLngLat(lngLat)
+        .setDOMContent(popupContent)
+        .addTo(map.current!)
 
     popupContent.querySelector("#add-bubbler-btn")?.addEventListener("click", () => {
       popup.remove()
@@ -105,11 +131,11 @@ export default function WaterMap() {
     })
 
     map.current.addControl(
-      new maplibregl.AttributionControl({
-        compact: false,
-        customAttribution: "© Linus Kang",
-      }),
-      "bottom-right",
+        new maplibregl.AttributionControl({
+          compact: false,
+          customAttribution: "© Linus Kang",
+        }),
+        "bottom-right",
     )
 
     const geolocateControl = new maplibregl.GeolocateControl({
@@ -167,12 +193,12 @@ export default function WaterMap() {
   useEffect(() => {
     console.log("Fetching waypoints...")
     fetch("/api/waypoints")
-      .then((res) => (res.ok ? res.json() : Promise.reject(`HTTP error! status: ${res.status}`)))
-      .then(setWaypoints)
-      .catch((err) => {
-        console.error(err)
-        alert("Error fetching waypoints")
-      })
+        .then((res) => (res.ok ? res.json() : Promise.reject(`HTTP error! status: ${res.status}`)))
+        .then(setWaypoints)
+        .catch((err) => {
+          console.error(err)
+          alert("Error fetching waypoints")
+        })
   }, [])
 
   useEffect(() => {
@@ -184,7 +210,6 @@ export default function WaterMap() {
     if (waypointId) {
       const waypoint = waypoints.find((w) => w.id === Number.parseInt(waypointId))
       if (waypoint) {
-        // Fly to the waypoint and select it
         map.current.flyTo({
           center: [waypoint.longitude, waypoint.latitude],
           zoom: 16,
@@ -227,45 +252,6 @@ export default function WaterMap() {
     }
   }, [mapLoaded])
 
-  const submitBubbler = async () => {
-    if (!selectedWaypoint || !session?.user) return
-    try {
-      const res = await fetch("/api/waypoints", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...selectedWaypoint,
-          addedby: session.user.username,
-          addedbyuserid: session.user.id,
-        }),
-      })
-      if (!res.ok) throw new Error("Failed to add water fountain")
-      const newWaypoint = await res.json()
-      setWaypoints((prev) => [...prev, newWaypoint])
-      setShowAddForm(false)
-    } catch (err) {
-      console.error(err)
-      alert("Error adding water fountain")
-    }
-  }
-
-  const selectWaypoint = (w: Waypoint) => {
-    setSelectedWaypoint(w)
-    showRedMarker(w)
-    setSearch(w.name || "")
-    setMatches([])
-    setIsFocused(false)
-  }
-
-  const deselectWaypoint = () => {
-    setSelectedWaypoint(null)
-    hideRedMarker()
-
-    const url = new URL(window.location.href)
-    url.searchParams.delete("waypoint")
-    window.history.replaceState({}, "", url.toString())
-  }
-
   useEffect(() => {
     if (!map.current) return
 
@@ -290,7 +276,6 @@ export default function WaterMap() {
         }
       }
     }
-
 
     map.current.on("click", handleMapClick)
 
@@ -317,11 +302,11 @@ export default function WaterMap() {
     }
 
     const features: Feature<Point, { id: number; name?: string; description?: string; addedby?: string }>[] =
-      waypoints.map((w) => ({
-        type: "Feature",
-        geometry: { type: "Point", coordinates: [w.longitude, w.latitude] },
-        properties: { id: w.id, name: w.name, description: w.description, addedby: w.addedby },
-      }))
+        waypoints.map((w) => ({
+          type: "Feature",
+          geometry: { type: "Point", coordinates: [w.longitude, w.latitude] },
+          properties: { id: w.id, name: w.name, description: w.description, addedby: w.addedby },
+        }))
 
     map.current.addSource("waypoints", {
       type: "geojson",
@@ -431,63 +416,108 @@ export default function WaterMap() {
     selectWaypoint(first)
   }
 
+  const selectWaypoint = (w: Waypoint) => {
+    setSelectedWaypoint(w)
+    showRedMarker(w)
+    setSearch(w.name || "")
+    setMatches([])
+    setIsFocused(false)
+  }
+
+  const deselectWaypoint = () => {
+    setSelectedWaypoint(null)
+    hideRedMarker()
+
+    const url = new URL(window.location.href)
+    url.searchParams.delete("waypoint")
+    window.history.replaceState({}, "", url.toString())
+  }
+
+  const submitBubbler = async () => {
+    if (!selectedWaypoint || !session?.user) return
+    try {
+      const res = await fetch("/api/waypoints", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...selectedWaypoint,
+          addedby: session.user.username,
+          addedbyuserid: session.user.id,
+        }),
+      })
+      if (!res.ok) throw new Error("Failed to add water fountain")
+      const newWaypoint = await res.json()
+      setWaypoints((prev) => [...prev, newWaypoint])
+      setShowAddForm(false)
+    } catch (err) {
+      console.error(err)
+      alert("Error adding water fountain")
+    }
+  }
+
   return (
-    <div className="relative w-screen h-screen bg-gray-50">
-      <div ref={mapContainer} className="absolute inset-0 w-full h-full" />
+      <div className="w-screen h-screen bg-gray-50 overflow-hidden grid grid-cols-[48px_1fr] grid-rows-1">
+        <NavigationSidebar onNavigate={handleNavigation} />
 
-      <SearchV2
-        search={search}
-        setSearch={setSearch}
-        matches={matches}
-        setMatches={setMatches}
-        selectedWaypoint={selectedWaypoint}
-        setSelectedWaypoint={setSelectedWaypoint}
-        onSearchSubmit={handleSearchSubmit}
-        showRedMarker={showRedMarker}
-        hideRedMarker={hideRedMarker}
-        selectWaypoint={selectWaypoint}
-        map={map}
-      />
+        <div className="relative h-full overflow-hidden">
+          <div ref={mapContainer} className="h-full w-full" />
 
-      <MapControls
-        session={session}
-        setIsPopupOpen={setIsPopupOpen}
-        setShowSettings={setShowSettings}
-        setShowCommandDeck={setShowCommandDeck}
-        map={map}
-      />
-
-      <CommandDeck
-        isOpen={showCommandDeck}
-        onClose={() => setShowCommandDeck(false)}
-        onAction={(action) => {
-          console.log(action)
-        }}
-      />
-
-      <MagicLinkPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
-
-      {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
-
-      {showAddForm && selectedWaypoint && (
-        <AddWaypointModal
-          selectedWaypoint={selectedWaypoint}
-          setSelectedWaypoint={setSelectedWaypoint}
-          setShowAddForm={setShowAddForm}
-          submitBubbler={submitBubbler}
-        />
-      )}
-
-      {selectedWaypoint && (
-        <div className="w-96 border-r bg-white shadow-lg z-20 flex-shrink-0">
-          <WaypointInfoPanel
-            selectedWaypoint={selectedWaypoint}
-            setSelectedWaypoint={setSelectedWaypoint}
-            hideRedMarker={hideRedMarker}
-            currentUserId={userId}
+          <SearchV2
+              search={search}
+              setSearch={setSearch}
+              matches={matches}
+              setMatches={setMatches}
+              selectedWaypoint={selectedWaypoint}
+              setSelectedWaypoint={setSelectedWaypoint}
+              onSearchSubmit={handleSearchSubmit}
+              showRedMarker={showRedMarker}
+              hideRedMarker={hideRedMarker}
+              selectWaypoint={selectWaypoint}
+              map={map}
           />
+
+          {selectedWaypoint && (
+              <WaypointInfoPanel
+                  selectedWaypoint={selectedWaypoint}
+                  setSelectedWaypoint={setSelectedWaypoint}
+                  hideRedMarker={hideRedMarker}
+                  currentUserId={userId}
+              />
+          )}
+
+          <MapControls
+              session={session}
+              setIsPopupOpen={setIsPopupOpen}
+              setShowSettings={setShowSettings}
+              setShowCommandDeck={setShowCommandDeck}
+              map={map}
+          />
+
+          {/* Command deck */}
+          <CommandDeck
+              isOpen={showCommandDeck}
+              onClose={() => setShowCommandDeck(false)}
+              onAction={(action) => {
+                console.log(action)
+              }}
+          />
+
+          {/* Magic link popup */}
+          <MagicLinkPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
+
+          {/* Settings panel */}
+          {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
+
+          {/* Add waypoint modal */}
+          {showAddForm && selectedWaypoint && (
+              <AddWaypointModal
+                  selectedWaypoint={selectedWaypoint}
+                  setSelectedWaypoint={setSelectedWaypoint}
+                  setShowAddForm={setShowAddForm}
+                  submitBubbler={submitBubbler}
+              />
+          )}
         </div>
-      )}
-    </div>
+      </div>
   )
 }

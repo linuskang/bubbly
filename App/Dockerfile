@@ -30,7 +30,7 @@ ENV RESEND_API_KEY="dummy_key"
 ENV API_KEY="dummy_api_key"
 ENV OLLAMA_API_URL="https://dummy.api.url"
 
-ENV NEXT_PUBLIC_VERSION="1.5.0"
+ENV NEXT_PUBLIC_VERSION="1.5.4"
 
 RUN npx prisma generate
 

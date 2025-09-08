@@ -15,4 +15,5 @@ export interface Waypoint {
   imageUrl?: string
   maintainer?: string
   updatedAt?: string
+  favoriteId?: string
 }

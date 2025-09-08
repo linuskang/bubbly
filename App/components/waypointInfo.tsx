@@ -36,9 +36,55 @@ export default function WaypointInfoPanel({
   // --- Reviews State ---
   const [rating, setRating] = useState<number>(0)
   const [comment, setComment] = useState<string>("")
+  const [favoriteDbId, setFavoriteDbId] = useState<string | null>(null);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!selectedWaypoint.id) return;
+
+    async function checkFavorite() {
+      try {
+        const res = await fetch("/api/user/favorites");
+        if (!res.ok) throw new Error("Failed to fetch favorites");
+        const favorites = await res.json();
+        const fav = favorites.find((f: any) => f.bubblerId === selectedWaypoint.id);
+        setIsFavorite(!!fav);
+        setFavoriteDbId(fav?.id || null); // store the actual favorite ID
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    checkFavorite();
+  }, [selectedWaypoint.id]);
+
+
+  async function toggleFavorite() {
+    try {
+      if (isFavorite) {
+        // Remove favorite
+        const res = await fetch(`/api/user/favorites?id=${favoriteDbId}`, {
+          method: "DELETE",
+        });
+        if (!res.ok) throw new Error("Failed to remove favorite");
+        setIsFavorite(false);
+      } else {
+        // Add favorite
+        const res = await fetch(`/api/user/favorites`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bubblerId: selectedWaypoint.id }),
+        });
+        if (!res.ok) throw new Error("Failed to add favorite");
+        setIsFavorite(true);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   const [reviews, setReviews] = useState<Review[]>([])
   const [avgRating, setAvgRating] = useState<number>(0)
@@ -226,6 +272,18 @@ export default function WaypointInfoPanel({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12c0 4.418-3.582 8-8 8s-8-3.582-8-8 3.582-8 8-8 8 3.582 8 8z" />
               </svg>
             </button>
+            <button
+                onClick={toggleFavorite}
+                className={`p-2 bg-white/90 backdrop-blur-sm cursor-pointer rounded-full shadow-lg hover:bg-white transition-colors ${
+                    isFavorite ? "text-red-500" : "text-gray-700"
+                }`}
+                title={isFavorite ? "Unfavorite" : "Favorite"}
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 18l-6.828-6.828a4 4 0 010-5.656z" />
+              </svg>
+            </button>
+
           </div>
           <div className="p-4">
             <div className="flex items-start justify-between gap-3">

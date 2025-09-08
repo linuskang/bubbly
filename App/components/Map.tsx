@@ -488,7 +488,6 @@ export default function WaterMap() {
               map={map}
           />
 
-          {/* Command deck */}
           <CommandDeck
               isOpen={showCommandDeck}
               onClose={() => setShowCommandDeck(false)}
@@ -497,13 +496,10 @@ export default function WaterMap() {
               }}
           />
 
-          {/* Magic link popup */}
           <MagicLinkPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />
 
-          {/* Settings panel */}
           {showSettings && <SettingsPanel onClose={() => setShowSettings(false)} />}
 
-          {/* Add waypoint modal */}
           {showAddForm && selectedWaypoint && (
               <AddWaypointModal
                   selectedWaypoint={selectedWaypoint}

@@ -1,6 +1,6 @@
 "use client"
 import { Home, Info, Bookmark, Shield, FileText, X } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react";
 
 interface NavigationSidebarProps {
     onNavigate?: (section: string) => void
@@ -9,6 +9,44 @@ interface NavigationSidebarProps {
 export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps) {
     const [activeSection, setActiveSection] = useState<string | null>(null)
     const isExpanded = activeSection !== null
+
+    const [favorites, setFavorites] = useState<any[]>([]);
+    const [loadingFavs, setLoadingFavs] = useState(false);
+
+    useEffect(() => {
+        if (activeSection === "bookmarks") {
+            setLoadingFavs(true);
+            fetch("/api/user/favorites")
+                .then((res) => res.json())
+                .then((data) => setFavorites(data))
+                .catch(() => setFavorites([]))
+                .finally(() => setLoadingFavs(false));
+        }
+    }, [activeSection]);
+
+    // Delete favorite by favoriteId
+    const handleDeleteFavorite = async (favoriteId: number) => {
+        if (!confirm("Remove this bookmark?")) return;
+        const res = await fetch(`/api/user/favorites?id=${favoriteId}`, {
+            method: "DELETE",
+        });
+        if (res.ok) {
+            setFavorites((prev) => prev.filter((f) => f.id !== favoriteId));
+        } else {
+            alert("Failed to remove bookmark");
+        }
+    };
+
+    const handleBookmarkClick = (bubblerId: number) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("waypoint", String(bubblerId));
+        // Replace pushState with a full reload navigating to the new URL:
+        window.location.href = url.toString();
+
+        // No need to setActiveSection or call onNavigate here
+    };
+
+
 
     const handleClick = (section: string) => {
         if (section === "home") {
@@ -68,23 +106,44 @@ export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps
                 return (
                     <div className="p-4">
                         <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-lg font-semibold text-gray-800">Bookmarks</h2>
+                            <h2 className="text-lg font-semibold text-gray-800">Your Bookmarks</h2>
                             <button onClick={() => setActiveSection(null)} className="p-1 hover:bg-gray-100 rounded">
                                 <X className="w-4 h-4 text-gray-500" />
                             </button>
                         </div>
-                        <div className="space-y-2">
-                            <div className="p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">
-                                <div className="font-medium text-sm">Important Link</div>
-                                <div className="text-xs text-gray-500">Saved 2 days ago</div>
+                        {loadingFavs ? (
+                            <div className="text-center text-gray-600">Loading bookmarks...</div>
+                        ) : favorites.length === 0 ? (
+                            <div className="text-center text-gray-400">No bookmarks saved.</div>
+                        ) : (
+                            <div className="space-y-2 max-h-[400px] overflow-auto">
+                                {favorites.map((fav) => (
+                                    <div
+                                        key={fav.id}
+                                        className="p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer flex justify-between items-center"
+                                    >
+                                        <div onClick={() => handleBookmarkClick(fav.bubblerId)} className="flex-1">
+                                            <div className="font-medium text-sm">{fav.bubbler?.name || "Unnamed Fountain"}</div>
+                                            <div className="text-xs text-gray-500">
+                                                Saved {new Date(fav.createdAt).toLocaleDateString()}
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();  // prevent triggering parent click
+                                                handleDeleteFavorite(fav.id);
+                                            }}
+                                            className="text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1 rounded"
+                                            title="Remove bookmark"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
                             </div>
-                            <div className="p-2 bg-gray-50 rounded hover:bg-gray-100 cursor-pointer">
-                                <div className="font-medium text-sm">Another Bookmark</div>
-                                <div className="text-xs text-gray-500">Saved 1 week ago</div>
-                            </div>
-                        </div>
+                        )}
                     </div>
-                )
+                );
             default:
                 return null
         }

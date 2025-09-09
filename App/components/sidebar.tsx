@@ -1,6 +1,7 @@
 "use client"
 import { Home, Info, Bookmark, Shield, FileText, X } from "lucide-react"
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react"
 
 interface NavigationSidebarProps {
     onNavigate?: (section: string) => void
@@ -9,22 +10,23 @@ interface NavigationSidebarProps {
 export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps) {
     const [activeSection, setActiveSection] = useState<string | null>(null)
     const isExpanded = activeSection !== null
-
     const [favorites, setFavorites] = useState<any[]>([]);
     const [loadingFavs, setLoadingFavs] = useState(false);
+    const { data: session } = useSession()
 
     useEffect(() => {
         if (activeSection === "bookmarks") {
-            setLoadingFavs(true);
+            if (!session) return
+
+            setLoadingFavs(true)
             fetch("/api/user/favorites")
                 .then((res) => res.json())
                 .then((data) => setFavorites(data))
                 .catch(() => setFavorites([]))
-                .finally(() => setLoadingFavs(false));
+                .finally(() => setLoadingFavs(false))
         }
-    }, [activeSection]);
+    }, [activeSection, session])
 
-    // Delete favorite by favoriteId
     const handleDeleteFavorite = async (favoriteId: number) => {
         if (!confirm("Remove this bookmark?")) return;
         const res = await fetch(`/api/user/favorites?id=${favoriteId}`, {
@@ -40,22 +42,17 @@ export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps
     const handleBookmarkClick = (bubblerId: number) => {
         const url = new URL(window.location.href);
         url.searchParams.set("waypoint", String(bubblerId));
-        // Replace pushState with a full reload navigating to the new URL:
         window.location.href = url.toString();
-
-        // No need to setActiveSection or call onNavigate here
     };
-
-
 
     const handleClick = (section: string) => {
         if (section === "home") {
             setActiveSection(null)
         } else if (section === "privacy") {
-            window.open("https://linuskang.au/privacy", "_blank")
+            window.open("https://lkang.au/privacy", "_blank")
             return
         } else if (section === "terms") {
-            window.open("https://linuskang.au/terms", "_blank")
+            window.open("https://lkang.au/terms", "_blank")
             return
         } else {
             setActiveSection(activeSection === section ? null : section)
@@ -157,6 +154,13 @@ export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps
         >
             <div className="w-12 flex flex-col">
                 <div className="flex flex-col pt-4 space-y-2">
+                    <div className="w-10 h-10 mx-1 flex items-center justify-center">
+                        <img
+                            src="/logo.png"
+                            alt="Logo"
+                            className="w-10 h-10"
+                        />
+                    </div>
                     <button
                         onClick={() => handleClick("home")}
                         className={`w-10 h-10 mx-1 flex items-center justify-center rounded-lg transition-colors group ${
@@ -185,19 +189,21 @@ export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps
                         />
                     </button>
 
-                    <button
-                        onClick={() => handleClick("bookmarks")}
-                        className={`w-10 h-10 mx-1 flex items-center justify-center rounded-lg transition-colors group ${
-                            activeSection === "bookmarks" ? "bg-blue-100" : "hover:bg-blue-100"
-                        }`}
-                        title="Bookmarks"
-                    >
-                        <Bookmark
-                            className={`w-5 h-5 ${
-                                activeSection === "bookmarks" ? "text-blue-600" : "text-gray-600 group-hover:text-blue-600"
+                    {session && (
+                        <button
+                            onClick={() => handleClick("bookmarks")}
+                            className={`w-10 h-10 mx-1 flex items-center justify-center rounded-lg transition-colors group ${
+                                activeSection === "bookmarks" ? "bg-blue-100" : "hover:bg-blue-100"
                             }`}
-                        />
-                    </button>
+                            title="Bookmarks"
+                        >
+                            <Bookmark
+                                className={`w-5 h-5 ${
+                                    activeSection === "bookmarks" ? "text-blue-600" : "text-gray-600 group-hover:text-blue-600"
+                                }`}
+                            />
+                        </button>
+                    )}
                 </div>
                 <div className="flex-1" />
                 <div className="flex flex-col pb-4 space-y-2">

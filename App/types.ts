@@ -16,4 +16,5 @@ export interface Waypoint {
   maintainer?: string
   updatedAt?: string
   favoriteId?: string
+  rating?: string
 }

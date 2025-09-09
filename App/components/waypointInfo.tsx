@@ -1026,6 +1026,7 @@ function AiTab({selectedWaypoint}: { selectedWaypoint: Waypoint }) {
                             Have any questions? Ask our chatbot for help!
                         </p>
                     </div>
+
                 )}
 
                 <div className="flex gap-2">

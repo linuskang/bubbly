@@ -23,7 +23,7 @@ export const authOptions: AuthOptions = {
                 
                 <div style="text-align: center; margin-bottom: 24px;">
                   <h1 style="margin: 0; font-size: 26px; color: #111; font-weight: 600;">
-                    Sign in to <span style="color: #6366f1;">WaterNearMe</span> 👋
+                    Sign in to <span style="color: #6366f1;">Bubbly</span> 👋
                   </h1>
                 </div>
 

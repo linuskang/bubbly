@@ -58,7 +58,7 @@ sudo apt update
 sudo apt install -y nodejs npm git python3 python3-venv
 ```
 
-Additionally, please ensure you have both **Docker** and **``docker-compose`` installed. You can follow those setup instructions [here](https://docs.docker.com/desktop/setup/install/linux/ubuntu/)
+Additionally, please ensure you have both **Docker** and ``docker-compose`` installed. You can follow those setup instructions [here](https://docs.docker.com/desktop/setup/install/linux/ubuntu/)
 
 > [!TIP]
 > If your wanting to use Portainer to manage all of Bubbly's services, you can create the docker container for it using:

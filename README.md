@@ -6,6 +6,8 @@ This was my submission for the *2025 Premier Coding Comp* in Australia.
 
 You can access **Bubbly** at https://bubbly.linuskang.au.
 
+----
+
 ## Tech stack
 
 - Next.js - App framework
@@ -16,6 +18,8 @@ You can access **Bubbly** at https://bubbly.linuskang.au.
 - Shadcn/ui - UI framework
 - TileServer GL - Map tile server
 - Any many more...
+
+----
 
 ## Locally hosting the entire project
 
@@ -75,6 +79,8 @@ git clone https://github.com/linuskang/bubbly
 cd bubbly
 ```
 
+----
+
 ### Installing TileServerGL (Map server)
 
 > [!NOTE]
@@ -95,6 +101,8 @@ sudo docker compose up -d
 
 All set up! You can access your map tile server at http://YOUR_SERVER_IP:8080.
 
+----
+
 ### Installing Seq (logging server)
 
 > [!NOTE]
@@ -113,6 +121,8 @@ sudo docker compose up -d
 ```
 
 You can access the Seq web UI at http://YOUR_SERVER_IP:2000 and the logging server listens at http://YOUR_SERVER_IP:5341.
+
+----
 
 ### Installing Ollama (AI Model Server)
 
@@ -140,6 +150,8 @@ Your done! You can test the model using ``ollama run``:
 ```shell
 ollama run gpt-oss:7b
 ```
+
+----
 
 ### Installing OllamaFunctionsAPI
 
@@ -169,6 +181,8 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 The AI Functions API will be listening at http://YOUR_SERVER_IP:8000
 
+----
+
 ### Running the Bubbly app & database
 
 #### Database Configurations
@@ -193,6 +207,8 @@ FLUSH PRIVILEGES;
 # Exit MySQL terminal
 exit;
 ```
+
+----
 
 #### Running the Bubbly App
 
@@ -259,9 +275,13 @@ Now, you can run the Bubbly app using:
 npm run dev
 ```
 
+----
+
 ## License
 
 **Bubbly** is under **CC BY-NC 4.0**. See [LICENSE](LICENSE) for more details.
+
+----
 
 ## Credit
 

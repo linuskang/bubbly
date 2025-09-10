@@ -56,7 +56,7 @@ export default function WaypointInfoPanel({
                 const favorites = await res.json();
                 const fav = favorites.find((f: any) => f.bubblerId === selectedWaypoint.id);
                 setIsFavorite(!!fav);
-                setFavoriteDbId(fav?.id || null); // store the actual favorite ID
+                setFavoriteDbId(fav?.id || null);
             } catch (err) {
                 console.error(err);
             }
@@ -69,14 +69,12 @@ export default function WaypointInfoPanel({
     async function toggleFavorite() {
         try {
             if (isFavorite) {
-                // Remove favorite
                 const res = await fetch(`/api/user/favorites?id=${favoriteDbId}`, {
                     method: "DELETE",
                 });
                 if (!res.ok) throw new Error("Failed to remove favorite");
                 setIsFavorite(false);
             } else {
-                // Add favorite
                 const res = await fetch(`/api/user/favorites`, {
                     method: "POST",
                     headers: {"Content-Type": "application/json"},
@@ -618,7 +616,6 @@ function ReviewsTab({
                 </>
             )}
 
-            {/* Reviews list */}
             <div className="space-y-3">
                 {reviews.length === 0 ? (
                     <div className="text-center py-8">

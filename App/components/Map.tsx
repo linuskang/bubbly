@@ -9,7 +9,6 @@ import type { Feature, Point } from "geojson"
 
 import SettingsPanel from "@/components/settingsPopup"
 import MagicLinkPopup from "@/components/loginPopup"
-import CommandDeck from "@/components/commandDeck"
 import SearchV2 from "@/components/searchBar"
 import MapControls from "@/components/mapControls"
 import AddWaypointModal from "@/components/addWaypoint"
@@ -509,14 +508,6 @@ export default function WaterMap() {
               setShowSettings={setShowSettings}
               setShowCommandDeck={setShowCommandDeck}
               map={map}
-          />
-
-          <CommandDeck
-              isOpen={showCommandDeck}
-              onClose={() => setShowCommandDeck(false)}
-              onAction={(action) => {
-                console.log(action)
-              }}
           />
 
           <MagicLinkPopup isOpen={isPopupOpen} onClose={() => setIsPopupOpen(false)} />

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 interface ReportUserButtonProps {
-  username: string; // username of the reported user
+  username: string; //username of reported user as string.
 }
 
 export default function ReportUserButton({ username }: ReportUserButtonProps) {

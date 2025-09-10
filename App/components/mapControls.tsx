@@ -2,7 +2,7 @@
 
 import React from "react"
 import maplibregl from "maplibre-gl"
-import { Plus, Navigation } from "lucide-react"
+import { Navigation } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import UserAvatarDropdown from "@/components/avatarDropdown"
 
@@ -40,15 +40,6 @@ export default function MapControls({
       </div>
 
       <div className="absolute right-7 bottom-10 z-10 flex flex-col gap-3">
-        <Button
-          size="icon"
-          className="h-14 w-14 bg-blue-700 hover:bg-blue-800 shadow-lg rounded-full cursor-pointer"
-          title="Contribute"
-          onClick={() => setShowCommandDeck(true)}
-        >
-          <Plus className="w-6 h-6" />
-        </Button>
-
         <Button
           variant="outline"
           size="icon"

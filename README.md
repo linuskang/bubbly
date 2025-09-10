@@ -79,6 +79,8 @@ git clone https://github.com/linuskang/bubbly
 cd bubbly
 ```
 
+----
+
 ## Hosting Bubbly app via. docker
 If you don't want to make any huge configuration changes to any of the micro services, you can easily start playing around with Bubbly by using its docker image.
 

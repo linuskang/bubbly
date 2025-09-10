@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  seq:
+    image: datalust/seq:latest
+    container_name: seq
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      SEQ_PASSWORD: "DEFAULT_SEQ_PASSWORD_UPON_FIRST_LOGIN_CHANGE_ME"
+    ports:
+      - "2000:80"
+      - "5341:5341"
+    volumes:
+      - ./seq-data:/data

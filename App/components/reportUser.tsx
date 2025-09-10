@@ -3,17 +3,17 @@
 import { useState } from "react";
 
 interface ReportUserButtonProps {
-  username: string; //username of reported user as string.
+  username: string; // username of reported user as string
 }
 
 export default function ReportUserButton({ username }: ReportUserButtonProps) {
-  const [reason, setReason] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   const handleReport = async () => {
-    if (!reason.trim()) {
-      setMessage("Please enter a reason.");
+    const reason = prompt("Enter reason for reporting this user:");
+    if (!reason || !reason.trim()) {
+      setMessage("Report cancelled or reason empty.");
       return;
     }
 
@@ -29,7 +29,6 @@ export default function ReportUserButton({ username }: ReportUserButtonProps) {
 
       if (res.ok) {
         setMessage("Report submitted successfully.");
-        setReason("");
       } else {
         const text = await res.text();
         setMessage(`Error: ${text}`);
@@ -43,22 +42,15 @@ export default function ReportUserButton({ username }: ReportUserButtonProps) {
   };
 
   return (
-    <div className="mt-4 space-y-2">
-      <textarea
-        value={reason}
-        onChange={(e) => setReason(e.target.value)}
-        placeholder="Enter reason for reporting this user"
-        className="w-full border rounded p-2 text-sm"
-        rows={3}
-      />
-      <button
-        onClick={handleReport}
-        disabled={loading}
-        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
-      >
-        {loading ? "Reporting..." : "Report Abuse"}
-      </button>
-      {message && <p className="text-sm text-muted-foreground">{message}</p>}
-    </div>
+      <div className="mt-4 space-y-2">
+        <button
+            onClick={handleReport}
+            disabled={loading}
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+        >
+          {loading ? "Reporting..." : "Report Abuse"}
+        </button>
+        {message && <p className="text-sm text-muted-foreground">{message}</p>}
+      </div>
   );
 }

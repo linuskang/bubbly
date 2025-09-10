@@ -79,6 +79,18 @@ git clone https://github.com/linuskang/bubbly
 cd bubbly
 ```
 
+## Hosting Bubbly app via. docker
+If you don't want to make any huge configuration changes to any of the micro services, you can easily start playing around with Bubbly by using its docker image.
+
+Below are the commands to get your container running:
+```shell
+cd App
+nano docker-compose.yml # EDIT THE ENV VALUES TO YOUR OWN
+sudo docker compose up -d # INSTALL AND RUN THE IMAGE
+```
+
+Access Bubbly at http://your_server_ip:3400
+
 ----
 
 ### Installing TileServerGL (Map server)

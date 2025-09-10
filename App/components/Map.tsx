@@ -16,7 +16,6 @@ import AddWaypointModal from "@/components/addWaypoint"
 import WaypointInfoPanel from "@/components/waypointInfo"
 import NavigationSidebar from "@/components/sidebar"
 import FountainsPanel from "@/components/recentWaypoints"
-import ReviewsPanel from "@/components/recentReviews"
 
 import type { Waypoint } from "@/types"
 
@@ -61,24 +60,6 @@ export default function WaterMap() {
           console.error("Failed to fetch recent waypoints:", err)
         })
   }, [])
-
-  useEffect(() => {
-    fetchRecentReviews().catch((err) => console.error("Failed to fetch recent reviews:", err))
-  }, [])
-
-  const fetchRecentReviews = async () => {
-    const res = await fetch("/api/reviews/recent?number=3")
-    const data = await res.json()
-    const mapped: ReviewUI[] = data.map((r: any) => ({
-      id: r.id,
-      waypointName: r.bubbler?.name || "Unknown",
-      rating: r.rating,
-      comment: r.comment || "",
-      reviewedBy: r.user?.username || "Anonymous",
-      createdAt: new Date(r.createdAt).toISOString(),
-    }))
-    setRecentReviews(mapped)
-  }
 
   const handleNavigation = (section: string) => {
     switch (section) {
@@ -552,13 +533,6 @@ export default function WaterMap() {
           )}
 
           <FountainsPanel recentWaypoints={recentWaypoints} map={map} selectWaypoint={selectWaypoint} isMinimized={isFountainsPanelMinimized} setIsMinimized={setIsFountainsPanelMinimized}/>
-          <ReviewsPanel
-              recentReviews={recentReviews}
-              fountainsPanelMinimized={isFountainsPanelMinimized}
-              map={map}
-              selectWaypoint={selectWaypoint}
-              waypoints={waypoints}
-          />
         </div>
       </div>
   )

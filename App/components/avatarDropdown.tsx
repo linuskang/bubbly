@@ -26,7 +26,7 @@ export default function UserAvatarDropdown({ session, onSettingsClick }: UserAva
       <DropdownMenuTrigger asChild>
         <Avatar className="w-10 h-10 rounded-full shadow cursor-pointer">
           <AvatarImage src={session.user?.image} alt={session.user?.name || "User"} />
-          <AvatarFallback className="text-base font-bold">
+          <AvatarFallback className="bg-blue-600 text-white text-lg font-medium">
             {session.user?.name?.[0] || "U"}
           </AvatarFallback>
         </Avatar>
@@ -36,7 +36,7 @@ export default function UserAvatarDropdown({ session, onSettingsClick }: UserAva
         <DropdownMenuItem
           onClick={() => {
             if (session.user?.username) {
-              router.push(`/u/${session.user.username}`)
+              router.push(`/user/${session.user.username}`)
             }
           }}
         >

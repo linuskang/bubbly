@@ -75,7 +75,16 @@ model BubblerAuditLog {
   action    String
   changes   Json?
   createdAt DateTime @default(now())
-  bubbler   Bubbler  @relation(fields: [bubblerId], references: [id])
+  bubbler   Bubbler  @relation(fields: [bubblerId], references: [id], onDelete: Cascade)
+}
+
+model Favorite {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  bubblerId Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  bubbler   Bubbler  @relation(fields: [bubblerId], references: [id], onDelete: Cascade)
 }
 
 model Review {
@@ -89,16 +98,6 @@ model Review {
 
   bubbler Bubbler @relation(fields: [bubblerId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Favorite {
-  id        Int      @id @default(autoincrement())
-  userId    String
-  bubblerId Int
-  createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id])
-  bubbler Bubbler @relation(fields: [bubblerId], references: [id])
 }
 
 model Session {

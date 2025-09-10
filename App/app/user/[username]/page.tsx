@@ -33,17 +33,21 @@ export default async function UserProfilePage({ params }: { params: any }) {
   return (
     <div className="max-w-2xl mx-auto py-10 px-4 space-y-6">
       <div className="flex items-center space-x-4">
-        <Avatar className="h-20 w-20">
-          <AvatarImage src={user.image || ""} />
-          <AvatarFallback>{user.name?.[0]}</AvatarFallback>
-        </Avatar>
-        <div>
-          <p className="text-2xl font-semibold">{user.name || user.username}</p>
-          <p className="text-sm text-muted-foreground">@{user.username}</p>
-          <p className="text-xs text-muted-foreground">
-            Joined {new Date(user.createdAt).toLocaleDateString()}
-          </p>
-          <ReportUserButton username={user.username!} />
+        <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-xl">
+          <Avatar className="h-16 w-16">
+            <AvatarImage src={user.image || ""} />
+            <AvatarFallback className="bg-blue-600 text-white text-lg font-medium">
+              {user.name?.[0] || "U"}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1">
+            <h3 className="font-medium text-gray-900">{user.name}</h3>
+            <p className="text-xs font-medium text-gray-900">@{user.username}</p>
+            <p className="text-xs text-gray-500 mt-1">
+              Member since{" "}
+              {new Date(user.createdAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+            </p>
+          </div>
         </div>
       </div>
 

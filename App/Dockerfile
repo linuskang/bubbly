@@ -24,13 +24,14 @@ ENV NEXTAUTH_URL="http://localhost:3400"
 
 ENV NEXT_PUBLIC_MAP_STYLE="openstreetmap"
 ENV NEXT_PUBLIC_TILESERVER_URL="https://tiles.linus.id.au"
+ENV NEXT_PUBLIC_OLLAMA_API_URL="https://agent.linus.id.au"
 
 ENV RESEND_API_KEY="dummy_key"
 
 ENV API_KEY="dummy_api_key"
 ENV OLLAMA_API_URL="https://dummy.api.url"
 
-ENV NEXT_PUBLIC_VERSION="1.5.4"
+ENV NEXT_PUBLIC_VERSION="1.6.0"
 
 RUN npx prisma generate
 

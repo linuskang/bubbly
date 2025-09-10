@@ -13,6 +13,23 @@ export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps
     const [favorites, setFavorites] = useState<any[]>([]);
     const [loadingFavs, setLoadingFavs] = useState(false);
     const { data: session } = useSession()
+    const [stats, setStats] = useState<{
+        total_water_fountains: number;
+        total_contributors: number;
+        contributors: string[];
+        total_users: number;
+        total_reviews: number;
+        total_audit_log_entries: number;
+    } | null>(null);
+
+    useEffect(() => {
+        if (activeSection === "about") {
+            fetch("/api/stats")
+                .then((res) => res.json())
+                .then((data) => setStats(data))
+                .catch(() => setStats(null));
+        }
+    }, [activeSection]);
 
     useEffect(() => {
         if (activeSection === "bookmarks") {
@@ -82,16 +99,33 @@ export default function NavigationSidebar({ onNavigate }: NavigationSidebarProps
                             </p>
 
                             <div>
-                                <p className="font-medium mb-2">Features include:</p>
+                                <p className="font-bold mb-2">Features:</p>
                                 <ul className="list-disc list-inside space-y-1">
-                                    <li>💧 Find nearby water fountains quickly using your location.</li>
-                                    <li>📝 Contribute by adding new fountains or reporting issues.</li>
-                                    <li>📍 View fountain details, including accessibility and amenities.</li>
+                                    <li>Find nearby water fountains quickly using your location.</li>
+                                    <li>Contribute by adding new fountains or reporting issues.</li>
+                                    <li>View fountain details, including accessibility and amenities.</li>
                                 </ul>
                             </div>
 
+                            {stats && (
+                                <div className="bg-gray-50 p-3 rounded-lg space-y-2">
+                                    <p className="font-bold text-gray-800">Statistics:</p>
+                                    <ul className="list-disc list-inside text-gray-700 space-y-1">
+                                        <li>Water Fountains: {stats.total_water_fountains}</li>
+                                        <li>Contributors: {stats.total_contributors}</li>
+                                        <li>Reviews: {stats.total_reviews}</li>
+                                        <li>Commits: {stats.total_audit_log_entries}</li>
+                                        <li>Users: {stats.total_users}</li>
+                                    </ul>
+                                </div>
+                            )}
+
                             <p>
                                 Feel free to contribute or check out the code at <a href="https://github.com/linuskang/bubbly" className="text-blue-600 underline">GitHub</a>.
+                            </p>
+
+                            <p>
+                                Join the discord server <a href="https://linus.id.au/ds" className="text-blue-600 underline">here</a>.
                             </p>
 
                             <p className="text-center font-semibold">Happy Exploring :)</p>

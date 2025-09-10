@@ -974,7 +974,7 @@ function AiTab({selectedWaypoint}: { selectedWaypoint: Waypoint }) {
         scrollToBottom()
 
         try {
-            const res = await fetch("https://ai.lkang.au/chat", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_OLLAMA_API_URL}/chat`, {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({

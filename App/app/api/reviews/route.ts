@@ -8,6 +8,7 @@ import { authOptions } from "@/lib/auth";
 import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
+import { giveXP, XP_REWARDS } from "@/lib/xp";
 
 /**
  * @openapi
@@ -158,6 +159,8 @@ export async function POST(request: Request) {
         comment,
       },
     });
+
+    await giveXP(session.user.id, XP_REWARDS.ADD_REVIEW);
 
     await sendDiscordWebhook(webhookUrl, {
       username: "Bubbly",

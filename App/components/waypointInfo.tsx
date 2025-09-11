@@ -851,7 +851,7 @@ function EditBubblerForm({selectedWaypoint, setSelectedWaypoint, hideForm}: Edit
                 body: JSON.stringify(formState),
             })
 
-            if (!res.ok) throw new Error("Failed to update bubbler")
+            if (!res.ok) throw new Error(`Failed to update bubbler, you don't have the required level to edit bubblers!`)
 
             const updated = await res.json()
             setSelectedWaypoint(updated)

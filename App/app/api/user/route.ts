@@ -71,6 +71,9 @@ export async function GET() {
         image: true,
         createdAt: true,
         updatedAt: true,
+        xp: true,
+        level: true,
+        bio: true,
       },
     })
 

@@ -135,6 +135,8 @@ export async function GET(
         bio: true,
         createdAt: true,
         updatedAt: true,
+        xp: true,
+        level: true,
       },
     });
 

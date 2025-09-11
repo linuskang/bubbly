@@ -8,6 +8,7 @@ import { authOptions } from "@/lib/auth";
 import { sendDiscordWebhook } from "@/lib/discord";
 
 const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
+import { giveXP, XP_REWARDS, LEVELS, getUserXP } from "@/lib/xp";
 
 /**
  * @openapi
@@ -310,6 +311,13 @@ export async function POST(request: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    if (userId) {
+      const user = await getUserXP(userId);
+      if (user.level < 20) {
+        return new NextResponse("You need to be at least level 20 to add a waypoint", { status: 403 });
+      }
+    }
+
     const body = await request.json();
     console.log("POST body:", body);
 
@@ -358,6 +366,12 @@ export async function POST(request: Request) {
         imageUrl,
       },
     });
+
+    if (userId) {
+      await giveXP(userId, XP_REWARDS.ADD_WAYPOINT);
+    } else if (finalUserId) {
+      await giveXP(finalUserId, XP_REWARDS.ADD_WAYPOINT);
+    }
 
     await sendDiscordWebhook(webhookUrl, {
       username: "Bubbly",
@@ -480,6 +494,16 @@ export async function PATCH(request: NextRequest, context: {params: any}) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    if (userId) {
+      const user = await getUserXP(userId);
+      if (user.level < 5) {
+        return new NextResponse(
+            "You need to be at least level 5 to edit a waypoint",
+            { status: 403 }
+        );
+      }
+    }
+
     const url = new URL(request.url);
     const idParam = url.searchParams.get("id");
     if (!idParam) {
@@ -537,7 +561,6 @@ export async function PATCH(request: NextRequest, context: {params: any}) {
       changes[key] = { old: (oldBubbler as any)[key], new: (updatedBubbler as any)[key] };
     }
 
-    // Save audit log
     await prisma.bubblerAuditLog.create({
       data: {
         bubblerId: id,
@@ -546,6 +569,10 @@ export async function PATCH(request: NextRequest, context: {params: any}) {
         changes,
       },
     });
+
+    if (userId) {
+      await giveXP(userId, XP_REWARDS.EDIT_WAYPOINT);
+    }
 
     await sendDiscordWebhook(webhookUrl, {
       username: "Bubbly",

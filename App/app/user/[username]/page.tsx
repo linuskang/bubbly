@@ -27,6 +27,8 @@ export default async function UserProfilePage({
       name: true,
       bio: true,
       username: true,
+      xp: true,
+      level: true,
       image: true,
       createdAt: true,
       _count: { select: { bubblers: true } },
@@ -67,6 +69,10 @@ export default async function UserProfilePage({
               {user.bio && (
                   <p className="text-sm text-gray-600 mt-1">{user.bio}</p>
               )}
+              <p className="text-sm text-gray-600 mt-1">
+                Level {user.level} • {user.xp} XP
+              </p>
+
               <p className="text-xs text-gray-500 mt-1">
                 Member since{" "}
                 {new Date(user.createdAt).toLocaleDateString("en-US", {

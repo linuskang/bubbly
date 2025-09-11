@@ -8,22 +8,23 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  username      String?   @unique
-  email         String    @unique
+  username      String?    @unique
+  email         String     @unique
   emailVerified DateTime?
-  image         String?   @db.Text
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  image         String?    @db.Text
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   Account       Account[]
-  bio           String?   @db.Text
+  bio           String?    @db.Text
   Session       Session[]
-  role          String    @default("USER")
-
-  Review   Review[]
-  Favorite Favorite[]
-  bubblers Bubbler[]
+  role          String     @default("USER")
+  xp            Int        @default(0)
+  level         Int        @default(1)
+  Review        Review[]
+  Favorite      Favorite[]
+  bubblers      Bubbler[]
 }
 
 model Account {

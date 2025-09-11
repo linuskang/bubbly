@@ -8,7 +8,7 @@ interface AddWaypointModalProps {
     selectedWaypoint: Waypoint;
     setSelectedWaypoint: React.Dispatch<React.SetStateAction<Waypoint | null>>;
     setShowAddForm: (show: boolean) => void;
-    submitBubbler: () => Promise<void>; // add this
+    submitBubbler: () => Promise<void>;
 }
 
 export default function AddWaypointModal({
@@ -66,7 +66,12 @@ export default function AddWaypointModal({
         setShowAddForm(false);
       } else {
         const text = await res.text();
-        setMessage(`Error: ${text}`);
+
+          if (text.includes("XP too low") || text.includes("level 20")) {
+              setMessage("You need to be level 20 to add waypoints.");
+          } else {
+              setMessage(`Error: ${text}`);
+          }
       }
     } catch (err) {
       console.error(err);
@@ -80,8 +85,6 @@ export default function AddWaypointModal({
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
         <div className="bg-white rounded-lg p-6 w-96 shadow-lg space-y-4 max-h-[90vh] overflow-y-auto">
           <h2 className="text-lg font-bold">Add Water Fountain</h2>
-
-          {/* Name */}
           <input
               type="text"
               placeholder="Name"
@@ -92,7 +95,6 @@ export default function AddWaypointModal({
               }
           />
 
-          {/* Description */}
           <textarea
               placeholder="Description"
               className="w-full border rounded px-3 py-2"
@@ -104,7 +106,6 @@ export default function AddWaypointModal({
               }
           />
 
-          {/* Latitude */}
           <input
               type="number"
               placeholder="Latitude"
@@ -117,7 +118,6 @@ export default function AddWaypointModal({
               }
           />
 
-          {/* Longitude */}
           <input
               type="number"
               placeholder="Longitude"
@@ -130,7 +130,6 @@ export default function AddWaypointModal({
               }
           />
 
-          {/* Maintainer */}
           <input
               type="text"
               placeholder="Maintainer"
@@ -143,7 +142,6 @@ export default function AddWaypointModal({
               }
           />
 
-          {/* Image URL */}
           <input
               type="text"
               placeholder="Image URL"
@@ -156,7 +154,6 @@ export default function AddWaypointModal({
               }
           />
 
-          {/* Accessible */}
           <label className="flex items-center gap-2">
             <input
                 type="checkbox"
@@ -170,7 +167,6 @@ export default function AddWaypointModal({
             Accessible
           </label>
 
-          {/* Dog Friendly */}
           <label className="flex items-center gap-2">
             <input
                 type="checkbox"
@@ -184,7 +180,6 @@ export default function AddWaypointModal({
             Dog Friendly
           </label>
 
-          {/* Bottle Filler */}
           <label className="flex items-center gap-2">
             <input
                 type="checkbox"

@@ -1,12 +1,39 @@
 # Bubbly: Mapping out Australia's water fountains
 
-**Bubbly** is an all-in-one app designed to help you locate your nearest water fountain. Open sourced.
+<img width="2558" height="1350" alt="image" src="https://github.com/user-attachments/assets/dec98b7b-ce44-41a9-ad80-3f9b08c10e1a" />
 
-This was my submission for the *2025 Premier Coding Comp* in Australia.
+**Bubbly** is an all-in-one app designed to help you locate your nearest water fountain. Open sourced. This was my submission for the *2025 Premier Coding Comp* in Australia.
 
 You can access **Bubbly** at https://bubbly.linuskang.au.
 
-----
+## About the platform
+
+I first realised the challenge of accessing clean water at this year's Ekka, when I struggled to find a water bubbler to refill my bottle. This made me wonder why there wasn’t a simple way to locate water fountains. After researching, I found two main issues with current solutions: most had outdated databases, and others lacked a user-friendly interface. This made it painfully difficult for everyday people like me to quickly find nearby fountains.
+To address these issues, I developed a platform called Bubbly that generalises finding bubblers for all Australians. Through my app, users can:
+
+•	Check reviews of bubblers.
+
+•	Search for bubblers. 
+
+•	Contribute to the database.
+
+For a demo, I had 50 randomly selected people from my school try out Bubbly. 90% of users said the platform was a smart idea, and some noted that the system could be abused by bad actors, since it's a user-first contribution platform. To fix these issues, I implemented an XP tiering system so new accounts can't immediately edit information and added AI moderation for reviews.
+
+My app could become an enterprise by partnering with local councils, schools, event organisers, and public venue management, maintaining an accurate, nationwide database of water bubblers, and can be expanded to provide an easy way to locate toilets, which is now on the roadmap for future development.
+
+In a world where access to something as basic as clean drinking water can still be a challenge, I believe that my app, with 5,000 water bubblers mapped, can revolutionise making clean drinking water accessible to all Australians, for free.
+
+## App features
+
+- Bookmarking fountians.
+- AI Chatbot for questions.
+- Viewing (guest) and posting reviews.
+- Viewing contribution logs.
+- Amenities viewer.
+- Logging using Discord and Seq.
+- User profile systems.
+- XP tiering systems for accounts.
+- Report abuse system for reviews, waypoints, and users.
 
 ## Tech stack
 
@@ -19,11 +46,22 @@ You can access **Bubbly** at https://bubbly.linuskang.au.
 - TileServer GL - Map tile server
 - Any many more...
 
-----
+## Self-hosting 
 
-## Locally hosting the entire project
+You can quickly get started self-hosting the main Next.js app using the following commands: 
 
-Bubbly has several hosted components that you need to self-host in order to get the entire app working. For me, that is:
+```shell
+cd App
+nano docker-compose.yml # EDIT THE ENV VALUES TO YOUR OWN
+sudo docker compose up -d # INSTALL AND RUN THE IMAGE
+```
+
+Access your instance at http://your_server_ip:3400
+
+## Hosting entire project
+
+This is for people who want to self host literally everything for Bubbly:
+
 * Main app (https://bubbly.linuskang.au)
 * Database via. MySQL (http://192.168.10.87:3006)
 * MapTilerGL via. Docker (https://tiles.linus.id.au)
@@ -31,7 +69,7 @@ Bubbly has several hosted components that you need to self-host in order to get 
 * Ollama via. Windows/Linux - GPU RECOMMENDED! (https://ollama.linus.id.au)
 * OllamaFunctionsAPI via. python (https://agent.linus.id.au)
 
-Each section below will guide you on how to self-host the services via. docker containers with **Portainer**
+Each section below will guide you on how to self-host the services via. docker containers.
 
 ### Hardware and OS specs
 
@@ -48,7 +86,6 @@ To fully host Bubbly, you will need the following:
 * Node.js
 * Npm
 * Git
-* Portainer (optional)
 * Python3.x
 
 You can install these dependencies like so:
@@ -78,20 +115,6 @@ Next, clone the Bubbly repository for its source:
 git clone https://github.com/linuskang/bubbly
 cd bubbly
 ```
-
-----
-
-## Hosting Bubbly app via. docker
-If you don't want to make any huge configuration changes to any of the micro services, you can easily start playing around with Bubbly by using its docker image.
-
-Below are the commands to get your container running:
-```shell
-cd App
-nano docker-compose.yml # EDIT THE ENV VALUES TO YOUR OWN
-sudo docker compose up -d # INSTALL AND RUN THE IMAGE
-```
-
-Access Bubbly at http://your_server_ip:3400
 
 ----
 
@@ -300,4 +323,5 @@ npm run dev
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 

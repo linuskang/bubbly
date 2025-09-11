@@ -37,7 +37,7 @@ In a world where access to something as basic as clean drinking water can still 
 
 ## Self-hosting 
 
-You can quickly get started self-hosting the main Next.js app using the following commands: 
+You can quickly get started self-hosting the **production version** Next.js app using the following commands: 
 
 ```shell
 cd App
@@ -421,6 +421,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

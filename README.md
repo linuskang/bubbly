@@ -312,16 +312,111 @@ Now, you can run the Bubbly app using:
 npm run dev
 ```
 
-----
+## Terms
+
+### 1. Eligibility
+
+You must be at least 13 years old to use Bubbly. By using the App, you confirm that you meet this age requirement and have the legal capacity to enter into this agreement.
+
+### 2. Accounts
+
+To access certain features, you must create an account. You agree to:
+
+- Provide accurate and up-to-date information.
+
+- Keep your login credentials secure.
+
+- Be responsible for all activity under your account.
+
+- We may suspend or terminate your account if you violate these Terms.
+
+### 3. User Content
+
+Bubbly allows users to submit and share content, including bubbler locations, reviews, photos, and other information (“User Content”).
+
+By submitting User Content, you:
+
+- Grant us a worldwide, non-exclusive, royalty-free licence to use, display, and distribute your content on the App.
+
+- Confirm you own or have the right to share the content.
+
+- Agree not to post anything unlawful, misleading, or offensive.
+
+- We may remove any User Content at our discretion.
+
+### 4. Location Data
+
+The App may collect and use your device’s GPS location to show nearby water bubblers. You can disable location access at any time in your device settings, but certain features may not function without it.
+
+### 5. Paid Features and Advertising
+
+Bubbly may offer paid features, subscriptions, or display third-party advertisements.
+
+Payments are handled through your device’s app store and are non-refundable except as required by law.
+
+We are not responsible for the content or actions of third-party advertisers or links.
+
+### 6. Privacy
+
+Your privacy is important to us. By using Bubbly, you agree that we may collect and process personal data (including name, email, and location data) in accordance with our **Privacy Policy**.
+
+### 7. Acceptable Use
+
+You agree not to:
+
+- Use the App for unlawful purposes.
+
+- Attempt to hack, disrupt, or interfere with the App.
+
+- Impersonate others or misrepresent your identity.
+
+- Add false information onto the databases.
+
+### 8. Termination
+
+We may suspend or terminate your access to Bubbly at any time without notice if you violate these Terms. Upon termination, your right to use the App ends immediately.
+
+### 9. Disclaimers and Liability
+
+Bubbly is provided “as is” and “as available” without warranties of any kind.
+
+We do not guarantee the accuracy or availability of any bubbler locations or information provided by users.
+
+To the maximum extent permitted by law in Australia, we are not liable for any loss, damage, or injury resulting from your use of the App.
+
+### 10. Governing Law
+
+These Terms are governed by the laws of Australia. Any disputes will be subject to the exclusive jurisdiction of the courts located in Australia.
+
+### 11. Changes to These Terms
+
+We may update these Terms from time to time. We will notify users of significant changes, and continued use of the App means you accept the updated Terms.
+
+### Contact Us
+If you have any questions about these Terms, please contact us at: email@linus.id.au
+
+## Privacy
+
+I collect the following from all users accessing the platform:
+
+- IP Addresses
+- Emails
+- Name
+- Profile picture (if any)
+- Detailed logs of your actions on the platform
+- Location (if enabled, will only store on your local device)
+
+This is to ensure security on my platform. If you would like to dispute or remove any of your data, you can either delete your account with security logs still being accessable by me, or contact me directly at email@linus.id.au to remove your data.
+
+View the full policy at https://lkang.au/privacy
 
 ## License
 
 **Bubbly** is under **CC BY-NC 4.0**. See [LICENSE](LICENSE) for more details.
 
-----
-
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 

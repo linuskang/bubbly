@@ -238,7 +238,7 @@ export default function WaterMap() {
 
   useEffect(() => {
     if (status === "loading") return
-    if (session?.user && !session.user.username) router.push("/api/settings")
+    if (session?.user && !session.user.username) router.push("/onboarding")
   }, [session, status, router])
 
   useEffect(() => {

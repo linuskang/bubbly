@@ -57,6 +57,10 @@ Access your instance at http://your_server_ip:3400
 - Shadcn/ui - UI framework
 - TileServer GL - Map tile server
 
+<img width="714" height="647" alt="image" src="https://github.com/user-attachments/assets/dcc43d4c-3c6b-45ef-9a0f-ca255781069c" />
+<img width="717" height="661" alt="image" src="https://github.com/user-attachments/assets/c159365b-c243-4ff3-b304-4f8e88c25ddb" />
+<img width="992" height="663" alt="image" src="https://github.com/user-attachments/assets/e90b6e29-1c9d-474c-bcb6-008d7d558495" />
+
 ## Hosting entire project
 
 > [!NOTE]
@@ -417,6 +421,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

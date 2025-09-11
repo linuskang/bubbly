@@ -35,17 +35,6 @@ In a world where access to something as basic as clean drinking water can still 
 - XP tiering systems for accounts.
 - Report abuse system for reviews, waypoints, and users.
 
-## Tech stack
-
-- Next.js - App framework
-- Auth.js - Authentication
-- Resend - Emails
-- MySQL Server w/ Prisma
-- MapLibre GL - Map library
-- Shadcn/ui - UI framework
-- TileServer GL - Map tile server
-- Any many more...
-
 ## Self-hosting 
 
 You can quickly get started self-hosting the main Next.js app using the following commands: 
@@ -58,9 +47,20 @@ sudo docker compose up -d # INSTALL AND RUN THE IMAGE
 
 Access your instance at http://your_server_ip:3400
 
+## Tech stack
+
+- Next.js - App framework
+- Auth.js - Authentication
+- Resend - Emails
+- MySQL Server w/ Prisma
+- MapLibre GL - Map library
+- Shadcn/ui - UI framework
+- TileServer GL - Map tile server
+
 ## Hosting entire project
 
-This is for people who want to self host literally everything for Bubbly:
+> [!NOTE]
+> This is for people who want to self host literally everything for Bubbly:
 
 * Main app (https://bubbly.linuskang.au)
 * Database via. MySQL (http://192.168.10.87:3006)
@@ -417,6 +417,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

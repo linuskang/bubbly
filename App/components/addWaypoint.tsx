@@ -48,7 +48,7 @@ export default function AddWaypointModal({
         isaccessible: selectedWaypoint.isaccessible || false,
         dogfriendly: selectedWaypoint.dogfriendly || false,
         hasbottlefiller: selectedWaypoint.hasbottlefiller || false,
-        type: "fountain", // fixed type
+        type: "fountain", // fixed to fountain. needs to be moved in v2.
         maintainer: selectedWaypoint.maintainer || "",
         imageUrl: selectedWaypoint.imageUrl || "",
       };

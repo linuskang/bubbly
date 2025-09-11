@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function OnboardingPage() {
-    const { data: session, status, update } = useSession(); // add update to refresh session
+    const { data: session, status, update } = useSession();
     const router = useRouter();
     const [form, setForm] = useState({
         name: "",
@@ -54,13 +54,9 @@ export default function OnboardingPage() {
             if (res.ok) {
                 setMessage("Profile updated successfully!");
                 setCompleted(true); // mark onboarding as just completed
-
-                // refresh session to get updated username
                 await update?.();
-
-                // small delay to let session update propagate
                 setTimeout(() => {
-                    router.push("/"); // redirect to homepage
+                    router.push("/");
                 }, 500);
             } else {
                 const text = await res.text();

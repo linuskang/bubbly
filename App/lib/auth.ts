@@ -10,9 +10,7 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
-      // This function is called when NextAuth wants to send the magic link
       async sendVerificationRequest({ identifier: email, url, provider }) {
-        // Send your custom email using Resend
         await resend.emails.send({
           from: "Bubbly <bubbly@mail.linus.id.au>",
           to: email,
@@ -55,7 +53,6 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async session({ session, user }) {
-      // Add username to the session object
       if (session.user) {
         session.user.id = user.id
         session.user.username = user.username

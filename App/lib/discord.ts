@@ -4,8 +4,8 @@ export type DiscordEmbed = {
   title?: string;
   description?: string;
   url?: string;
-  timestamp?: string; // ISO string
-  color?: number; // Decimal color (e.g., 0xff0000)
+  timestamp?: string;
+  color?: number;
   footer?: { text: string; icon_url?: string };
   image?: { url: string };
   thumbnail?: { url: string };

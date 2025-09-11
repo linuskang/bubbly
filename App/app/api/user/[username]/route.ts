@@ -132,6 +132,7 @@ export async function GET(
         username: true,
         email: true,
         image: true,
+        bio: true,
         createdAt: true,
         updatedAt: true,
       },

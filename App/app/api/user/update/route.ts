@@ -34,6 +34,9 @@ const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
  *               username:
  *                 type: string
  *                 description: The new username for the user.
+ *                bio:
+               *   type: string
+               *   description: The biography text for the user.
  *               image:
  *                 type: string
  *                 description: URL of the new profile image.
@@ -74,6 +77,7 @@ const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
 // -d '{
 //   "name": "Linus Kang",
 //   "username": "linuskang",
+//   "bio": "Hello world",
 //   "image": "https://example.com/avatar.png"
 // }'
 
@@ -98,7 +102,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { name, image, username } = await req.json();
+    const { name, image, username, bio } = await req.json();
 
     if (!session?.user?.email) {
       return new NextResponse(
@@ -113,6 +117,7 @@ export async function POST(req: Request) {
         name: name ?? undefined,
         image: image ?? undefined,
         username: username ?? undefined,
+        bio: bio ?? undefined,
       },
     });
 
@@ -127,6 +132,7 @@ export async function POST(req: Request) {
             { name: "Email", value: session.user.email, inline: true },
             { name: "Name", value: name ?? "No change", inline: true },
             { name: "Username", value: username ?? "No change", inline: true },
+            { name: "Bio", value: bio ?? "No change" },
             { name: "Image URL", value: image ?? "No change" },
           ],
           timestamp: new Date().toISOString(),

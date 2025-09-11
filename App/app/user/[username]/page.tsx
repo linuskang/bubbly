@@ -25,6 +25,7 @@ export default async function UserProfilePage({
     where: { username },
     select: {
       name: true,
+      bio: true,
       username: true,
       image: true,
       createdAt: true,
@@ -63,6 +64,9 @@ export default async function UserProfilePage({
             <div className="flex-1">
               <h3 className="font-medium text-gray-900">{user.name}</h3>
               <p className="text-xs font-medium text-gray-900">@{user.username}</p>
+              {user.bio && (
+                  <p className="text-sm text-gray-600 mt-1">{user.bio}</p>
+              )}
               <p className="text-xs text-gray-500 mt-1">
                 Member since{" "}
                 {new Date(user.createdAt).toLocaleDateString("en-US", {

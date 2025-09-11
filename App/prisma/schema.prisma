@@ -17,6 +17,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   Account       Account[]
+  bio           String?   @db.Text
   Session       Session[]
   role          String    @default("USER")
 

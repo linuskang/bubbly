@@ -14,6 +14,7 @@ export default function SettingsPanel({ onClose }: { onClose?: () => void }) {
   const [image, setImage] = useState("")
   const [saving, setSaving] = useState(false)
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null)
+  const [bio, setBio] = useState("");
 
   useEffect(() => {
     fetch("/api/user")
@@ -23,6 +24,7 @@ export default function SettingsPanel({ onClose }: { onClose?: () => void }) {
           setName(data.name ?? "")
           setUsername(data.username ?? "")
           setImage(data.image ?? "")
+          setBio(data.bio ?? "")
         })
   }, [])
 
@@ -33,7 +35,7 @@ export default function SettingsPanel({ onClose }: { onClose?: () => void }) {
       const res = await fetch("/api/user/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, username, image }),
+        body: JSON.stringify({ name, username, image, bio }),
       })
       if (!res.ok) throw new Error("Failed to save changes")
       const updatedUser = await res.json()
@@ -125,6 +127,19 @@ export default function SettingsPanel({ onClose }: { onClose?: () => void }) {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Enter your username"
+                        className="rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="bio" className="text-sm font-medium text-gray-700">
+                      Bio
+                    </Label>
+                    <Input
+                        id="bio"
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                        placeholder="Tell people about yourself"
                         className="rounded-lg border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                     />
                   </div>

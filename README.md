@@ -18,6 +18,12 @@ After researching, I discovered two major problems with existing solutions:
 
 These issues make it unnecessarily hard for everyday people to find nearby water bubblers quickly and confidently.
 
+### What's different about my platform from others?
+
+Bubbly is different from other water fountain locator tools because it is a user-driven platform where people contribute and edit the database, with a trust system that ensures only reliable users can make changes, keeping the information accurate and up to date. This means that Bubbly doesn't rely on a single endpoint for recieving waypoint data. It uses multiple verified sources mixed together to create our huge dataset. We've changed up the Bubbler Map space by allowing verified users with enough XP from reviews to start contributing to the platform, allowing them to edit and add water bubblers. This helps us keep our information heavily updated so we can get reliable data.
+
+### Feedback
+
 To address these problems, I developed a platform called Bubbly, which aims to centralise and simplify access to clean drinking water across Australia. Through my app, users can:
 
 - Search for nearby bubblers using an intuitive, map-based interface.
@@ -32,6 +38,8 @@ For an initial demo, I invited 50 randomly selected students from Calamvale Comm
 
 - AI-powered moderation to detect and filter out inappropriate or misleading reviews before they are published.
 
+### Sustainability towards the future
+
 Looking forward, Bubbly has the potential to scale into an enterprise platform by partnering with:
 
 - Local councils and governments
@@ -43,6 +51,8 @@ Looking forward, Bubbly has the potential to scale into an enterprise platform b
 - Public venue and transport management groups
 
 These partnerships could ensure an accurate, nationwide database of water bubblers is maintained. Furthermore, the platform is designed to be extensible: future updates are planned to include locating public toilets, as well as other essential amenities.
+
+Additionally, Bubbly is open source by nature, allowing anyone to contribute or build on it, and by sharing the platform and waypoint data, it helps people across Australia access clean drinking water bit by bit.
 
 In a world where access to something as basic as clean drinking water can still be a challenge, Bubbly aims to make a meaningful impact. With over 5,000 water bubblers already mapped, the platform is paving the way towards universal, free access to clean drinking water for everyone in Australia, one bubbler at a time.
 
@@ -444,6 +454,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

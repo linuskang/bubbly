@@ -8,20 +8,43 @@ You can access **Bubbly** at https://bubbly.linuskang.au.
 
 ## About the platform
 
-I first realised the challenge of accessing clean water at this year's Ekka, when I struggled to find a water bubbler to refill my bottle. This made me wonder why there wasn’t a simple way to locate water fountains. After researching, I found two main issues with current solutions: most had outdated databases, and others lacked a user-friendly interface. This made it painfully difficult for everyday people like me to quickly find nearby fountains.
-To address these issues, I developed a platform called Bubbly that generalises finding bubblers for all Australians. Through my app, users can:
+I first realised the challenge of accessing clean water at this year’s Ekka, when I struggled to find a water bubbler to refill my bottle. This experience made me wonder why there wasn’t a simple, reliable way to locate water fountains in public spaces.
 
-•	Check reviews of bubblers.
+After researching, I discovered two major problems with existing solutions:
 
-•	Search for bubblers. 
+- Most platforms rely on static or community-generated databases that are rarely maintained, leading to inaccurate locations.
 
-•	Contribute to the database.
+- Many existing tools have clunky interfaces or lack mobile optimisation, making them difficult to use in the moment.
 
-For a demo, I had 50 randomly selected people from my school try out Bubbly. 90% of users said the platform was a smart idea, and some noted that the system could be abused by bad actors, since it's a user-first contribution platform. To fix these issues, I implemented an XP tiering system so new accounts can't immediately edit information and added AI moderation for reviews.
+These issues make it unnecessarily hard for everyday people to find nearby water bubblers quickly and confidently.
 
-My app could become an enterprise by partnering with local councils, schools, event organisers, and public venue management, maintaining an accurate, nationwide database of water bubblers, and can be expanded to provide an easy way to locate toilets, which is now on the roadmap for future development.
+To address these problems, I developed a platform called Bubbly, which aims to centralise and simplify access to clean drinking water across Australia. Through my app, users can:
 
-In a world where access to something as basic as clean drinking water can still be a challenge, I believe that my app, with 5,000 water bubblers mapped, can revolutionise making clean drinking water accessible to all Australians, for free.
+- Search for nearby bubblers using an intuitive, map-based interface.
+
+- Check reviews and condition reports of existing bubblers to know if they are functional and clean.
+
+- Contribute by adding new bubblers or updating the status of existing ones, ensuring the database stays accurate and up to date.
+
+For an initial demo, I invited 50 randomly selected students from Calamvale Community College to test the platform. The response was overwhelmingly positive with 90% of users said the platform was a smart idea. Some participants raised concerns that a user-contribution system could be abused by bad actors. To address this, I implemented:
+
+- An XP tiering system that gradually unlocks editing permissions as users contribute accurate information over time.
+
+- AI-powered moderation to detect and filter out inappropriate or misleading reviews before they are published.
+
+Looking forward, Bubbly has the potential to scale into an enterprise platform by partnering with:
+
+- Local councils and governments
+
+- Schools and universities
+
+- Event organisers
+
+- Public venue and transport management groups
+
+These partnerships could ensure an accurate, nationwide database of water bubblers is maintained. Furthermore, the platform is designed to be extensible: future updates are planned to include locating public toilets, as well as other essential amenities.
+
+In a world where access to something as basic as clean drinking water can still be a challenge, Bubbly aims to make a meaningful impact. With over 5,000 water bubblers already mapped, the platform is paving the way towards universal, free access to clean drinking water for everyone in Australia, one bubbler at a time.
 
 ## App features
 
@@ -421,6 +444,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

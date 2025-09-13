@@ -38,15 +38,15 @@ I personally source and import accurate datasets from across the internet, then 
 
 But accuracy doesn’t stop there. Because things are constantly changeing, and I cant update everything quickly all the time, Bubbly is designed to be community-driven through:
 
-- 📝 User Contributions — Any user can add new bubblers, edit incorrect details, or leave reviews about water quality, accessibility, and condition.
+-  Any user can add new bubblers, edit incorrect details, or leave reviews about water quality, accessibility, and condition.
 
-- ⚡ XP & Trust System — Contributions earn XP. As users gain XP, their edits are trusted more and require less review, gradually unlocking new editing privileges.
+- Contributions earn XP. As users gain XP, their edits are trusted more and require less review, gradually unlocking new editing privileges.
 
-- 🤖 AI Moderation — All contributions are scanned for spam, abuse, or inaccurate info before they go live. Suspicious submissions are flagged for manual review.
+- All contributions are scanned for spam, abuse, or inaccurate info before they go live. Suspicious submissions are flagged for manual review.
 
-- 🧠 Reputation Tracking — Each contribution is linked to the user who made it, building a public contribution history to encourage responsibility and transparency.
+- Each contribution is linked to the user who made it, building a public contribution history to encourage responsibility and transparency.
 
-- 🗺️ Version History & Rollbacks — Edits are versioned so incorrect data can be rolled back if necessary, ensuring long-term accuracy.
+- Edits are versioned so incorrect data can be rolled back if necessary, ensuring long-term accuracy.
 
 Bubbly aims to become the world’s most accurate, publicly maintained map of drinking water bubblers — combining open community input with strong safeguards against misinformation.
 
@@ -94,6 +94,8 @@ In a world where access to something as basic as clean drinking water can still 
 
 ## Self-hosting 
 
+Hosting Bubbly by yourself is very challenging, because it is very resource intensive, requiring a beefy CPU and GPU for AI and map rendering. This is why I open sourced my existing Tile and API server. You can just self-host the important part at home: The Next.js app at https://bubbly.linuskang.au. This contains the actual stuff that users will view: Reviews, map, actual app, etc.. including database.
+
 You can quickly get started self-hosting the **production version** Next.js app using the following commands: 
 
 ```shell
@@ -103,6 +105,8 @@ sudo docker compose up -d # INSTALL AND RUN THE IMAGE
 ```
 
 Access your instance at http://your_server_ip:3400
+
+You won't need to host anything else if you are doing it this way.
 
 ## Tech stack
 
@@ -480,6 +484,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

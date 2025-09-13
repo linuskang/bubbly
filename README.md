@@ -24,6 +24,28 @@ These issues make it unnecessarily hard for everyday people to find nearby water
 
 Bubbly is different from other water fountain locator tools because it is a user-driven platform where people contribute and edit the database, with a trust system that ensures only reliable users can make changes, keeping the information accurate and up to date. This means that Bubbly doesn't rely on a single endpoint for recieving waypoint data. It uses multiple verified sources mixed together to create our huge dataset. We've changed up the Bubbler Map space by allowing verified users with enough XP from reviews to start contributing to the platform, allowing them to edit and add water bubblers. This helps us keep our information heavily updated so we can get reliable data.
 
+Bubbly is a map-based platform powered by a custom API and a MySQL database that stores information about public water bubblers (fountains), user profiles, reviews, and contribution history.
+
+I personally source and import accurate datasets from across the internet, then manually verify their location and details. Verified entries are marked as admin verified, giving users confidence that they can rely on the data.
+
+But accuracy doesn’t stop there. Because things are constantly changeing, and I cant update everything quickly all the time, Bubbly is designed to be community-driven through:
+
+- 📝 User Contributions — Any user can add new bubblers, edit incorrect details, or leave reviews about water quality, accessibility, and condition.
+
+- ⚡ XP & Trust System — Contributions earn XP. As users gain XP, their edits are trusted more and require less review, gradually unlocking new editing privileges.
+
+- 🤖 AI Moderation — All contributions are scanned for spam, abuse, or inaccurate info before they go live. Suspicious submissions are flagged for manual review.
+
+- 🧠 Reputation Tracking — Each contribution is linked to the user who made it, building a public contribution history to encourage responsibility and transparency.
+
+- 🗺️ Version History & Rollbacks — Edits are versioned so incorrect data can be rolled back if necessary, ensuring long-term accuracy.
+
+Bubbly aims to become the world’s most accurate, publicly maintained map of drinking water bubblers — combining open community input with strong safeguards against misinformation.
+
+In the long term, Bubbly aims to become the world’s most comprehensive, community-driven repository of drinking water locations. Beyond simply mapping bubblers, the platform will provide open data access for governments, event organizers, and developers to integrate into their services, helping cities plan maintenance and improve accessibility. My included gamification elements like badges, leaderboards, and community ranks will encourage sustained contributions, while analytics dashboards will give insights into water quality, usage trends, and infrastructure gaps. Ultimately, Bubbly envisions a future where everyone has easy access to safe, reliable drinking water while reducing single-use plastic consumption and supporting sustainable communities globally.
+
+At the end of the day, this is a project that I genuinely had a issue against, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that empowers individuals to access free, safe drinking water anytime, anywhere whether it's at festivals, parks, or public spaces—without being forced into unnecessary purchases. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
+
 ### Feedback
 
 To address these problems, I developed a platform called Bubbly, which aims to centralise and simplify access to clean drinking water across Australia. Through my app, users can:
@@ -458,6 +480,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

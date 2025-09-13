@@ -18,6 +18,8 @@ After researching, I discovered two major problems with existing solutions:
 
 - Many existing tools have clunky interfaces or lack mobile optimisation, making them difficult to use in the moment.
 
+- While there may be site maps of fountains for locations like malls, they are very limited in range, normally just detailing a specific area.
+
 These issues make it unnecessarily hard for everyday people to find nearby water bubblers quickly and confidently.
 
 To address these problems, I developed a platform called Bubbly, which aims to centralise and simplify access to clean drinking water across Australia. Through my app, users can:
@@ -48,11 +50,9 @@ But accuracy doesn’t stop there. Because things are constantly changeing, and 
 
 - Edits are versioned so incorrect data can be rolled back if necessary, ensuring long-term accuracy.
 
-Bubbly aims to become the world’s most accurate, publicly maintained map of drinking water bubblers — combining open community input with strong safeguards against misinformation.
+In the long term, I'm heavily aiming to become the world’s most detailed, updated, community driven repository of drinking water locations. Beyond simply mapping bubblers, the platform will provide open data access for governments, event organizers, and developers to integrate into their services, helping cities plan maintenance and improve accessibility. My included gamification elements like badges, leaderboards, and community ranks will encourage sustained contributions, while analytics dashboards will give insights into water quality, usage trends, and infrastructure gaps. Ultimately, Bubbly envisions a future where everyone has easy access to safe, reliable drinking water while reducing single-use plastic consumption and supporting sustainable communities globally.
 
-In the long term, Bubbly aims to become the world’s most comprehensive, community-driven repository of drinking water locations. Beyond simply mapping bubblers, the platform will provide open data access for governments, event organizers, and developers to integrate into their services, helping cities plan maintenance and improve accessibility. My included gamification elements like badges, leaderboards, and community ranks will encourage sustained contributions, while analytics dashboards will give insights into water quality, usage trends, and infrastructure gaps. Ultimately, Bubbly envisions a future where everyone has easy access to safe, reliable drinking water while reducing single-use plastic consumption and supporting sustainable communities globally.
-
-At the end of the day, this is a project that I genuinely had a major issue with, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that empowers individuals to access free, safe drinking water anytime, anywhere whether it's at festivals, parks, or public spaces, without being forced into unnecessary purchases. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
+At the end of the day, this is a project that I genuinely had a major issue with, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that lets any individual access free drinking water anytime, anywhere, whether it's at festivals, parks, or public spaces, without being forced into unnecessary purchases. This all started at the Ekka, and I never thought that I would get to this level for my app. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
 
 ### Feedback
 
@@ -486,6 +486,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

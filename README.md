@@ -110,6 +110,8 @@ You won't need to host anything else if you are doing it this way.
 
 ## Tech stack
 
+Below contains basically every technical detail about my app, including the softaere and hardware maps.
+
 - Next.js - App framework
 - Auth.js - Authentication
 - Resend - Emails
@@ -484,6 +486,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

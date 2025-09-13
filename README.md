@@ -6,6 +6,8 @@
 
 You can access **Bubbly** at https://bubbly.linuskang.au.
 
+If anything is down on the site, please contact me via. email@linus.id.au. You can also view any service outages on my sites at https://status.linuskang.au.
+
 ## About the platform
 
 I first realised the challenge of accessing clean water at this year’s Ekka, when I struggled to find a water bubbler to refill my bottle. This experience made me wonder why there wasn’t a simple, reliable way to locate water fountains in public spaces.
@@ -456,6 +458,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

@@ -52,7 +52,7 @@ Bubbly aims to become the world’s most accurate, publicly maintained map of dr
 
 In the long term, Bubbly aims to become the world’s most comprehensive, community-driven repository of drinking water locations. Beyond simply mapping bubblers, the platform will provide open data access for governments, event organizers, and developers to integrate into their services, helping cities plan maintenance and improve accessibility. My included gamification elements like badges, leaderboards, and community ranks will encourage sustained contributions, while analytics dashboards will give insights into water quality, usage trends, and infrastructure gaps. Ultimately, Bubbly envisions a future where everyone has easy access to safe, reliable drinking water while reducing single-use plastic consumption and supporting sustainable communities globally.
 
-At the end of the day, this is a project that I genuinely had a major issue with, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that empowers individuals to access free, safe drinking water anytime, anywhere whether it's at festivals, parks, or public spaces—without being forced into unnecessary purchases. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
+At the end of the day, this is a project that I genuinely had a major issue with, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that empowers individuals to access free, safe drinking water anytime, anywhere whether it's at festivals, parks, or public spaces, without being forced into unnecessary purchases. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
 
 ### Feedback
 
@@ -480,6 +480,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

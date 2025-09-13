@@ -92,6 +92,10 @@ In a world where access to something as basic as clean drinking water can still 
 - XP tiering systems for accounts.
 - Report abuse system for reviews, waypoints, and users.
 
+## API Endpoints
+
+You can access the docs for Bubbly API at: https://bubbly.linuskang.au/docs
+
 ## Self-hosting 
 
 Hosting Bubbly by yourself is very challenging, because it is very resource intensive, requiring a beefy CPU and GPU for AI and map rendering. This is why I open sourced my existing Tile and API server. You can just self-host the important part at home: The Next.js app at https://bubbly.linuskang.au. This contains the actual stuff that users will view: Reviews, map, actual app, etc.. including database.
@@ -486,6 +490,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

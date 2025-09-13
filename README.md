@@ -20,6 +20,14 @@ After researching, I discovered two major problems with existing solutions:
 
 These issues make it unnecessarily hard for everyday people to find nearby water bubblers quickly and confidently.
 
+To address these problems, I developed a platform called Bubbly, which aims to centralise and simplify access to clean drinking water across Australia. Through my app, users can:
+
+- Search for nearby bubblers using an intuitive, map-based interface.
+
+- Check reviews and condition reports of existing bubblers to know if they are functional and clean.
+
+- Contribute by adding new bubblers or updating the status of existing ones, ensuring the database stays accurate and up to date.
+
 ### What's different about my platform from others?
 
 Bubbly is different from other water fountain locator tools because it is a user-driven platform where people contribute and edit the database, with a trust system that ensures only reliable users can make changes, keeping the information accurate and up to date. This means that Bubbly doesn't rely on a single endpoint for recieving waypoint data. It uses multiple verified sources mixed together to create our huge dataset. We've changed up the Bubbler Map space by allowing verified users with enough XP from reviews to start contributing to the platform, allowing them to edit and add water bubblers. This helps us keep our information heavily updated so we can get reliable data.
@@ -44,17 +52,9 @@ Bubbly aims to become the world’s most accurate, publicly maintained map of dr
 
 In the long term, Bubbly aims to become the world’s most comprehensive, community-driven repository of drinking water locations. Beyond simply mapping bubblers, the platform will provide open data access for governments, event organizers, and developers to integrate into their services, helping cities plan maintenance and improve accessibility. My included gamification elements like badges, leaderboards, and community ranks will encourage sustained contributions, while analytics dashboards will give insights into water quality, usage trends, and infrastructure gaps. Ultimately, Bubbly envisions a future where everyone has easy access to safe, reliable drinking water while reducing single-use plastic consumption and supporting sustainable communities globally.
 
-At the end of the day, this is a project that I genuinely had a issue against, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that empowers individuals to access free, safe drinking water anytime, anywhere whether it's at festivals, parks, or public spaces—without being forced into unnecessary purchases. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
+At the end of the day, this is a project that I genuinely had a major issue with, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that empowers individuals to access free, safe drinking water anytime, anywhere whether it's at festivals, parks, or public spaces—without being forced into unnecessary purchases. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
 
 ### Feedback
-
-To address these problems, I developed a platform called Bubbly, which aims to centralise and simplify access to clean drinking water across Australia. Through my app, users can:
-
-- Search for nearby bubblers using an intuitive, map-based interface.
-
-- Check reviews and condition reports of existing bubblers to know if they are functional and clean.
-
-- Contribute by adding new bubblers or updating the status of existing ones, ensuring the database stays accurate and up to date.
 
 For an initial demo, I invited 50 randomly selected students from Calamvale Community College to test the platform. The response was overwhelmingly positive with 90% of users said the platform was a smart idea. Some participants raised concerns that a user-contribution system could be abused by bad actors. To address this, I implemented:
 
@@ -480,6 +480,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

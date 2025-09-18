@@ -20,7 +20,7 @@ export default function FountainsPanel({
                                            setIsMinimized,
                                        }: FountainsPanelProps) {
     return (
-        <div className="absolute top-20 right-4 z-50 w-72 bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="absolute top-20 right-4 z-10 w-72 bg-white rounded-xl shadow-lg overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-gray-100">
                 <h3 className="font-semibold text-gray-800">Recently Added Fountains</h3>
                 <button

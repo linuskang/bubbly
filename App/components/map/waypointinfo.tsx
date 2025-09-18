@@ -15,6 +15,7 @@ interface Review {
     createdAt: string
     userId: string
     userName?: string
+    profileImage?: string
 }
 
 interface WaypointInfoPanelProps {
@@ -26,7 +27,7 @@ interface WaypointInfoPanelProps {
 
 type TabType = "overview" | "reviews" | "amenities" | "history" | "photos" | "ai"
 
-export default function WaypointInfoPanel({
+export default function Waypointinfo({
                                               selectedWaypoint,
                                               setSelectedWaypoint,
                                               hideRedMarker,
@@ -646,9 +647,22 @@ function ReviewsTab({
                             <div className="flex justify-between items-start mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-blue-600 font-medium text-sm">
-                      {(review.userName || "A").charAt(0).toUpperCase()}
-                    </span>
+                                        <div className="w-8 h-8 rounded-full overflow-hidden">
+                                            {review.profileImage ? (
+                                                <img
+                                                    src={review.profileImage}
+                                                    alt={review.userName || "User"}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-blue-100 flex items-center justify-center">
+      <span className="text-blue-600 font-medium text-sm">
+        {(review.userName || "A").charAt(0).toUpperCase()}
+      </span>
+                                                </div>
+                                            )}
+                                        </div>
+
                                     </div>
                                     <div>
                                         <div className="font-medium text-gray-900">

@@ -12,35 +12,45 @@ export const authOptions: AuthOptions = {
     EmailProvider({
       async sendVerificationRequest({ identifier: email, url, provider }) {
         await resend.emails.send({
-          from: "Bubbly <bubbly@mail.linus.id.au>",
+          from: "Bubbly Team via. Linus Kang Software <bubbly@mail.linus.id.au>",
           to: email,
-          subject: "Your Account Sign-in Link",
+          subject: "Your account sign-in link",
           html: `
-            <div style="font-family: 'Segoe UI', Roboto, sans-serif; background: #f9fafb; padding: 40px 0;">
-              <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 32px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+            <div style="font-family: 'Segoe UI', Roboto, sans-serif; background: #000000; padding: 40px 0;">
+              <div style="max-width: 600px; margin: auto; background: #ffffff; padding: 32px; border-radius: 0; box-shadow: none; border: 1px solid #e5e5e5;">
+                
+                <div style="text-align: center; margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid #e5e5e5;">
+                  <div style="display: inline-block; background: #000000; color: #ffffff; padding: 8px 16px; font-size: 14px; font-weight: 600; letter-spacing: 1px; margin-bottom: 8px;">
+                    LKANG
+                  </div>
+                  <h2 style="margin: 0; font-size: 18px; color: #000000; font-weight: 500; letter-spacing: 0.5px;">
+                    LINUS KANG SOFTWARE
+                  </h2>
+                </div>
                 
                 <div style="text-align: center; margin-bottom: 24px;">
-                  <h1 style="margin: 0; font-size: 26px; color: #111; font-weight: 600;">
-                    Sign in to <span style="color: #6366f1;">Bubbly</span> 👋
+                  <h1 style="margin: 0; font-size: 26px; color: #000000; font-weight: 400; letter-spacing: -0.5px;">
+                    Sign in to <span style="color: #000000; font-weight: 600;">Bubbly</span>
                   </h1>
                 </div>
-
-                <p style="font-size: 16px; line-height: 1.6; color: #444; text-align: center;">
-                  Welcome back! Click the button below to securely sign in. <br/>
-                  <strong>This link expires in 10 minutes.</strong>
+            
+                <p style="font-size: 16px; line-height: 1.5; color: #666666; text-align: center; margin: 0 0 32px; font-weight: 400;">
+                  Welcome back! Click the button below to securely sign in.
+                  <br/>
+                  <strong style="color: #000000;">This link expires in 10 minutes.</strong>
                 </p>
-
-                <div style="text-align: center; margin: 32px 0;">
+            
+                <div style="text-align: center; margin-bottom: 32px;">
                   <a href="${url}" 
-                    style="display: inline-block; background-color: #6366f1; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; box-shadow: 0 3px 6px rgba(0,0,0,0.1);">
-                    Sign in
+                    style="display: inline-block; background-color: #000000; color: #ffffff; padding: 16px 32px; text-decoration: none; border-radius: 0; font-weight: 500; font-size: 16px; border: 2px solid #000000; transition: all 0.2s; letter-spacing: 0.5px;">
+                    SIGN IN
                   </a>
                 </div>
-
-                <hr style="margin: 32px 0; border: none; border-top: 1px solid #eee;" />
-
-                <p style="font-size: 14px; color: #888; line-height: 1.5; text-align: center;">
-                  Didn’t request this email? You can safely ignore it.<br/>
+            
+                <hr style="margin: 0 0 32px; border: none; border-top: 1px solid #e5e5e5;" />
+           
+                <p style="font-size: 14px; color: #999999; line-height: 1.4; text-align: center; margin: 0; font-weight: 400;">
+                  Didn't request this email? You can safely ignore it.<br/>
                   For security reasons, never share this link.
                 </p>
               </div>

@@ -80,7 +80,7 @@ export default function MagicLinkPopup({ isOpen, onClose }: MagicLinkPopupProps)
             <p className="text-gray-600 text-sm mb-4">
               We've sent a magic link to <strong>{email}</strong>
             </p>
-            <Button onClick={handleClose} className="w-full">
+            <Button onClick={handleClose} className="w-full cursor-pointer">
               Got it
             </Button>
           </div>

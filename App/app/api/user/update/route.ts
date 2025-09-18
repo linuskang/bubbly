@@ -34,9 +34,6 @@ const webhookUrl = process.env.DISCORD_WEBHOOK_URL!;
  *               username:
  *                 type: string
  *                 description: The new username for the user.
- *                bio:
-               *   type: string
-               *   description: The biography text for the user.
  *               image:
  *                 type: string
  *                 description: URL of the new profile image.

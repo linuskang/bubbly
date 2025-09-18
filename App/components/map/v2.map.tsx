@@ -9,24 +9,17 @@ import maplibregl from "maplibre-gl"
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
-
-
-
 import { loadMap } from "@/hooks/map.loader"
 
 import SettingsPanel from "@/components/settingsPopup"
 import MagicLinkPopup from "@/components/loginPopup"
 import Searchbar from "@/components/map/searchbar.map"
-
 import MapControls from "@/components/map/controls.map"
-
-
+import Welcome from "@/components/map/welcome"
 import AddWaypointModal from "@/components/addWaypoint"
 import Waypointinfo from "@/components/map/waypointinfo"
 import NavigationSidebar from "@/components/sidebar"
 import FountainsPanel from "@/components/recentWaypoints"
-
-
 
 export default function WaterMap() {
     const mapContainer = useRef<HTMLDivElement | null>(null)
@@ -107,6 +100,14 @@ export default function WaterMap() {
 
         addBubblerPopupRef.current = popup
     }
+
+    const [showOnboarding, setShowOnboarding] = useState(false)
+
+    useEffect(() => {
+        if (status !== "loading" && !session?.user) {
+            setShowOnboarding(true)
+        }
+    }, [status, session])
 
     const openAddBubblerForm = (lngLat: maplibregl.LngLat) => {
         if (!session?.user) {
@@ -423,6 +424,10 @@ export default function WaterMap() {
     return (
         <div className="w-screen h-screen bg-gray-50 overflow-hidden grid grid-cols-[48px_1fr] grid-rows-1">
             <NavigationSidebar />
+
+            {showOnboarding && !session?.user && (
+                <Welcome onClose={() => setShowOnboarding(false)} />
+            )}
 
             <div className="relative h-full overflow-hidden">
                 <div ref={mapContainer} className="h-full w-full" />

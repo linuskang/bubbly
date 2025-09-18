@@ -1,9 +1,9 @@
-import Map from "@/components/Map";
+import Map from "@/components/map/v2.map";
 
 export default function Home() {
-  return (
-    <main>
-      <Map />
-    </main>
-  );
+    return (
+        <main>
+            <Map />
+        </main>
+    );
 }

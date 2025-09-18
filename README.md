@@ -39,6 +39,26 @@ To address these problems, I developed a platform called Bubbly, which aims to c
 
 - Contribute by adding new bubblers or updating the status of existing ones, ensuring the database stays accurate and up to date.
 
+These are also the other features:
+
+- Bookmarking fountians.
+  
+- AI Chatbot for questions.
+  
+- Viewing (guest) and posting reviews.
+  
+- Viewing contribution logs.
+  
+- Amenities viewer.
+  
+- Logging using Discord and Seq.
+  
+- User profile systems.
+  
+- XP tiering systems for accounts.
+
+- Report abuse system for reviews, waypoints, and users.
+
 Below are some videos of my app features:
 
 The overview of each water fountain. Shows essential information.
@@ -59,88 +79,6 @@ This is the star of all of Bubbly's features: an AI assistant. You can ask it fo
 
 <img width="405" height="742" alt="image" src="https://github.com/user-attachments/assets/63fffd7f-5601-4496-80be-9660c35c5951" />
 
-### What's different about my platform from others?
-
-Bubbly is different from other water fountain locator tools because it is a user-driven platform where people contribute and edit the database, with a trust system that ensures only reliable users can make changes, keeping the information accurate and up to date. This means that Bubbly doesn't rely on a single endpoint for recieving waypoint data. It uses multiple verified sources mixed together to create our huge dataset. We've changed up the Bubbler Map space by allowing verified users with enough XP from reviews to start contributing to the platform, allowing them to edit and add water bubblers. This helps us keep our information heavily updated so we can get reliable data.
-
-Bubbly is a map-based platform powered by a custom API and a MySQL database that stores information about public water bubblers (fountains), user profiles, reviews, and contribution history.
-
-I personally source and import accurate datasets from across the internet, then manually verify their location and details. Verified entries are marked as admin verified, giving users confidence that they can rely on the data.
-
-But accuracy doesn’t stop there. Because things are constantly changeing, and I cant update everything quickly all the time, Bubbly is designed to be community-driven through:
-
--  Any user can add new bubblers, edit incorrect details, or leave reviews about water quality, accessibility, and condition.
-
-- Contributions earn XP. As users gain XP, their edits are trusted more and require less review, gradually unlocking new editing privileges.
-
-- All contributions are scanned for spam, abuse, or inaccurate info before they go live. Suspicious submissions are flagged for manual review.
-
-- Each contribution is linked to the user who made it, building a public contribution history to encourage responsibility and transparency.
-
-- Edits are versioned so incorrect data can be rolled back if necessary, ensuring long-term accuracy.
-
-In the long term, I'm heavily aiming to become the world’s most detailed, updated, community driven repository of drinking water locations. Beyond simply mapping bubblers, the platform will provide open data access for governments, event organizers, and developers to integrate into their services, helping cities plan maintenance and improve accessibility. My included gamification elements like badges, leaderboards, and community ranks will encourage sustained contributions, while analytics dashboards will give insights into water quality, usage trends, and infrastructure gaps. Ultimately, Bubbly envisions a future where everyone has easy access to safe, reliable drinking water while reducing single-use plastic consumption and supporting sustainable communities globally.
-
-At the end of the day, this is a project that I genuinely had a major issue with, considering events take advantage of users by upselling and upcharging drinks at events when there's no other option. I wanted to create a solution that lets any individual access free drinking water anytime, anywhere, whether it's at festivals, parks, or public spaces, without being forced into unnecessary purchases. This all started at the Ekka, and I never thought that I would get to this level for my app. Bubbly is my way of fighting back against the insane pricing system, and I wanted to provide a transparent, community-driven resource for all Australians, not controlled by a government or central organisation, by but the community.
-
-### Feedback
-
-For an initial demo, I invited 50 randomly selected students from Calamvale Community College to test the platform. The response was overwhelmingly positive with 90% of users said the platform was a smart idea. Some participants raised concerns that a user-contribution system could be abused by bad actors. To address this, I implemented:
-
-- An XP tiering system that gradually unlocks editing permissions as users contribute accurate information over time.
-
-- AI-powered moderation to detect and filter out inappropriate or misleading reviews before they are published.
-
-### Sustainability towards the future
-
-Looking forward, Bubbly has the potential to scale into an enterprise platform by partnering with:
-
-- Local councils and governments
-
-- Schools and universities
-
-- Event organisers
-
-- Public venue and transport management groups
-
-These partnerships could ensure an accurate, nationwide database of water bubblers is maintained. Furthermore, the platform is designed to be extensible: future updates are planned to include locating public toilets, as well as other essential amenities.
-
-Additionally, Bubbly is open source by nature, allowing anyone to contribute or build on it, and by sharing the platform and waypoint data, it helps people across Australia access clean drinking water bit by bit.
-
-In a world where access to something as basic as clean drinking water can still be a challenge, Bubbly aims to make a meaningful impact. With over 5,000 water bubblers already mapped, the platform is paving the way towards universal, free access to clean drinking water for everyone in Australia, one bubbler at a time.
-
-## App features
-
-- Bookmarking fountians.
-- AI Chatbot for questions.
-- Viewing (guest) and posting reviews.
-- Viewing contribution logs.
-- Amenities viewer.
-- Logging using Discord and Seq.
-- User profile systems.
-- XP tiering systems for accounts.
-- Report abuse system for reviews, waypoints, and users.
-
-## API Endpoints
-
-You can access the docs for Bubbly API at: https://bubbly.linuskang.au/docs
-
-## Self-hosting 
-
-Hosting Bubbly by yourself is very challenging, because it is very resource intensive, requiring a beefy CPU and GPU for AI and map rendering. This is why I open sourced my existing Tile and API server. You can just self-host the important part at home: The Next.js app at https://bubbly.linuskang.au. This contains the actual stuff that users will view: Reviews, map, actual app, etc.. including database.
-
-You can quickly get started self-hosting the **production version** Next.js app using the following commands: 
-
-```shell
-cd App
-nano docker-compose.yml # EDIT THE ENV VALUES TO YOUR OWN
-sudo docker compose up -d # INSTALL AND RUN THE IMAGE
-```
-
-Access your instance at http://your_server_ip:3400
-
-You won't need to host anything else if you are doing it this way.
-
 ## Tech stack
 
 Below contains basically every technical detail about my app, including the softaere and hardware maps.
@@ -158,6 +96,100 @@ Below are detailed diagrams of how Bubbly is set up and maintained, including ou
 <img width="714" height="647" alt="image" src="https://github.com/user-attachments/assets/dcc43d4c-3c6b-45ef-9a0f-ca255781069c" />
 <img width="717" height="661" alt="image" src="https://github.com/user-attachments/assets/c159365b-c243-4ff3-b304-4f8e88c25ddb" />
 <img width="992" height="663" alt="image" src="https://github.com/user-attachments/assets/e90b6e29-1c9d-474c-bcb6-008d7d558495" />
+
+----
+
+### What's different about my platform from others?
+
+Bubbly is different from other water fountain locator tools because it is a user-driven platform where people contribute and edit the database, with a trust system that ensures only reliable users can make changes, keeping the information accurate and up to date. This means that Bubbly doesn't rely on a single endpoint for recieving waypoint data. It uses multiple verified sources mixed together to create our huge dataset. We've changed up the Bubbler Map space by allowing verified users with enough XP from reviews to start contributing to the platform, allowing them to edit and add water bubblers. This helps us keep our information heavily updated so we can get reliable data. I personally source and import accurate datasets from across the internet, then manually verify their location and details. Verified entries are marked as admin verified, giving users confidence that they can rely on the data.
+
+But accuracy doesn’t stop there. Because things are constantly changing, I cant update everything quickly as it happens, so Bubbly is designed to be community-driven:
+
+- Any user can add new bubblers, edit incorrect details, or leave reviews about water quality, accessibility, and condition.
+
+- Contributions earn XP. As users gain XP, their edits are trusted more and require less review, gradually unlocking new editing privileges.
+
+- All contributions are scanned for spam, abuse, or inaccurate info before they go live. Suspicious submissions are flagged for manual review.
+
+- Each contribution is linked to the user who made it, building a public contribution history to encourage responsibility and transparency.
+
+- Edits are versioned so incorrect data can be rolled back if necessary, ensuring long-term accuracy.
+
+In the long term, I'm heavily aiming to become the world’s most detailed, updated, community driven repository of drinking water locations. Beyond simply mapping bubblers, the platform will provide open data access for governments, event organizers, and developers to integrate into their services, helping cities plan maintenance and improve accessibility. My included gamification elements like badges, leaderboards, and community ranks will encourage sustained contributions, while analytics dashboards will give insights into water quality, usage trends, and infrastructure gaps. Ultimately, Bubbly envisions a future where everyone has easy access to safe, reliable drinking water while reducing single-use plastic consumption and supporting sustainable communities globally.
+
+----
+
+### Early beta user feedback
+
+I invited 50 randomly selected students from Calamvale Community College to test the platform. The response was overwhelmingly positive with 90% of users said the platform was a smart idea. Some participants raised concerns that a user-contribution system could be abused by bad actors. To address this, I implemented:
+
+- An XP tiering system that gradually unlocks editing permissions as users contribute accurate information over time.
+
+- AI-powered moderation to detect and filter out inappropriate or misleading reviews before they are published.
+
+----
+
+### Sustainability towards the future
+
+Looking forward, Bubbly has the potential to scale into an enterprise platform by partnering with:
+
+- Local councils and governments
+
+- Schools and universities
+
+- Event organisers
+
+- Public venue and transport management groups
+
+These partnerships could ensure an accurate, nationwide database of water bubblers is maintained. Furthermore, the platform is designed to be extensible: future updates are planned to include locating public toilets, as well as other essential amenities.
+
+In a world where access to something as basic as clean drinking water can still be a challenge, Bubbly aims to make a meaningful impact. With over 5,000 water bubblers already mapped, the platform is paving the way towards universal, free access to clean drinking water for everyone in Australia, one bubbler at a time.
+
+----
+
+## Self-hosting Bubbly
+
+If you want to use my prebuilt services like the AI agent servers without self hosting anything else of your own, you can easily get started with this ``docker-compose`` file:
+
+```yaml
+version: "3.9"
+
+services:
+  bubbly:
+    image: ghcr.io/linuskang/bubbly/bubbly:latest
+    container_name: bubbly
+    ports:
+      - "3400:3400"
+    environment:
+      DATABASE_URL: "mysql://user:password@localhost:3306/bubbly" # change to your database creds
+      NEXTAUTH_SECRET: "0KprtXWjpbLzXAnNR+BUREhglOjCUvnjIMki5Uq+JAs=" # change to whatever you want.
+      NEXTAUTH_URL: "https://your_app_url_to_access_bubbly"
+      RESEND_API_KEY: "your_resend_api_key" # https://resend.com
+      API_KEY: "change_this_to_whatever_you_want"
+      OLLAMA_API_URL: "https://agent.linus.id.au" # use my prebuilt agent ai server
+      DISCORD_WEBHOOK_URL: "https://your_discord_webhook" # https://discord.com/developers
+      SEQ_URL: "https://your_seq_logging_server" # https://datalust.co
+    restart: unless-stopped
+```
+
+Edit the compose file in ``bubbly/App/docker-compose.yml`` and run the following to finish setting up:
+
+```bash
+sudo docker-compose up -d
+```
+
+## Docs for developers
+
+API documentation is available at https://bubbly.linuskang.au/docs or your own self hosted instance /docs.
+
+
+
+
+
+
+IGNORE THE BOTTOM. UP ONLY ^^^^^^^^^^^^^^^^^^^^^^^^
+
+
 
 ## Hosting entire project
 
@@ -519,6 +551,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

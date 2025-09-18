@@ -28,7 +28,7 @@
     "cmdk": "^1.1.1",
     "formidable": "^3.5.4",
     "ioredis": "^5.7.0",
-    "lucide-react": "^0.543.0",
+    "lucide-react": "^0.544.0",
     "maplibre-gl": "^5.7.1",
     "next": "15.5.3",
     "next-auth": "^4.24.11",

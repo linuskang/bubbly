@@ -81,7 +81,15 @@ This is the star of all of Bubbly's features: an AI assistant. You can ask it fo
 
 ## Self-hosting Bubbly
 
-You can easily get started hosting the production ready version of Bubbly by editing this ``docker-compose.yml`` file:
+You can easily get started hosting the production ready version of Bubbly by hosting the app via. docker. Follow the below steps to get started:
+
+```bash
+git clone https://github.com/linuskang/bubbly
+cd bubbly/App
+nano docker-compose.yml
+```
+
+Edit the ``docker-compose.yml`` file @ ``bubbly/App/docker-compose.yml`` to your own values.
 
 ```yaml
 version: "3.9"
@@ -104,19 +112,19 @@ services:
     restart: unless-stopped
 ```
 
-Edit the compose file in ``bubbly/App/docker-compose.yml`` and run the following to finish setting up:
+Pull the docker image and start it via:
 
 ```bash
 sudo docker-compose up -d
 ```
+
+Access Bubbly at http://your_ip:3400
 
 ## Docs for developers
 
 API documentation is available at https://bubbly.linuskang.au/docs or your own self hosted instance /docs.
 
 ## Tech stack
-
-Below contains basically every technical detail about my app, including the softaere and hardware maps.
 
 - Next.js - App framework
 - Auth.js - Authentication
@@ -544,6 +552,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

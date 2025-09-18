@@ -7,11 +7,12 @@ services:
     ports:
       - "3400:3400"
     environment:
-      DATABASE_URL: "mysql://database_username:database_user_password@localhost:3306/database_name"
-      NEXTAUTH_SECRET: "your_nextauth_secret"
-      NEXTAUTH_URL: "your_bubbly_app_url"
-      RESEND_API_KEY: "your_resend_api_key"
-      API_KEY: "change_this_to_something_strong"
-      DISCORD_WEBHOOK_URL: "your_discord_webhook_url"
-      SEQ_URL: "your_seq_instance_url:5341"
+      DATABASE_URL: "mysql://user:password@localhost:3306/bubbly" # change to your database creds
+      NEXTAUTH_SECRET: "0KprtXWjpbLzXAnNR+BUREhglOjCUvnjIMki5Uq+JAs=" # change to whatever you want.
+      NEXTAUTH_URL: "https://your_app_url_to_access_bubbly"
+      RESEND_API_KEY: "your_resend_api_key" # https://resend.com
+      API_KEY: "change_this_to_whatever_you_want"
+      OLLAMA_API_URL: "https://agent.linus.id.au" # use my prebuilt agent ai server
+      DISCORD_WEBHOOK_URL: "https://your_discord_webhook" # https://discord.com/developers
+      SEQ_URL: "https://your_seq_logging_server" # https://datalust.co
     restart: unless-stopped

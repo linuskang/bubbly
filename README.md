@@ -81,7 +81,7 @@ This is the star of all of Bubbly's features: an AI assistant. You can ask it fo
 
 ## Self-hosting Bubbly
 
-If you want to use my prebuilt services like the AI agent servers without self hosting anything else of your own, you can easily get started with this ``docker-compose`` file:
+You can easily get started hosting the production ready version of Bubbly by editing this ``docker-compose.yml`` file:
 
 ```yaml
 version: "3.9"
@@ -544,6 +544,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

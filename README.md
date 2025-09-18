@@ -1,14 +1,19 @@
 # Bubbly: Mapping out Australia's water fountains
 
-<img width="2558" height="1350" alt="image" src="https://github.com/user-attachments/assets/dec98b7b-ce44-41a9-ad80-3f9b08c10e1a" />
+<img width="2556" height="1274" alt="image" src="https://github.com/user-attachments/assets/5f732818-b3c7-4ec8-aa6b-c344a211f938" />
 
-**Bubbly** is an all-in-one app designed to help you locate your nearest water fountain. Open sourced. This was my submission for the *2025 Premier Coding Comp* in Australia.
+**Bubbly** is an all-in-one app designed to help you locate your nearest water fountain, with our code open sourced. This was my submission for the *2025 Premier Coding Comp* in Australia.
 
 You can access **Bubbly** at https://bubbly.linuskang.au.
 
-If anything is down on the site, please contact me via. email@linus.id.au. You can also view any service outages on my sites at https://status.linuskang.au.
+> [!TIP]
+> Have you noticed anything broken on the site? I'm here to help! Please reach out at email@linus.id.au for anything you find!
+> 
+> Additionally, check my [status page](https://status.linuskang.au) for any outage updates on my site.
 
 ## About the platform
+
+### The problem
 
 I first realised the challenge of accessing clean water at this year’s Ekka, when I struggled to find a water bubbler to refill my bottle. This experience made me wonder why there wasn’t a simple, reliable way to locate water fountains in public spaces.
 
@@ -22,6 +27,10 @@ After researching, I discovered two major problems with existing solutions:
 
 These issues make it unnecessarily hard for everyday people to find nearby water bubblers quickly and confidently.
 
+----
+
+### My proposed solution
+
 To address these problems, I developed a platform called Bubbly, which aims to centralise and simplify access to clean drinking water across Australia. Through my app, users can:
 
 - Search for nearby bubblers using an intuitive, map-based interface.
@@ -29,6 +38,26 @@ To address these problems, I developed a platform called Bubbly, which aims to c
 - Check reviews and condition reports of existing bubblers to know if they are functional and clean.
 
 - Contribute by adding new bubblers or updating the status of existing ones, ensuring the database stays accurate and up to date.
+
+Below are some videos of my app features:
+
+The overview of each water fountain. Shows essential information.
+
+<img width="2000" height="1500" alt="image" src="https://github.com/user-attachments/assets/839c6cac-2a0c-4aee-a7ef-c0957fd1a107" />
+
+<img width="399" height="754" alt="image" src="https://github.com/user-attachments/assets/2b6cb4a3-f880-435b-85bc-9e761d119e5b" />
+
+This tab shows user reviews.
+
+<img width="412" height="746" alt="image" src="https://github.com/user-attachments/assets/f167da5b-4534-46ed-b19a-d7c7c9297cf9" />
+
+This tab lists all the changes that users have made/contributed to the database. Basically a commits log.
+
+<img width="410" height="946" alt="image" src="https://github.com/user-attachments/assets/13c1adac-9cda-4beb-9c24-6f2fcc645df1" />
+
+This is the star of all of Bubbly's features: an AI assistant. You can ask it for details about the bubbler, summarise user reviews, and ask it questions like "Can my dog drink water here, is it dog friendly". We use Ollama + our own custom agent functions to call the Bubbly API for data.
+
+<img width="405" height="742" alt="image" src="https://github.com/user-attachments/assets/63fffd7f-5601-4496-80be-9660c35c5951" />
 
 ### What's different about my platform from others?
 
@@ -490,6 +519,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

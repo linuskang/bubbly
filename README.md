@@ -79,6 +79,41 @@ This is the star of all of Bubbly's features: an AI assistant. You can ask it fo
 
 <img width="405" height="742" alt="image" src="https://github.com/user-attachments/assets/63fffd7f-5601-4496-80be-9660c35c5951" />
 
+## Self-hosting Bubbly
+
+If you want to use my prebuilt services like the AI agent servers without self hosting anything else of your own, you can easily get started with this ``docker-compose`` file:
+
+```yaml
+version: "3.9"
+
+services:
+  bubbly:
+    image: ghcr.io/linuskang/bubbly/bubbly:latest
+    container_name: bubbly
+    ports:
+      - "3400:3400"
+    environment:
+      DATABASE_URL: "mysql://user:password@localhost:3306/bubbly" # change to your database creds
+      NEXTAUTH_SECRET: "0KprtXWjpbLzXAnNR+BUREhglOjCUvnjIMki5Uq+JAs=" # change to whatever you want.
+      NEXTAUTH_URL: "https://your_app_url_to_access_bubbly"
+      RESEND_API_KEY: "your_resend_api_key" # https://resend.com
+      API_KEY: "change_this_to_whatever_you_want"
+      OLLAMA_API_URL: "https://agent.linus.id.au" # use my prebuilt agent ai server
+      DISCORD_WEBHOOK_URL: "https://your_discord_webhook" # https://discord.com/developers
+      SEQ_URL: "https://your_seq_logging_server" # https://datalust.co
+    restart: unless-stopped
+```
+
+Edit the compose file in ``bubbly/App/docker-compose.yml`` and run the following to finish setting up:
+
+```bash
+sudo docker-compose up -d
+```
+
+## Docs for developers
+
+API documentation is available at https://bubbly.linuskang.au/docs or your own self hosted instance /docs.
+
 ## Tech stack
 
 Below contains basically every technical detail about my app, including the softaere and hardware maps.
@@ -143,58 +178,16 @@ Looking forward, Bubbly has the potential to scale into an enterprise platform b
 
 These partnerships could ensure an accurate, nationwide database of water bubblers is maintained. Furthermore, the platform is designed to be extensible: future updates are planned to include locating public toilets, as well as other essential amenities.
 
-In a world where access to something as basic as clean drinking water can still be a challenge, Bubbly aims to make a meaningful impact. With over 5,000 water bubblers already mapped, the platform is paving the way towards universal, free access to clean drinking water for everyone in Australia, one bubbler at a time.
-
 ----
 
-## Self-hosting Bubbly
-
-If you want to use my prebuilt services like the AI agent servers without self hosting anything else of your own, you can easily get started with this ``docker-compose`` file:
-
-```yaml
-version: "3.9"
-
-services:
-  bubbly:
-    image: ghcr.io/linuskang/bubbly/bubbly:latest
-    container_name: bubbly
-    ports:
-      - "3400:3400"
-    environment:
-      DATABASE_URL: "mysql://user:password@localhost:3306/bubbly" # change to your database creds
-      NEXTAUTH_SECRET: "0KprtXWjpbLzXAnNR+BUREhglOjCUvnjIMki5Uq+JAs=" # change to whatever you want.
-      NEXTAUTH_URL: "https://your_app_url_to_access_bubbly"
-      RESEND_API_KEY: "your_resend_api_key" # https://resend.com
-      API_KEY: "change_this_to_whatever_you_want"
-      OLLAMA_API_URL: "https://agent.linus.id.au" # use my prebuilt agent ai server
-      DISCORD_WEBHOOK_URL: "https://your_discord_webhook" # https://discord.com/developers
-      SEQ_URL: "https://your_seq_logging_server" # https://datalust.co
-    restart: unless-stopped
-```
-
-Edit the compose file in ``bubbly/App/docker-compose.yml`` and run the following to finish setting up:
-
-```bash
-sudo docker-compose up -d
-```
-
-## Docs for developers
-
-API documentation is available at https://bubbly.linuskang.au/docs or your own self hosted instance /docs.
-
-
-
-
-
-
-IGNORE THE BOTTOM. UP ONLY ^^^^^^^^^^^^^^^^^^^^^^^^
-
-
-
-## Hosting entire project
+## Developing on Bubbly
 
 > [!NOTE]
-> This is for people who want to self host literally everything for Bubbly:
+> If you are just wanting to deploy the production ready version of bubbly, you can follow the ``docker-compose`` above and just host the app standalone.
+>
+> I only recommend you self host every service for Bubbly if your developing and contributing to the repository.
+
+Bubbly comprises of several parts:
 
 * Main app (https://bubbly.linuskang.au)
 * Database via. MySQL (http://192.168.10.87:3006)
@@ -551,6 +544,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

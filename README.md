@@ -10,6 +10,7 @@ You can access **Bubbly** at https://bubbly.linuskang.au.
 > These are the following pages that users can access on the site:
 >
 > ``/`` - Main map page
+> 
 > ``/user/username_here`` - Access a user's account profile (i.e. https://bubbly.linuskang.au/user/linuskang)
 
 > [!TIP]
@@ -569,6 +570,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

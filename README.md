@@ -7,9 +7,26 @@
 You can access **Bubbly** at https://bubbly.linuskang.au.
 
 > [!TIP]
+> These are the following pages that users can access on the site:
+>
+> ``/`` - Main map page
+> ``/user/username_here`` - Access a user's account profile (i.e. https://bubbly.linuskang.au/user/linuskang)
+
+> [!TIP]
 > Have you noticed anything broken on the site? I'm here to help! Please reach out at email@linus.id.au for anything you find!
 > 
 > Additionally, check my [status page](https://status.linuskang.au) for any outage updates on my site.
+
+> [!TIP]
+> Wanting to contribute?
+>
+> If your account is above level 10, you can start editing information on Bubbly! Start by pressing on a Bubbler of your choice, and press the edit icon on the water bubbler header. Now, you can appropriately edit the information to keep Bubbly accurate!
+>
+> Above level 20? You can start adding bubblers to the database! Right click on the point of the map where you would like to add a bubbler, and press Add bubbler and fill out the information for it. Please note all edits and contributions from users are heavily moderated by our team and any inapropriate contributions will be wiped off the platform.
+
+If you would like an example of a water bubbler, here is one at my school grounds: https://bubbly.linuskang.au/?waypoint=6207
+
+You can view a sample review that Ive placed and click on my user profile!
 
 ## About the platform
 
@@ -552,6 +569,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 

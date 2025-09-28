@@ -6,6 +6,9 @@
 
 You can access **Bubbly** at https://bubbly.linuskang.au.
 
+> [!NOTE]
+> After seeing the potential impact of my app on Australian's, I've decided to continue maintaining the project and rewrite everything to be production ready for Version 2. Information about that can be found here: https://lkang.au/bubbly. The new improved version with more features, better ui, and more developer friendly api endpoints will cover the whole world, not just Australia.
+
 > [!TIP]
 > These are the following pages that users can access on the site:
 >
@@ -570,6 +573,7 @@ View the full policy at https://lkang.au/privacy
 ## Credit
 
 **Bubbly** is a project by **Linus Kang**. For any enquiries, please reach out at **email@linus.id.au**
+
 
 
 
